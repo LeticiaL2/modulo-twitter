@@ -1,0 +1,14 @@
+.button_login_container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.button_login{
+    color: #00acee;
+    border: 1px solid #808080;
+    width: 100%;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 16px;
+}

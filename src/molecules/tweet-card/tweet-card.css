@@ -1,0 +1,65 @@
+.area-tweets__tweets{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #565656;
+    padding: 20px;
+    color: white;
+}
+
+.area-tweets__tweets__topo{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.nome_perfil{
+    margin-right: 5px;
+    padding: 0;
+}
+
+.nick{
+    padding: 0;
+    margin: 0;
+    margin-left: -20px;
+}
+
+.usuario{
+    margin-left: -10px;
+    font-size: 12px;
+    align-items: center;
+    color: #808080;
+    padding: 0;
+
+}
+
+.texto{
+    font-size: 1.2em;
+    padding: 5px;
+    margin-left: 50px;
+    color: white;
+}
+
+.icones{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;  
+    flex-wrap: wrap;
+    margin-top: 5px;
+}
+
+.botao_icone{
+    display: flex;
+    background-color: transparent;
+    align-items: center;
+    font-size: 1em;
+    color: #808080;
+    padding: 3px;
+    border-style: none;
+}
+
+.icone-twitter{
+    height: 20px;
+    width: 20px;
+    align-items: center;
+    padding: 10px;
+}

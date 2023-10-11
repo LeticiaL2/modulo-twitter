@@ -1,0 +1,68 @@
+{
+  "users": [
+    {
+      "email": "teste@gmail.com",
+      "password": "$2a$10$6iatvXSx/4.gJpW7SFDzyeHzhBnV1uGbOLeWMubJH8wxVlf7NjSYG",
+      "id": 1
+    },
+    {
+      "email": "raf@gmail.com",
+      "password": "$2a$10$Pxa4S4pBh9n3q5VbHFhfUOemJRK5fVWqIfdc8HrTfshY6rTv5MhGW",
+      "id": 2
+    }
+  ],
+  "tweets": [
+    {
+      "nameProfile": "L2Code",
+      "user": "@l2code",
+      "textTweet": "Phasellus congue porttitor elementum. Duis iaculis vitae nisl cursus vestibulum. Sed fermentum auctor ante at commodo.",
+      "qtdReply": "2",
+      "qtdRt": "5",
+      "qtdFav": "25",
+      "qtdView": "125",
+      "id": 1
+    },
+    {
+      "nameProfile": "Rafael",
+      "user": "@rafael",
+      "textTweet": "Phasellus congue porttitor elementum. Duis iaculis vitae nisl cursus vestibulum. Sed fermentum auctor ante at commodo.",
+      "qtdReply": "5",
+      "qtdRt": "3",
+      "qtdFav": "44",
+      "qtdView": "177",
+      "id": 2
+    },
+    {
+      "nameProfile": "Roberta",
+      "user": "@Roberta",
+      "textTweet": "Phasellus congue porttitor elementum. Duis iaculis vitae nisl cursus vestibulum. Sed fermentum auctor ante at commodo.",
+      "qtdReply": "4",
+      "qtdRt": "7",
+      "qtdFav": "36",
+      "qtdView": "223",
+      "id": 3
+    },
+    {
+      "textTweet": "teste",
+      "profilePhoto": "/static/media/perfil.9bc29303077aba139564.png",
+      "nameProfile": "Rafael",
+      "user": "@rafinha",
+      "qtdReply": "0",
+      "qtdRt": "0",
+      "qtdFav": "0",
+      "qtdView": "0",
+      "id": 4
+    },
+    {
+      "textTweet": "123",
+      "profilePhoto": "/static/media/perfil.9bc29303077aba139564.png",
+      "nameProfile": "Rafael",
+      "user": "@rafinha",
+      "qtdReply": "0",
+      "qtdRt": "0",
+      "qtdFav": "0",
+      "qtdView": "0",
+      "id": 5
+    }
+  ]
+}

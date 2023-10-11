@@ -1,0 +1,10 @@
+.post_button{
+    margin-right: 15px;
+    height: 35px;
+    width: 60px;
+    background-color: #00acee;
+    border-radius: 20px;
+    border-style: none;
+    color: white;
+    font-weight: bold;
+}
