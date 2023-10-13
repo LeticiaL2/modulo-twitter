@@ -1,10 +1,16 @@
-import React from 'react'
-import { Container } from './style'
+/* eslint-disable  */
+import React from 'react';
+import { Container } from './style';
 
-const Button = (props) => {
-  return (
-    <Container {...props}>{props.children}</Container>
-  )
+function Button(props) {
+  return <Container
+    bgColor={props.backgroundColor}
+    fontColor={props.fontColor}
+    fontSize={props.fontSize}
+    borderColor={props.borderColor}
+    {...props}>
+    {props.children}
+  </Container>;
 }
 
-export default Button
+export default Button;

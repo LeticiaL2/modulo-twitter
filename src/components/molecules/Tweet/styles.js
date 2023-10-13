@@ -1,10 +1,11 @@
 import styled from "styled-components";
+import { colors } from "../../../styles/colors";
 
 export const TweetContainer = styled.article`
   margin-top: 0.75rem;
   padding: 0 1rem;
   display: flex;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid ${colors.dark_gray};
   width: 100%;
   gap: 0.75rem;
 `;
@@ -37,7 +38,7 @@ export const UserInfo = styled.div`
 
 export const GrayContainer = styled.div`
   display: flex;
-  color: var(--font-color-light);
+  color: ${colors.light_gray};
 `;
 
 export const Content = styled.span`
@@ -50,12 +51,5 @@ export const Footer = styled.footer`
   margin-top: 0.75rem;
   font-size: 13px;
   justify-content: space-between;
-  color: var(--font-color-light);
-`;
-
-export const Action = styled.div`
-  display: flex;
-  gap: 0.25rem;
-  align-items: center;
-  cursor: pointer;
-`;
+  color: ${colors.light_gray};
+`

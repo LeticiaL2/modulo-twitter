@@ -1,9 +1,15 @@
 import React from 'react';
 import AppRoutes from './Routes/AppRoutes';
+import GlobalStyle from './styles/global';
 
 
 function App() {
-  return <AppRoutes />
+  return (
+    <>
+      <GlobalStyle />
+      <AppRoutes />
+    </>
+  )
 }
 
 export default App;

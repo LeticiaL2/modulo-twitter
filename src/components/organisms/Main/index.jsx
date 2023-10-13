@@ -1,71 +1,60 @@
-import React, { useContext, useEffect, useState } from 'react'
-import Header from '../../molecules/Header'
-import PostTweet from '../../molecules/PostTweet'
-import TweetsList from '../../molecules/TweetsList'
-import Button from '../../atoms/Button'
-import { AuthContext } from '../../../contexts/auth'
+import React, {useEffect, useState } from 'react';
+import Header from '../../organisms/Header';
+import PostTweet from '../../molecules/PostTweet';
+import TweetsList from '../../molecules/TweetsList';
 
-
-
-const Main = () => {
-  const [tweets, setTweets] = useState([])
+function Main() {
+  const [tweets, setTweets] = useState([]);
 
   async function getTweets() {
     try {
-      const response = await fetch('http://localhost:3004/posts')
-      if(!response.ok) {
-        throw new Error('Erro ao buscar os tweets')
+      const response = await fetch('http://localhost:3004/posts');
+      if (!response.ok) {
+        throw new Error('Erro ao buscar os tweets');
       }
-      
-      const data = await response.json()
-      setTweets(data)
+
+      const data = await response.json();
+      setTweets(data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
   useEffect(() => {
-    getTweets()
-  }, [])
-  
+    getTweets();
+  }, []);
 
   const handleAddTweet = async (tweet) => {
-      try {
-        const response = await fetch('http://localhost:3004/posts', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(tweet)
-        })
-        const data = await response.json()
+    try {
+      const response = await fetch('http://localhost:3004/posts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(tweet),
+      });
+      const data = await response.json();
 
-        if(!response.ok) {
-          throw new Error(data.message || 'Something went wrong')
-        }
-
-        getTweets()
-      } catch(e) {
-        console.log(e)
+      if (!response.ok) {
+        throw new Error(data.message || 'Something went wrong');
       }
-  }
 
-  const { logout } = useContext(AuthContext)
-  const handleLogout = () => {
-    logout()
-  }
-  
-  const orderedTweets = [...tweets].reverse()
-  
+      getTweets();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+
+  const orderedTweets = [...tweets].reverse();
+
   return (
     <>
       <Header />
-      <Button variant="primary" onClick={handleLogout}>Logout</Button>
-      <PostTweet onAddTweet={handleAddTweet}/>
+      <PostTweet onAddTweet={handleAddTweet} />
       <TweetsList tweets={orderedTweets} />
-      
     </>
-  )
+  );
 }
 
-export default Main
+export default Main;

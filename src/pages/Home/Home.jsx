@@ -1,10 +1,12 @@
-import React from 'react'
-import Layout from '../../components/Layout'
+import React from 'react';
+import { Container } from './styles';
+import Main from '../../components/organisms/Main';
 
-const HomePage = () => {
+function HomePage() {
   return (
-    <Layout />
-  )
+    <Container>
+      <Main />
+    </Container>);
 }
 
-export default HomePage
+export default HomePage;

@@ -1,13 +1,14 @@
-import React from 'react'
-import Tweet from '../../molecules/Tweet'
+import React from 'react';
+import Tweet from '../Tweet';
 
-const TweetsList = ({tweets}) => {
+function TweetsList({ tweets }) {
   return (
     <>
-      {tweets.map(tweet => <Tweet key={tweet.id} userData={tweet}/>)}
+      {tweets.map((tweet) => (
+        <Tweet key={tweet.id} userData={tweet} />
+      ))}
     </>
-
-  )
+  );
 }
 
-export default TweetsList
+export default TweetsList;

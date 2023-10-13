@@ -1,18 +1,17 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
+import { colors } from "../../../styles/colors";
 
 export const Container = styled.input`
+  font-family: 'Twitter', sans-serif;
   font-size: 1.5rem;
   border: none;
-  color: var(--font-color);
-  background-color: var(--background-color);
-  padding: 0.75rem 0;
+  color: ${colors.white};
+  background-color: ${colors.black};
+  padding: .75rem .75rem;
   width: 100%;
+  border: ${props => props.border === 'outline' ? `1px solid ${colors.light_gray}` : "none"};
+  border-radius: .7rem;
 
-  ${({variant}) => variant === "outline" && css`
-    border: 1px solid var(--border-color);
-    border-radius: .7rem;
-    padding: .75rem .75rem;
-  `}
 
   &:focus {
     outline: none;
