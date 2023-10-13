@@ -38,17 +38,19 @@ function TweetInput (props) {
                     <form className="container-form_box" >
                         <input
                             type="text"
-                            className="tweet-input_box"
+                            className="tweet_input_box"
                             placeholder="What is happening?!"
                             value={tweetText}
                             onChange={(e) => setTweetText(e.target.value)}
                         /> </form>
                 </div>
-                        <div className="button_input_box">
-                            <Button text={props.buttonText} onClick={handleButtonClick}/>
+                        <div className="footer_input">
+                            <div className="button_input_box">
+                                <Button text={props.buttonText} onClick={handleButtonClick}/>
+                            </div>
                         </div>
                     
-                </div>
+            </div>
           
         </>
     )

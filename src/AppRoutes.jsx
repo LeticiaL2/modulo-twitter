@@ -10,7 +10,7 @@ import HomePage from './pages/home-page/home-page';
 import LoginPage from './pages/login-page/login-page';
 
 import { AuthProvider, AuthContext } from "./contexts/auth";
-import SignupPage from "./pages/signup-page/signup";
+import SignupPage from "./pages/signup-page/signup-page";
 
 
 const AppRoutes = () => {

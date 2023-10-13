@@ -35,7 +35,6 @@ function HomePage() {
     }, []);
     
     const {logout} = useContext(AuthContext)
-
     
     const handleLogout = () => {
       logout();

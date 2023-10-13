@@ -7,7 +7,9 @@ import "./button.css"
 function Button(props) {
     const {onClick} = props
     return (
-    <button  onClick={onClick} className="post_button">{props.text}</button>
+        <div className="button_container">
+            <button  onClick={onClick} className="button_click">{props.text}</button>
+        </div>
     )
 }
 

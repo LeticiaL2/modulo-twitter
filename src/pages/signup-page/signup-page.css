@@ -6,16 +6,13 @@
 }
 
 
-.login_page{
+.signup_page{
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
     color: white;
     align-items: center;
     width: 100%;
     justify-content: center;
 }
-
-
 
 

@@ -13,7 +13,7 @@ export const AuthProvider = ({children}) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const recoveredUser = localStorage.getItem('user')
+        const recoveredUser = localStorage.getItem('token')
 
         if(recoveredUser){
             setUser(JSON.parse(recoveredUser))
@@ -42,7 +42,7 @@ export const AuthProvider = ({children}) => {
         await fetch("http://localhost:3001/users", {
             method: "GET",
             headers: {
-                'Authorization':'Bearer ${acessToken}'
+                'Authorization':'Bearer ${accessToken}'
             }
         })
 
