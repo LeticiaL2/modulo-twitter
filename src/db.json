@@ -9,6 +9,11 @@
       "email": "teste@gmail.com",
       "password": "$2a$10$beqaEHbgHJSbWSqk5o4D5OahDzI3znfzPfiLVe2q3gH3kPkN942pO",
       "id": 2
+    },
+    {
+      "email": "alo@gmail.com",
+      "password": "$2a$10$WbVs3dVZNrNfpPqZ5kY6i.2IiP5uT9/51CF6n3zJJrDIX1pRuPA2.",
+      "id": 3
     }
   ],
   "tweets": [

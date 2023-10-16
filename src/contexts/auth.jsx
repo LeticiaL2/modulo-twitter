@@ -65,10 +65,18 @@ export const AuthProvider = ({children}) => {
     
     
 
-    const logout = () => {
+    const logout = async() => {
 
         console.log("logout");
         localStorage.removeItem("user");
+        localStorage.removeItem("token");
+
+        await fetch('http://localhost:3001/users', {
+                method: 'GET',
+                headers: {
+                    Authorization: null,
+                },
+        });
         
         setUser(null);
         navigate("/login");
