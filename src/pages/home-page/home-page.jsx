@@ -3,10 +3,10 @@ import axios from "axios";
 import TweetInput from  "../../molecules/tweet-input-box/tweet-input-box";
 import ListTweets from "../../organism/list-tweets/list-tweets";
 import perfil from '../../assets/perfil.png'
-import logo from '../../assets/logo.png'
 import "./home-page.css"
 import { AuthContext } from "../../contexts/auth";
-
+import Button from "../../atoms/button/button";
+import Header from "../../atoms/header/header";
 
 function HomePage() {
   
@@ -48,14 +48,16 @@ function HomePage() {
           <div className="container-home">
             
             <div className="header_home">
-              <img className="logo_X_Home" src={logo} alt="" />
+                <div className="logo">
+                    <Header/>
+                </div>
+                
+                <div className="button_logout">
+                    <Button className="logout" text="Sair" onClick={handleLogout}/>
+                </div>
             </div>
 
-            <div className="logout_container">
-              <div className="button_logout_container">
-               <button className="button_logout" onClick={handleLogout}>Sair</button>
-              </div>
-            </div>
+          
     
             <div className="container_caixa_central_home">
               <div className="caixa_central_home">

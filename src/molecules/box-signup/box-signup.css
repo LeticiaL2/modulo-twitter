@@ -40,3 +40,7 @@
     opacity: 1;
     color: #808080;
 }
+
+.error{
+    color: red;
+}

@@ -44,6 +44,7 @@ function BoxLogin() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}/>
                     </div>
+                    <div id="error-container" className="erro_message"></div>
 
                     <div className="action">
                         <ButtonSubmit text="Entrar"/>

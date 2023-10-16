@@ -1,11 +1,11 @@
 .button_container{
     width: 100%;
     display: flex;
-    justify-content: center;
-   
+    justify-content: center;   
 }
 
 .button_click{
+
     width: 100%;
     background-color: #00acee;
     border-radius: 20px;

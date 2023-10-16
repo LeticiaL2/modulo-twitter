@@ -8,10 +8,7 @@ import rt from  "../../assets/rt.png"
 import view from  "../../assets/view.png"
 
 
-
 function TweetCard(props) {
-
-  
   return (
     <div className="area-tweets__tweets">
       <div className="area-tweets__tweets__topo">

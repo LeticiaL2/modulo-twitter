@@ -70,3 +70,7 @@ input::placeholder{
     width: 20%;
     height: 20%;
 }
+
+.erro_message{
+    color: red;
+}
