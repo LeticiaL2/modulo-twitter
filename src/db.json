@@ -14,6 +14,31 @@
       "email": "alo@gmail.com",
       "password": "$2a$10$WbVs3dVZNrNfpPqZ5kY6i.2IiP5uT9/51CF6n3zJJrDIX1pRuPA2.",
       "id": 3
+    },
+    {
+      "email": "raff08@gmail.com",
+      "password": "$2a$10$QmvvEsemAWzOCEdnA7cTQes/MONIIenff5unLBpDXOvp6iZ7H9ASC",
+      "id": 4
+    },
+    {
+      "email": "aloo@gmail.com",
+      "password": "$2a$10$W0tlYh06nQyYh6DfNHPGKejQH4RhsuOodQ6/V/a3T9VpfurigNUqC",
+      "id": 5
+    },
+    {
+      "email": "alooo@gmail.com",
+      "password": "$2a$10$ErHNw6Qa3P8uuyvqGL.C4ei0Mw8WW/9rxMnzk2Z2cpEjCQq4Mrjui",
+      "id": 6
+    },
+    {
+      "email": "testee@gmail.com",
+      "password": "$2a$10$3UAeFVtH4vKf50uNdoW33OTyBXJhCA0gqygNSPxkiZM7X2aDOPykW",
+      "id": 7
+    },
+    {
+      "email": "dsadas@gmail.com",
+      "password": "$2a$10$Ejjy0AUpaIsgAjQ3/ZH4fOBYGlaB9tFF7ukbcl7hqv0OOV2qU4q6K",
+      "id": 8
     }
   ],
   "tweets": [

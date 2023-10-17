@@ -56,7 +56,6 @@ export const AuthProvider = ({children}) => {
             setUser(loggedUser);
             navigate("/");
         } else {
-            // Exibir mensagem de erro
             const errorContainer = document.getElementById("error-container");
             errorContainer.textContent = "Credenciais inválidas";
             errorContainer.style.display = "block";

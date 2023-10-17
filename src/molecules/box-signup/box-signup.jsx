@@ -1,10 +1,10 @@
-import React, { useState, useContext} from "react";
-import logo  from "../../assets/logo.png"
+import React, { useState} from "react";
 import "./box-signup.css"
-import {Link, Navigate} from "react-router-dom"
+import {Link} from "react-router-dom"
 import Button from "../../atoms/button/button";
 import ButtonSubmit from "../../atoms/button-submit/button-submit"
 import { useNavigate } from "react-router-dom";
+import FieldInput from "../../atoms/field-input/field-input";
 
 
 const BoxSignup = () => {
@@ -14,16 +14,12 @@ const BoxSignup = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
+
   const handleSubmit = (e) => {
         e.preventDefault();
 
         if (password !== confirmPassword) {
           setError("As senhas não coincidem.");
-          return;
-        }
-
-        if (password.length < 6) {
-          setError("A senha deve ter pelo menos 6 caracteres.");
           return;
         }
 
@@ -58,41 +54,27 @@ const BoxSignup = () => {
     <div className="container_signup">
       <div className="box">
         <form className="form_container" onSubmit={handleSubmit}>
-          <div className="field">
-            <input
-              className="input_signup"
+          
+            <FieldInput
               type="email"
-              name="email"
-              id="email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-          </div>
-
-          <div className="field">
-            <input
-              className="input_signup"
+       
+            <FieldInput
               type="password"
-              name="password"
-              id="password"
               placeholder="Senha"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-          </div>
 
-          <div className="field">
-            <input
-              className="input_signup"
+            <FieldInput
               type="password"
-              name="confirmPassword"
-              id="confirmPassword"
               placeholder="Confirmar Senha"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
-          </div>
 
           <div className="error">{error}</div> 
           

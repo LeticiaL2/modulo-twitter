@@ -4,6 +4,7 @@ import "./box-login.css"
 import { AuthContext } from "../../contexts/auth";
 import Button from "../../atoms/button/button";
 import {Link} from "react-router-dom"
+import FieldInput from "../../atoms/field-input/field-input"
 
 
 function BoxLogin() {
@@ -24,26 +25,19 @@ function BoxLogin() {
         <div className="container">
             <div className="login_container">
                 <form className="form_container" onSubmit={handleSubmit}>
-                    <div className="field">
-                        <input  
-                        className="input_login" 
+                    
+                        <FieldInput 
                         type="email" 
-                        name="email" 
-                        id="email" 
                         placeholder="Email" 
                         value={email}  
                         onChange={(e) => setEmail(e.target.value)}/>
-                    </div>
                     
-                    <div className="field">
-                        <input className="input_login" 
-                        type="password" 
-                        name="password" 
-                        id="password" 
+                        <FieldInput
+                        type="password"  
                         placeholder="Senha" 
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}/>
-                    </div>
+
                     <div id="error-container" className="erro_message"></div>
 
                     <div className="action">

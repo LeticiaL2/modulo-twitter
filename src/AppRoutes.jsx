@@ -1,4 +1,4 @@
-import React, {Children, useContext} from "react";
+import React, {useContext} from "react";
 import {
     BrowserRouter as Routers,
     Route,
@@ -24,7 +24,7 @@ const AppRoutes = () => {
 
         if(!authenticated) {
             return <Navigate to="/login"/>
-            console.log({authenticated})
+            
         } 
         return children;
     };
