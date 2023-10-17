@@ -25,7 +25,8 @@ input::placeholder{
   .icon_eye {
   position: absolute;
   top: 50%;
-  background-color: #80808000;
+  color: black;
+  background-color: transparent;
   right: 25%; 
   transform: translateY(-50%);
   cursor: pointer;

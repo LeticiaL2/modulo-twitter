@@ -9,6 +9,11 @@
       "email": "alo@gmail.com",
       "password": "$2a$10$Tck9fmtr45Ffkx4psUH38uhWjQRbKBYa8S9g.m4zAqZAy81E/r1fC",
       "id": 2
+    },
+    {
+      "email": "aloo@gmail.com",
+      "password": "$2a$10$jyvfaFLR9W3cuPBc6SDkP.B3tYhXuqSgwF9gK8Z6n84MeJXfyldLe",
+      "id": 3
     }
   ],
   "tweets": [
@@ -84,7 +89,7 @@
       "qtdRt": "0",
       "qtdFav": "0",
       "qtdView": "0",
-      "id": 7
+      "id": 7 
     }
   ]
 }
