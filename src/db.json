@@ -39,6 +39,11 @@
       "email": "dsadas@gmail.com",
       "password": "$2a$10$Ejjy0AUpaIsgAjQ3/ZH4fOBYGlaB9tFF7ukbcl7hqv0OOV2qU4q6K",
       "id": 8
+    },
+    {
+      "email": "testeee@gmail.com",
+      "password": "$2a$10$rxDrs19PpLkGxQNiLx3pG.1rwSYjqXws8AYBw76Fnr.FtGmSS6sES",
+      "id": 9
     }
   ],
   "tweets": [

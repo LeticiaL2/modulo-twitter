@@ -14,12 +14,28 @@ const BoxSignup = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
+  function validationPassword(password) {
+    const uppercase = /[A-Z]/;
+    const number = /\d/;
+    const specialCharacter = /[!@#\\$_%^&*]/; 
+  
+    return (
+      uppercase.test(password) &&
+      number.test(password) &&
+      specialCharacter.test(password)
+    );
+  }
 
   const handleSubmit = (e) => {
         e.preventDefault();
 
         if (password !== confirmPassword) {
           setError("As senhas não coincidem.");
+          return;
+        }
+
+        if (!validationPassword(password)) {
+          setError("A senha não atende aos criterios");
           return;
         }
 
