@@ -26,10 +26,10 @@ function TweetCard(props) {
           <p>{props.text}</p>
       </div>
       <div className="icones">
-          <button className="botao_icone"> <img src={reply} className="icone-twitter"/>{props.qtdReply}</button>
-          <button className="botao_icone"> <img src={rt} className="icone-twitter"/>{props.qtdRt}</button>
-          <button className="botao_icone"> <img src={fav} className="icone-twitter"/>{props.qtdFav}</button>
-          <button className="botao_icone"> <img src={view} className="icone-twitter"/>{props.qtdView}</button>
+          <button className="botao_icone"> <img src={reply} className="icone-twitter" alt="icone reply"/>{props.qtdReply}</button>
+          <button className="botao_icone"> <img src={rt} className="icone-twitter" alt="icone rt"/>{props.qtdRt}</button>
+          <button className="botao_icone"> <img src={fav} className="icone-twitter" alt="icone fav"/>{props.qtdFav}</button>
+          <button className="botao_icone"> <img src={view} className="icone-twitter" alt="icone view"/>{props.qtdView}</button>
       </div>
     </div>
   );

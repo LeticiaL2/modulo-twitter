@@ -16,7 +16,6 @@
 .header_home {
     display: flex;
     justify-content: center;
-    margin-left: 10%;
 }
 
 .container_caixa_central_home {
@@ -43,5 +42,20 @@
     justify-content: center;
 }
 
+.logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button_logout{
+    position: absolute;
+    left: 85%;
+    width: 6%;
+    
+    
+    
+    
+}
 
 

@@ -1,49 +1,14 @@
 {
   "users": [
     {
-      "email": "raff@gmail.com",
-      "password": "$2a$10$jo363LcleTCFPNzoNg9XFO17I2KKs4tBzHekFLGvJyN06QHcJvmLC",
+      "email": "teste@gmail.com",
+      "password": "$2a$10$8d.ATLYisww/qcLYxb.h1eE50uJ6pG/K8ZnFsSp0LROvbBhqF.4zO",
       "id": 1
     },
     {
-      "email": "teste@gmail.com",
-      "password": "$2a$10$beqaEHbgHJSbWSqk5o4D5OahDzI3znfzPfiLVe2q3gH3kPkN942pO",
-      "id": 2
-    },
-    {
       "email": "alo@gmail.com",
-      "password": "$2a$10$WbVs3dVZNrNfpPqZ5kY6i.2IiP5uT9/51CF6n3zJJrDIX1pRuPA2.",
-      "id": 3
-    },
-    {
-      "email": "raff08@gmail.com",
-      "password": "$2a$10$QmvvEsemAWzOCEdnA7cTQes/MONIIenff5unLBpDXOvp6iZ7H9ASC",
-      "id": 4
-    },
-    {
-      "email": "aloo@gmail.com",
-      "password": "$2a$10$W0tlYh06nQyYh6DfNHPGKejQH4RhsuOodQ6/V/a3T9VpfurigNUqC",
-      "id": 5
-    },
-    {
-      "email": "alooo@gmail.com",
-      "password": "$2a$10$ErHNw6Qa3P8uuyvqGL.C4ei0Mw8WW/9rxMnzk2Z2cpEjCQq4Mrjui",
-      "id": 6
-    },
-    {
-      "email": "testee@gmail.com",
-      "password": "$2a$10$3UAeFVtH4vKf50uNdoW33OTyBXJhCA0gqygNSPxkiZM7X2aDOPykW",
-      "id": 7
-    },
-    {
-      "email": "dsadas@gmail.com",
-      "password": "$2a$10$Ejjy0AUpaIsgAjQ3/ZH4fOBYGlaB9tFF7ukbcl7hqv0OOV2qU4q6K",
-      "id": 8
-    },
-    {
-      "email": "testeee@gmail.com",
-      "password": "$2a$10$rxDrs19PpLkGxQNiLx3pG.1rwSYjqXws8AYBw76Fnr.FtGmSS6sES",
-      "id": 9
+      "password": "$2a$10$Tck9fmtr45Ffkx4psUH38uhWjQRbKBYa8S9g.m4zAqZAy81E/r1fC",
+      "id": 2
     }
   ],
   "tweets": [
@@ -87,6 +52,39 @@
       "qtdFav": "0",
       "qtdView": "0",
       "id": 4
+    },
+    {
+      "textTweet": "alo",
+      "profilePhoto": "/static/media/perfil.9bc29303077aba139564.png",
+      "nameProfile": "Rafael",
+      "user": "@rafinha",
+      "qtdReply": "0",
+      "qtdRt": "0",
+      "qtdFav": "0",
+      "qtdView": "0",
+      "id": 5
+    },
+    {
+      "textTweet": "123",
+      "profilePhoto": "/static/media/perfil.9bc29303077aba139564.png",
+      "nameProfile": "Rafael",
+      "user": "@rafinha",
+      "qtdReply": "0",
+      "qtdRt": "0",
+      "qtdFav": "0",
+      "qtdView": "0",
+      "id": 6
+    },
+    {
+      "textTweet": "alo",
+      "profilePhoto": "/static/media/perfil.9bc29303077aba139564.png",
+      "nameProfile": "Rafael",
+      "user": "@rafinha",
+      "qtdReply": "0",
+      "qtdRt": "0",
+      "qtdFav": "0",
+      "qtdView": "0",
+      "id": 7
     }
   ]
 }

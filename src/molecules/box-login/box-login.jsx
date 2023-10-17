@@ -9,7 +9,7 @@ import FieldInput from "../../atoms/field-input/field-input"
 
 function BoxLogin() {
     
-    const {authenticated, login} = useContext(AuthContext);
+    const {login} = useContext(AuthContext);
     
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");

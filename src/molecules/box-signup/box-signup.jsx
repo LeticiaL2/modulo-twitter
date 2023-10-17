@@ -5,6 +5,7 @@ import Button from "../../atoms/button/button";
 import ButtonSubmit from "../../atoms/button-submit/button-submit"
 import { useNavigate } from "react-router-dom";
 import FieldInput from "../../atoms/field-input/field-input";
+import MessagePassword from "../../atoms/message-password/message-password";
 
 
 const BoxSignup = () => {
@@ -91,6 +92,8 @@ const BoxSignup = () => {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
+
+          <MessagePassword text="A senha deve possuir número, caractere especial e letra maiúscula."/>
 
           <div className="error">{error}</div> 
           
