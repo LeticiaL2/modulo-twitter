@@ -11,10 +11,30 @@ export const HeaderContainer = styled.header`
   justify-content: space-between;
   border-bottom: 1px solid ${colors.dark_gray};
 
-  button {
-    width:6rem;
+  .logout-icon {
+    width: 3.6rem;
   }
-`;
+
+  .logout-icon > svg {
+    height: 18px;
+    width: 18px;
+  }
+
+  .logout-text {
+    display: none;
+  }
+
+  @media (min-width: 425px) {
+    .logout-icon {
+      display: none;
+    }
+
+    .logout-text {
+      display: block;
+      width: 6rem;
+    }
+  }
+`
 
 export const TwitterLogoContainer = styled.div`
   display: flex;

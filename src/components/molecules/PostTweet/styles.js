@@ -25,6 +25,13 @@ export const InputTweetContainer = styled.div`
 export const ActionsContainer = styled.div`
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem;
   margin-top: 0.75rem;
   padding-bottom: 0.5rem;
+
+  span {
+    font-size: 0.75rem;
+    color: ${colors.light_gray};
+  }
 `;

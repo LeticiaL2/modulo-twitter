@@ -1,6 +1,6 @@
-/* eslint-disable  */
 import React, { createContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LoginRequest, getUserLocalStorage, setUserLocalStorage } from './util';
 
 export const AuthContext = createContext();
 
@@ -10,59 +10,34 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const recoveredUser = localStorage.getItem('user');
+    const recoveredUser = getUserLocalStorage()
 
     if (recoveredUser) {
-      setUser(JSON.parse(recoveredUser));
+      setUser(recoveredUser);
     }
     setLoading(false);
   }, []);
 
   const login = async (email, password) => {
-    const response = await fetch('http://localhost:3004/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
 
-    const data = await response.json();
-    const { accessToken, user: loggedUser } = data;
+    const response = await LoginRequest(email, password)
 
-    localStorage.setItem('user', JSON.stringify(loggedUser));
-    localStorage.setItem('token', JSON.stringify(accessToken));
+    const payload = { token: response.accessToken, email: response.user.email }
 
-    await fetch('http://localhost:3004/users', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
 
-    setUser(loggedUser);
-    navigate('/');
+    setUser(payload)
+    setUserLocalStorage(payload)
   };
 
   const logout = async () => {
     setUser(null);
+    setUserLocalStorage(null)
 
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-
-    await fetch('http://localhost:3004/users', {
-      method: 'GET',
-      headers: {
-        Authorization: null,
-      },
-    });
     navigate('/login');
   };
 
   return (
-    <AuthContext.Provider
-      value={{ authenticated: !!user, user, loading, login, logout }}
-    >
+    <AuthContext.Provider value={{ authenticated: !!user, user, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

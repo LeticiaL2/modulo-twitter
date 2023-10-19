@@ -4,11 +4,12 @@ import { Container } from './style';
 
 function Button(props) {
   return <Container
-    bgColor={props.backgroundColor}
-    fontColor={props.fontColor}
-    fontSize={props.fontSize}
-    borderColor={props.borderColor}
-    {...props}>
+  $bgColor={props.backgroundColor}
+  $fontColor={props.fontColor}
+  $fontSize={props.fontSize}
+  $borderColor={props.borderColor}
+  {...props}
+    >
     {props.children}
   </Container>;
 }

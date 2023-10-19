@@ -10,23 +10,23 @@ import { colors } from '../../../styles/colors'
 const ListActions = ({userData}) => {
   return (
     <>
-      <Action actionColor={colors.blue}>
+      <Action $actionColor={colors.blue}>
         <CommentIcon />
         <span>{userData.actions.comments}</span>
       </Action>
-      <Action actionColor={colors.green}>
+      <Action $actionColor={colors.green}>
         <RetweetIcon />
         <span>{userData.actions.retweets}</span>
       </Action>
-      <Action actionColor={colors.red}>
+      <Action $actionColor={colors.red}>
         <LikeIcon />
         <span>{userData.actions.likes}</span>
       </Action>
-      <Action actionColor={colors.blue}>
+      <Action $actionColor={colors.blue}>
         <AnalyticsIcon />
         <span>{userData.actions.views}</span>
       </Action>
-      <Action actionColor={colors.blue}>
+      <Action $actionColor={colors.blue}>
         <ShareIcon />
       </Action>
     </>

@@ -5,6 +5,7 @@ import UserPhoto from '../../atoms/UserPhoto';
 import TwitterIcon from '../../atoms/SVGIcons/TwitterIcon';
 import Button from '../../atoms/Button';
 import { colors } from '../../../styles/colors';
+import { BiLogOutCircle } from 'react-icons/bi';
 
 function Header() {
   const { logout } = useContext(AuthContext);
@@ -18,8 +19,11 @@ function Header() {
       <TwitterLogoContainer>
         <TwitterIcon />
       </TwitterLogoContainer>
-      <Button bgColor={colors.black} fontColor={colors.white} borderColor={colors.white} onClick={handleLogout}>
+      <Button className="logout-text" $bgColor={colors.black} $fontColor={colors.white} $borderColor={colors.white} onClick={handleLogout}>
         Logout
+      </Button>
+      <Button className="logout-icon" $bgColor={colors.black} $fontColor={colors.white} $borderColor={colors.white} onClick={handleLogout}>
+        <BiLogOutCircle />
       </Button>
     </HeaderContainer>
   );
