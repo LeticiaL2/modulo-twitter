@@ -1,8 +1,8 @@
 import React from "react";
-import "./login-page.css"
-import BoxLogin from "../../molecules/box-login/box-login";
-import TitleIntro from "../../atoms/title_intro/title_intro";
-import Header from "../../atoms/header/header";
+import BoxLogin from "../../components/molecules/box-login/box-login";
+import TitleIntro from "../../components/atoms/title_intro/title_intro";
+import Header from "../../components/atoms/header/header";
+import {ContainerLoginPage} from "./styles"
 
 
 function LoginPage () {
@@ -10,11 +10,11 @@ function LoginPage () {
 
     return (
         
-        <div className="login_page"> 
+        <ContainerLoginPage> 
             <Header/>
             <TitleIntro text="Acontecendo agora"/>
             <BoxLogin/>
-        </div>
+        </ContainerLoginPage>
     );
 }
 

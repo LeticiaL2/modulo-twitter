@@ -1,12 +1,10 @@
-import React, {useState, useEffect, useContext} from "react";
+import React, {useState, useEffect} from "react";
 import axios from "axios";
-import TweetInput from  "../../molecules/tweet-input-box/tweet-input-box";
-import ListTweets from "../../organism/list-tweets/list-tweets";
+import TweetInput from  "../../components/molecules/tweet-input-box/tweet-input-box";
+import ListTweets from "../../components/organism/list-tweets/list-tweets";
 import perfil from '../../assets/perfil.png'
-import "./home-page.css"
-import { AuthContext } from "../../contexts/auth";
-import Button from "../../atoms/button/button";
-import Header from "../../atoms/header/header";
+import {Container, BoxCenter} from "./styles"
+import HeaderHome from "../../components/molecules/header-home/header-home"
 
 function HomePage() {
   
@@ -34,33 +32,17 @@ function HomePage() {
       fetchTweets();
     }, []);
     
-    const {logout} = useContext(AuthContext)
     
-    const handleLogout = () => {
-      logout();
-    };
+    
+   
 
     console.log(tweets);
 
     return (
-        <div className="home-page">
+        <Container>
           
-          <div className="container-home">
-            
-            <div className="header_home">
-                <div className="logo">
-                    <Header/>
-                </div>
-                
-                <div className="button_logout">
-                    <Button className="logout" text="Sair" onClick={handleLogout}/>
-                </div>
-            </div>
-
-          
-    
-            <div className="container_caixa_central_home">
-              <div className="caixa_central_home">
+              <BoxCenter>
+                <HeaderHome/>
                 <TweetInput 
                 buttonText="Post"
                 src={perfil}
@@ -72,13 +54,9 @@ function HomePage() {
                 qtdView={"0"}
                 onTweet={addTweet}/>
                  <ListTweets/>
-                
-              </div>
-            </div>
-            
-          </div>
+              </BoxCenter>
           
-        </div>
+        </Container>
       );
     }
 

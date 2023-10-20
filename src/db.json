@@ -14,6 +14,11 @@
       "email": "aloo@gmail.com",
       "password": "$2a$10$jyvfaFLR9W3cuPBc6SDkP.B3tYhXuqSgwF9gK8Z6n84MeJXfyldLe",
       "id": 3
+    },
+    {
+      "email": "alooo@gmail.com",
+      "password": "$2a$10$C/VeMB.W5jFxUli/ASG.MeuDAFYimx8KsNVZkwDuiVYLtup0uxVIi",
+      "id": 4
     }
   ],
   "tweets": [
@@ -48,7 +53,7 @@
       "id": 3
     },
     {
-      "textTweet": "teste",
+      "textTweet": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type",
       "profilePhoto": "/static/media/perfil.9bc29303077aba139564.png",
       "nameProfile": "Rafael",
       "user": "@rafinha",
@@ -59,7 +64,7 @@
       "id": 4
     },
     {
-      "textTweet": "alo",
+      "textTweet": "ook like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their",
       "profilePhoto": "/static/media/perfil.9bc29303077aba139564.png",
       "nameProfile": "Rafael",
       "user": "@rafinha",
@@ -68,28 +73,6 @@
       "qtdFav": "0",
       "qtdView": "0",
       "id": 5
-    },
-    {
-      "textTweet": "123",
-      "profilePhoto": "/static/media/perfil.9bc29303077aba139564.png",
-      "nameProfile": "Rafael",
-      "user": "@rafinha",
-      "qtdReply": "0",
-      "qtdRt": "0",
-      "qtdFav": "0",
-      "qtdView": "0",
-      "id": 6
-    },
-    {
-      "textTweet": "alo",
-      "profilePhoto": "/static/media/perfil.9bc29303077aba139564.png",
-      "nameProfile": "Rafael",
-      "user": "@rafinha",
-      "qtdReply": "0",
-      "qtdRt": "0",
-      "qtdFav": "0",
-      "qtdView": "0",
-      "id": 7 
     }
   ]
 }
