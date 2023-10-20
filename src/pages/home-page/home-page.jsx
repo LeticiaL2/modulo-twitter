@@ -5,6 +5,7 @@ import ListTweets from "../../components/organism/list-tweets/list-tweets";
 import perfil from '../../assets/perfil.png'
 import {Container, BoxCenter} from "./styles"
 import HeaderHome from "../../components/molecules/header-home/header-home"
+import GlobalStyles from "../../styles/global-style";
 
 function HomePage() {
   
@@ -40,7 +41,7 @@ function HomePage() {
 
     return (
         <Container>
-          
+          <GlobalStyles/>
               <BoxCenter>
                 <HeaderHome/>
                 <TweetInput 
@@ -55,7 +56,6 @@ function HomePage() {
                 onTweet={addTweet}/>
                  <ListTweets/>
               </BoxCenter>
-          
         </Container>
       );
     }

@@ -4,18 +4,8 @@ import { RiTwitterXLine } from "react-icons/ri";
 export const HeaderContainer = styled.div`
 display: flex;
 justify-content: center;
-width: 20%;
+width: 10rem;
 min-width: 10%;
-
-@media screen and (max-width: 620px){
-        width: 30%;
-        
-    }
-
-    @media screen and (max-width: 475px){
-        width: 50%;
-    }
-
 `
 
 

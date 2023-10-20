@@ -19,12 +19,12 @@ export const ContainerButton = styled.div `
   
     
     @media screen and (max-width: 620px){
-      width: 100%;
+      width: 20rem;
         
     }
 
     @media screen and (max-width: 475px){
-        width: 100%;
+        width: 20rem;
        
     }
 

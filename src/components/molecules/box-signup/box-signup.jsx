@@ -1,15 +1,8 @@
 import React, { useState} from "react";
-
 import Button from "../../atoms/button/button";
 import { useNavigate } from "react-router-dom";
 import FieldInput from "../../atoms/field-input/field-input";
-import {Container} from "./styles"
-import {ContainerSignup} from "./styles"
-import {FormContainer} from "./styles"
-import {ActionContainer} from "./styles"
-import {LinkButton} from "./styles"
-
-
+import {Container, ContainerSignup, FormContainer, ActionContainer, LinkButton, ErrorMessage } from "./styles"
 const BoxSignup = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -95,9 +88,7 @@ const BoxSignup = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
 
-          
-
-          <div className="error">{error}</div> 
+          <ErrorMessage show={error !== ''}>{error}</ErrorMessage> 
           
           <ActionContainer>
             

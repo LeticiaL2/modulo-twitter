@@ -51,6 +51,8 @@ function TweetInput (props) {
         color: remainingChars < 0 ? "red" : "rgb(113, 118, 123)",
       };
 
+    
+
 
     return(
             <TweetBoxInput>

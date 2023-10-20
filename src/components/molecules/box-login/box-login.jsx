@@ -2,11 +2,7 @@ import React, { useState, useContext} from "react";
 import { AuthContext } from "../../../contexts/auth";
 import Button from "../../atoms/button/button";
 import FieldInput from "../../atoms/field-input/field-input"
-import {Container} from "./styles"
-import {ContainerLogin} from "./styles"
-import {FormContainer} from "./styles"
-import {ActionContainer} from "./styles"
-import {LinkButton} from "./styles"
+import {LinkButton, ErrorMessage, Container, ContainerLogin, FormContainer, ActionContainer} from "./styles"
 
 
 
@@ -16,13 +12,18 @@ function BoxLogin() {
     
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("submit", {email, password});
-        login(email, password);
-        
-    }
+    
+        try {
+          console.log("submit", { email, password });
+          await login(email, password);
+        } catch (err) {
+          setError("Credenciais inválidas"); 
+        }
+      }
     
     return(
         <Container>
@@ -41,7 +42,7 @@ function BoxLogin() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}/>
 
-                    <div id="error-container" className="erro_message"></div>
+                <ErrorMessage show={error !== ''}>{error}</ErrorMessage> 
 
                     <ActionContainer>
                         <Button

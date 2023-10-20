@@ -66,3 +66,11 @@ export const LinkButton = styled(Link)`
     text-decoration: none;
     line-height: 0;
 `
+
+
+export const ErrorMessage = styled.div`
+  color: red;
+  font-size: 1rem;
+  font-family:'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif, Arial, sans-serif; 
+  display: ${(props) => (props.show ? 'block' : 'none')};
+`;
