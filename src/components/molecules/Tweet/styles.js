@@ -8,6 +8,7 @@ export const TweetContainer = styled.article`
   border-bottom: 1px solid ${colors.dark_gray};
   width: 100%;
   gap: 0.75rem;
+  cursor: pointer;
 `
 
 export const Body = styled.div`

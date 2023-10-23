@@ -14,7 +14,26 @@ function LoginSection() {
 
   const emailIsValid = email => {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
-    return emailRegex.test(email)
+    if (email.trim() === '') {
+      setEmailError('Email must not be empty.')
+      return false
+    } else if (!emailRegex.test(email)) {
+      setEmailError('Please enter a valid email.')
+      return false
+    } else {
+      setEmailError('')
+      return true
+    }
+  }
+
+  const passwordIsValid = password => {
+    if (password.trim() === '') {
+      setPasswordError('Password must not be empty.')
+      return false
+    } else {
+      setPasswordError('')
+      return true
+    }
   }
 
 
@@ -27,42 +46,44 @@ function LoginSection() {
 
   const handleEmailInputChange = e => {
     setEmail(e.target.value)
-    if (e.target.value.trim() === '') {
-      setEmailError('Email must not be empty.')
-    } else if (!emailIsValid(e.target.value)) {
-      setEmailError('Please enter a valid email.')
-    } else {
-      setEmailError('')
-    }
+    emailIsValid(e.target.value)
   }
-  
+
   const handlePasswordInputChange = e => {
     setPassword(e.target.value)
-    if (e.target.value.trim() === '') {
-      setPasswordError('Password must not be empty.')
-    } else {
-      setPasswordError('')
-    }
+    passwordIsValid(e.target.value)
   }
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    if (email.trim() === '' && password.trim() === '') {
-      setEmailError('Email must not be empty.')
-      setPasswordError('Password must not be empty.')
+    if (!emailIsValid(email) && !passwordIsValid(password)) {
       return
     }
 
-    if (email.trim() === '') {
-      setEmailError('Email must not be empty.')
+    if (!emailIsValid(email)) {
       return
     }
 
-    if (password.trim() === '') {
-      setPasswordError('Password must not be empty.')
-      return;
+    if (!passwordIsValid(password)) {
+      return
     }
+
+    // if (email.trim() === '' && password.trim() === '') {
+    //   setEmailError('Email must not be empty.')
+    //   setPasswordError('Password must not be empty.')
+    //   return
+    // }
+
+    // if (email.trim() === '') {
+    //   setEmailError('Email must not be empty.')
+    //   return
+    // }
+
+    // if (password.trim() === '') {
+    //   setPasswordError('Password must not be empty.')
+    //   return;
+    // }
 
     try {
       await login(email, password);

@@ -21,8 +21,8 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
 
     const response = await LoginRequest(email, password)
-
-    const payload = { token: response.accessToken, email: response.user.email }
+    console.log(response)
+    const payload = { token: response.accessToken, id: response.user.id, name: response.user.name, username: response.user.username }
 
 
     setUser(payload)

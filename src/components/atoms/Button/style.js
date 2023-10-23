@@ -13,7 +13,7 @@ export const Container = styled(basicBtn)`
     font-family: 'Twitter', sans-serif;
     font-weight: 700;
     font-size: ${props => props.$fontSize ? props.$fontSize : "1rem"};
-    background-color: ${props => props.$bgColor ? props.$bgColor : colors.blue};
+    background-color: ${props => props.$backgroundColor ? props.$backgroundColor : colors.blue};
     color: ${props => props.$fontColor ? props.$fontColor : colors.white};
     padding: 0.5rem 1rem;
 

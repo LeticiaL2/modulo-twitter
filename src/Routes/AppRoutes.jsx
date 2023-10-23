@@ -4,6 +4,7 @@ import LoginPage from "../pages/Login/Login";
 import Signup from "../pages/Signup/Signup"
 import { AuthProvider, AuthContext } from "../contexts/auth";
 import React, { useContext } from 'react'
+import TweetPage from "../pages/Tweet/Tweet";
 
 const AppRoutes = () => {
   function Private({ children }) {
@@ -27,6 +28,7 @@ const AppRoutes = () => {
           <Route exact path="/login" element={<LoginPage />} />
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/" element={<Private><HomePage /></Private>} />
+          <Route exact path="/tweet/:id" element={<Private><TweetPage /></Private>} />
         </Routes>
       </AuthProvider>
     </Router>
