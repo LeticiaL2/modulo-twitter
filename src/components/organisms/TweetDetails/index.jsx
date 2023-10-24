@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import Tweet from '../../molecules/Tweet'
+import MainTweet from '../../molecules/MainTweet'
+import PostTweet from '../../molecules/PostTweet'
+import Header from '../../organisms/Header'
 import { Api } from '../../../services/api'
 import { useParams } from 'react-router-dom'
 
 function TweetDetails() {
-  const [tweet, setTweet] = useState({})
+  const [tweet, setTweet] = useState(null)
   const { id } = useParams()
 
 
@@ -26,10 +28,11 @@ function TweetDetails() {
   }, [id])
 
   return (
-    <div>
-      {/* <Tweet userData={tweet} /> */}
-      {id}
-    </div>
+    <>
+      <Header />
+      {tweet && <MainTweet userData={tweet} />}
+      <PostTweet placeholder="Post your reply"/>
+    </>
   )
 }
 

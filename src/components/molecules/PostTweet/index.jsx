@@ -6,7 +6,7 @@ import UserPhoto from '../../atoms/UserPhoto'
 import { AuthContext } from '../../../contexts/auth'
 
 
-function PostTweet({ onAddTweet }) {
+function PostTweet({ onAddTweet, placeholder }) {
   const { user } = useContext(AuthContext)
   const [enteredTweet, setEnteredTweet] = useState('')
   const [isButtonDisabled, setIsButtonDisabled] = useState(true)
@@ -46,7 +46,7 @@ function PostTweet({ onAddTweet }) {
         <InputTweetContainer>
           <Input
             type="text"
-            placeholder="What's hapenning?!"
+            placeholder={placeholder}
             value={enteredTweet}
             onChange={handleTweetChange}
             maxLength={maxLetters}

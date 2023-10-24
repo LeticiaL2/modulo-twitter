@@ -44,7 +44,7 @@ function Main() {
   return (
     <>
       <Header />
-      <PostTweet onAddTweet={handleAddTweet} />
+      <PostTweet onAddTweet={handleAddTweet} placeholder="What's hapenning?!"/>
       <TweetsList tweets={orderedTweets} />
     </>
   );

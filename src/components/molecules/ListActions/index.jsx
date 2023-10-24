@@ -1,5 +1,5 @@
 import React from 'react'
-import { Action } from './styles'
+import { Action, Container } from './styles'
 import CommentIcon from '../../atoms/SVGIcons/CommentIcon'
 import RetweetIcon from '../../atoms/SVGIcons/RetweetIcon'
 import LikeIcon from '../../atoms/SVGIcons/LikeIcon'
@@ -9,7 +9,7 @@ import { colors } from '../../../styles/colors'
 
 const ListActions = ({userData}) => {
   return (
-    <>
+    <Container>
       <Action $actionColor={colors.blue}>
         <CommentIcon />
         <span>{userData.actions.comments}</span>
@@ -29,7 +29,7 @@ const ListActions = ({userData}) => {
       <Action $actionColor={colors.blue}>
         <ShareIcon />
       </Action>
-    </>
+    </Container>
   )
 }
 

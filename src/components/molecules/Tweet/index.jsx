@@ -13,10 +13,12 @@ import DotIcon from '../../atoms/SVGIcons/DotIcon';
 import UserPhoto from '../../atoms/UserPhoto';
 import ListActions from '../ListActions';
 import { formatDistanceToNow } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
 
 function Tweet({ userData }) {
-  const [showMore, setShowMore] = useState(false);
-  const { content, date, user } = userData;
+  const navigate = useNavigate()
+  const [showMore, setShowMore] = useState(false)
+  const { content, date, user, id } = userData
 
   const text = content.length > 150 ? 
                   showMore ? 
@@ -25,15 +27,20 @@ function Tweet({ userData }) {
 
   
 
-  const handleShow = () => {
-    setShowMore(!showMore);
+  const handleShow = (e) => {
+    e.stopPropagation()
+    setShowMore(!showMore)
+  }
+
+  const handleTweetClick = () => {
+    navigate(`/tweet/${id}`)
   }
 
   const formattedDate = formatDistanceToNow(new Date(date), { addSuffix: true })
 
 
   return (
-    <TweetContainer>
+    <TweetContainer onClick={handleTweetClick}>
       <UserPhoto src={user.userphoto} />
       <Body>
         <Header>

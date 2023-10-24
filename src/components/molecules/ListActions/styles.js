@@ -1,6 +1,11 @@
 import styled from 'styled-components'
 import { colors } from '../../../styles/colors'
 
+export const Container = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
 export const Action = styled.div`
   display: flex;
   gap: 0.25rem;

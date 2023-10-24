@@ -1,40 +1,35 @@
 import styled from "styled-components"
 import { colors } from "../../../styles/colors"
 
-
 export const TweetContainer = styled.article`
   margin-top: 0.75rem;
-  padding: 0 1rem;
-  display: flex;
-  border-bottom: 1px solid ${colors.dark_gray};
-  width: 100%;
-  gap: 0.75rem;
-  cursor: pointer;
-`
-
-export const Body = styled.div`
   padding-bottom: 0.75rem;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid ${colors.dark_gray};
+  width: 90%;
 `
 
 export const Header = styled.header`
   display: flex;
+  gap: 0.75rem;
+`
+
+export const DivDisplay = styled.div`
+  display: flex;
   justify-content: space-between;
+  width: 100%;
 `
 
 export const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.1rem;
 
   span {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-
-  @media (min-width: 360px) {
-    flex-direction: row;
   }
 `
 
@@ -48,21 +43,20 @@ export const Content = styled.p`
   flex-direction: column;
   word-break: break-word;
   line-height: 20px;
-
-  span {
-    cursor: pointer;
-    color: ${colors.blue};
-  }
-
-  span:hover {
-    text-decoration: underline;
-  }
+  margin-top: 0.75rem;
 `
 
 export const Footer = styled.footer`
   display: flex;
+  flex-direction: column;
+  /* gap: 0.75rem; */
   margin-top: 0.75rem;
   font-size: 13px;
-  justify-content: space-between;
   color: ${colors.light_gray};
+
+`
+export const DateContainer = styled.div`
+  display: flex;
+  font-size: 1rem;
+  border-bottom: 1px solid ${colors.dark_gray};
 `
