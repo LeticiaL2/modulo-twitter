@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Button from "../../atoms/button/button";
 import UserPhoto from "../../atoms/user-photo/user-photo";
 import perfil from  "../../../assets/perfil.png";
+import { format } from "date-fns";
 import { TweetBoxInput, FooterContainerInput, FormContainer, TextInput, UserContainer, CharCount } from "./styles";
 
 function TweetInput (props) {
@@ -18,43 +19,33 @@ function TweetInput (props) {
         setRemainingChars(remaining);
       }
 
-    
-
-
     function handleButtonClick() {
         if (remainingChars >=0) {
-        const tweetObject = {
-            textTweet: tweetText,
-            profilePhoto: perfil,
-            nameProfile: props.nameProfile, 
-            user: props.user, 
-            qtdReply: props.qtdReply, 
-            qtdRt: props.qtdRt, 
-            qtdFav: props.qtdFav, 
-            qtdView: props.qtdView
+            const tweetObject = {
+                textTweet: tweetText,
+                profilePhoto: perfil,
+                nameProfile: props.nameProfile, 
+                user: props.user, 
+                date:new Date(),
+                qtdReply: props.qtdReply, 
+                qtdRt: props.qtdRt, 
+                qtdFav: props.qtdFav, 
+                qtdView: props.qtdView
         };
 
-        console.log(tweetObject);
-
         props.onTweet(tweetObject);
-        
         setTweetText("");
-
         setRemainingChars(charLimit);
         }
     }
-
+    
     const isTweetTooLong = remainingChars < 0;
     const buttonStyle = isTweetTooLong
-
     const charCountStyle = {
         color: remainingChars < 0 ? "red" : "rgb(113, 118, 123)",
       };
-
     
-
-
-    return(
+      return(
             <TweetBoxInput>
                 <UserContainer>
                     <UserPhoto />
@@ -66,22 +57,18 @@ function TweetInput (props) {
                             onChange={handleTweetChange}
                         /> </FormContainer>
                 </UserContainer>
-
                 
-                
-                        <FooterContainerInput>
-                        <CharCount style={charCountStyle}>
-                            {remainingChars} / {charLimit}
-                        </CharCount>
-
-                                <Button  
-                                style={buttonStyle}
-                                $text="Post"
-                                onClick={handleButtonClick}
-                                disabled={isTweetTooLong}
-                                />
-                        </FooterContainerInput>
-               
+                <FooterContainerInput>
+                    <CharCount style={charCountStyle}>
+                        {remainingChars} / {charLimit}
+                    </CharCount>
+                        <Button  
+                        style={buttonStyle}
+                        $text="Post"
+                        onClick={handleButtonClick}
+                        disabled={isTweetTooLong}
+                        />
+                    </FooterContainerInput>
             </TweetBoxInput>
     )
 }

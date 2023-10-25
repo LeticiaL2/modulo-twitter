@@ -42,7 +42,7 @@ function BoxLogin() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}/>
 
-                <ErrorMessage show={error !== ''}>{error}</ErrorMessage> 
+                <ErrorMessage $show={error !== ''}>{error}</ErrorMessage> 
 
                     <ActionContainer>
                         <Button

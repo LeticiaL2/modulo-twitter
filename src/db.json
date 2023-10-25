@@ -4,74 +4,159 @@
       "email": "teste@gmail.com",
       "password": "$2a$10$8d.ATLYisww/qcLYxb.h1eE50uJ6pG/K8ZnFsSp0LROvbBhqF.4zO",
       "id": 1
-    },
-    {
-      "email": "alo@gmail.com",
-      "password": "$2a$10$Tck9fmtr45Ffkx4psUH38uhWjQRbKBYa8S9g.m4zAqZAy81E/r1fC",
-      "id": 2
-    },
-    {
-      "email": "aloo@gmail.com",
-      "password": "$2a$10$jyvfaFLR9W3cuPBc6SDkP.B3tYhXuqSgwF9gK8Z6n84MeJXfyldLe",
-      "id": 3
-    },
-    {
-      "email": "alooo@gmail.com",
-      "password": "$2a$10$C/VeMB.W5jFxUli/ASG.MeuDAFYimx8KsNVZkwDuiVYLtup0uxVIi",
-      "id": 4
     }
   ],
   "tweets": [
     {
       "nameProfile": "L2Code",
       "user": "@l2code",
+      "date": "2023-10-25T02:32:23.262Z",
       "textTweet": "Phasellus congue porttitor elementum. Duis iaculis vitae nisl cursus vestibulum. Sed fermentum auctor ante at commodo.",
-      "qtdReply": "2",
+      "qtdReply": "125",
       "qtdRt": "5",
       "qtdFav": "25",
       "qtdView": "125",
-      "id": 1
+      "qtdBookMark":"0",
+      "id": 1,
+      "replies": [
+        {
+          "id": 1,
+          "nameProfile": "Alice",
+          "user": "@alice",
+          "date": "2023-10-25T02:32:23.262Z",
+          "textTweet": "Resposta ao tweet 1...",
+          "qtdReply": "0",
+          "qtdRt": "2",
+          "qtdFav": "1",
+          "qtdView": "",
+          "qtdBookMark":"0"
+        },
+        {
+          "id": 2,
+          "nameProfile": "Bob",
+          "user": "@bob",
+          "date": "2023-10-25T02:32:23.262Z",
+          "textTweet": "Outra resposta ao tweet 1...",
+          "qtdReply": "1",
+          "qtdRt": "0",
+          "qtdFav": "0",
+          "qtdView": "3",
+          "qtdBookMark":"0"
+        }
+      ]
     },
     {
       "nameProfile": "Rafael",
-      "user": "@rafael",
+      "user": "@rafinha",
+      "date": "2023-10-25T02:32:23.262Z",
       "textTweet": "Phasellus congue porttitor elementum. Duis iaculis vitae nisl cursus vestibulum. Sed fermentum auctor ante at commodo.",
-      "qtdReply": "5",
-      "qtdRt": "3",
-      "qtdFav": "44",
-      "qtdView": "177",
-      "id": 2
+      "qtdReply": "125",
+      "qtdRt": "0",
+      "qtdFav": "0",
+      "qtdView": "0",
+      "qtdBookMark":"5",
+      "id": 2,
+      "replies": [
+        {
+          "id": 1,
+          "nameProfile": "Alice",
+          "user": "@alice",
+          "date": "2023-10-25T02:32:23.262Z",
+          "textTweet": "Resposta ao tweet 1...",
+          "qtdReply": "0",
+          "qtdRt": "2",
+          "qtdFav": "1",
+          "qtdView": "",
+          "qtdBookMark":"0"
+        },
+        {
+          "id": 2,
+          "nameProfile": "Bob",
+          "user": "@bob",
+          "date": "2023-10-25T02:32:23.262Z",
+          "textTweet": "Outra resposta ao tweet 1...",
+          "qtdReply": "1",
+          "qtdRt": "0",
+          "qtdFav": "0",
+          "qtdView": "3",
+          "qtdBookMark":"0"
+        },
+        {
+          "id": 1,
+          "nameProfile": "Lorem Ipsum",
+          "user": "@lorem",
+          "date": "2023-10-25T02:32:23.262Z",
+          "textTweet": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "qtdReply": "0",
+          "qtdRt": "2",
+          "qtdFav": "1",
+          "qtdView": "",
+          "qtdBookMark":"0"
+        },
+        {
+          "id": 1,
+          "nameProfile": "Felipe",
+          "user": "@felipe",
+          "date": "2023-10-25T02:32:23.262Z",
+          "textTweet": "Alo",
+          "qtdReply": "0",
+          "qtdRt": "0",
+          "qtdFav": "1",
+          "qtdView": "",
+          "qtdBookMark":"0"
+        },
+        {
+          "id": 1,
+          "nameProfile": "Rafael",
+          "user": "@rafinha",
+          "date": "2023-10-25T02:32:23.262Z",
+          "textTweet": "teste",
+          "qtdReply": "0",
+          "qtdRt": "2",
+          "qtdFav": "1",
+          "qtdView": "",
+          "qtdBookMark":"0"
+        }
+      ]
+
     },
     {
-      "nameProfile": "Roberta",
-      "user": "@Roberta",
-      "textTweet": "Phasellus congue porttitor elementum. Duis iaculis vitae nisl cursus vestibulum. Sed fermentum auctor ante at commodo.",
-      "qtdReply": "4",
-      "qtdRt": "7",
-      "qtdFav": "36",
-      "qtdView": "223",
+      "textTweet": "Phasellus congue porttitor elementum. Duis iaculis vitae nisl cursus vestibulum. Sed fermentum auctor ante at commodoPhasellus congue porttitor elementum. Duis iaculis vitae nisl cursus vestibulum. Sed fermentum auctor ante at commodo",
+      "profilePhoto": "/static/media/perfil.9bc29303077aba139564.png",
+      "nameProfile": "Rafael",
+      "user": "@rafinha",
+      "date": "2023-10-25T02:32:23.262Z",
+      "qtdReply": "0",
+      "qtdRt": "0",
+      "qtdFav": "0",
+      "qtdView": "0",
+      "qtdBookMark":"3",
       "id": 3
     },
     {
-      "textTweet": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type",
+      "textTweet": "teste",
       "profilePhoto": "/static/media/perfil.9bc29303077aba139564.png",
       "nameProfile": "Rafael",
       "user": "@rafinha",
+      "date": "2023-09-25T02:32:23.262Z",
       "qtdReply": "0",
       "qtdRt": "0",
       "qtdFav": "0",
       "qtdView": "0",
+      "qtdBookMark":"0",
       "id": 4
     },
     {
-      "textTweet": "ook like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their",
+      "textTweet": "teste",
       "profilePhoto": "/static/media/perfil.9bc29303077aba139564.png",
       "nameProfile": "Rafael",
       "user": "@rafinha",
+      "date": "2023-10-25T02:32:23.262Z",
       "qtdReply": "0",
       "qtdRt": "0",
       "qtdFav": "0",
       "qtdView": "0",
+      "qtdBookMark":"0",
       "id": 5
     }
   ]

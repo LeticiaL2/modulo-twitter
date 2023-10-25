@@ -1,5 +1,4 @@
 import React, { Children } from "react";
-import "./user-photo.css";
 import { PhotoUserContainer, PhotoUser } from "./style";
 
 

@@ -19,7 +19,7 @@ export const Button = styled.button`
   background-color: transparent;
   border: none;
   cursor: pointer;
-  padding: 0px;
+  padding:  ${(prop) => prop.$padding ? prop.$padding : "3px"};
   margin: 0;
   justify-content: center;
   flex-wrap: wrap;

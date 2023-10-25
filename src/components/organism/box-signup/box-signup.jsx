@@ -3,6 +3,8 @@ import Button from "../../atoms/button/button";
 import { useNavigate } from "react-router-dom";
 import FieldInput from "../../atoms/field-input/field-input";
 import {Container, ContainerSignup, FormContainer, ActionContainer, LinkButton, ErrorMessage } from "./styles"
+
+
 const BoxSignup = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -88,7 +90,7 @@ const BoxSignup = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
 
-          <ErrorMessage show={error !== ''}>{error}</ErrorMessage> 
+          <ErrorMessage $show={error !== ''}>{error}</ErrorMessage> 
           
           <ActionContainer>
             

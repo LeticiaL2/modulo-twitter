@@ -1,5 +1,5 @@
 import React from "react";
-import BoxLogin from "../../components/molecules/box-login/box-login";
+import BoxLogin from "../../components/organism/box-login/box-login";
 import TitleIntro from "../../components/atoms/title_intro/title_intro";
 import Header from "../../components/atoms/header/header";
 import {ContainerLoginPage} from "./styles"

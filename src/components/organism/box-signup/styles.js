@@ -2,7 +2,6 @@ import styled from "styled-components";
 import {Link} from "react-router-dom"
 
 
-
 export const Container = styled.div`
 
 display: flex;
@@ -10,16 +9,16 @@ justify-content: center;
 align-items: center;
 width: 100%;
 
-
 `
 
-export const ContainerLogin = styled.div`
+export const ContainerSignup = styled.div`
 display: flex;
 flex-direction: column;
 width: 50%;
 justify-content: center;
 align-items: center;
-@media screen and (max-width: 998px){
+
+    @media screen and (max-width: 998px){
         width: 80%;
     }
     @media screen and (max-width: 760px){
@@ -29,7 +28,6 @@ align-items: center;
     @media screen and (max-width: 630px){
         width: 100%;
     }
-   
 `
 
 export const FormContainer = styled.form`
@@ -69,9 +67,10 @@ export const LinkButton = styled(Link)`
     line-height: 0;
 `
 
+
 export const ErrorMessage = styled.div`
   color: red;
   font-size: 1rem;
   font-family:'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif, Arial, sans-serif; 
-  display: ${(props) => (props.show ? 'block' : 'none')};
+  display: ${(props) => (props.$show ? 'block' : 'none')};
 `;

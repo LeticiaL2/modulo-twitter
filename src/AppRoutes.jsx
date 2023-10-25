@@ -8,9 +8,11 @@ import {
 
 import HomePage from './pages/home-page/home-page';
 import LoginPage from './pages/login-page/login-page';
+import DetailsPage from "./pages/details-page/details-page";
+import SignupPage from "./pages/signup-page/signup-page";
 
 import { AuthProvider, AuthContext } from "./contexts/auth";
-import SignupPage from "./pages/signup-page/signup-page";
+
 
 
 const AppRoutes = () => {
@@ -45,6 +47,18 @@ const AppRoutes = () => {
                         </Private>
                         }
                     />
+
+                    <Route exact 
+                        path="/tweet/:tweetId" 
+                        element={
+                        <Private>
+                            <DetailsPage/> 
+                        </Private>
+                        }
+                    />
+
+
+
                 </Routes>
             </AuthProvider>
         </Routers> 

@@ -10,7 +10,7 @@ width: 2.5rem;
 height: 100%;
 padding:0;
 margin: 0;
-
+height:100%;
 
 `
 
