@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "painel-risco-api.fullname" . }}
+  labels:
+    {{- include "painel-risco-api.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "painel-risco-api.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        ad.datadoghq.com/painel-risco-api.logs: >-
+          [{
+            "source":"nodejs",
+            "service":"{{ .Values.ddtrace.service }}",
+            "log_processing_rules": [{
+              "type": "multi_line",
+              "name": "log_start_with_date",
+              "pattern" : "\\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])"
+            }]
+          }]
+        checksum/config: {{ .Files.Get ".env" | sha256sum }}
+      labels:
+        {{- include "painel-risco-api.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "painel-risco-api.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: painel-risco-api
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: envfile
+              mountPath: ./.env
+              subPath: .env
+          envFrom:
+          - configMapRef:
+              name: {{ include "painel-risco-api.fullname" . }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          env:
+            - name: DD_AGENT_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: DD_SERVICE
+              value: "{{ .Values.ddtrace.service }}"
+            - name: DD_ENV
+              value: "{{ .Values.ddtrace.env }}"
+            - name: DD_VERSION
+              value: "{{ .Values.ddtrace.version }}"
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: envfile
+          configMap:
+            name: {{ include "painel-risco-api.fullname" . }}      
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
