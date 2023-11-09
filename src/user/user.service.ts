@@ -50,7 +50,7 @@ export class UserService {
         texto: 'Usuário criado com sucesso',
       },
       conteudo: {
-        User: createdUser.usuario,
+        usuario: createdUser.usuario,
         email: createdUser.email,
         nome: createdUser.nome,
       },
