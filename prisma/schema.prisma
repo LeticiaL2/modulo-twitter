@@ -8,17 +8,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Usuario {
-  id Int @id @default(autoincrement())
+  id               Int       @id @default(autoincrement())
+  email            String    @unique @db.Text()
+  usuario          String    @unique @db.Text()
+  senha            String    @db.Text()
+  nome             String?   @db.Text()
+  ativo            Boolean   @default(true)
+  data_criacao     DateTime  @default(now())
+  data_atualizacao DateTime  @default(now())
+  data_ativacao    DateTime  @default(now())
 
-  email String @unique @db.Text()
-  usuario String @unique @db.Text()
-  senha String @db.Text()
+  tweets           Tweet[]   @relation("usuario")
+}
 
-  nome String? @db.Text()
-  ativo Boolean @default(true)
-  data_criacao DateTime @default(now()) 
-  data_atualizacao DateTime @default(now())
-  data_ativacao DateTime @default(now())
+model Tweet {
+  id            Int      @id @default(autoincrement())
+  texto         String   @db.VarChar(280) 
+  usuarioId     Int
+  likes         Int
+  comentarios   Int
+  retweets      Int
+  data_criacao  DateTime @default(now())
+  usuario       Usuario?  @relation(fields: [usuarioId], references: [id])
 }

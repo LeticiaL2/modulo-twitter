@@ -1,29 +1,32 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { ResponseModel } from 'src/auth/models/ResponseModels';
 
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createUserDto: CreateUserDto) {
+  async create(
+    createUserDto: CreateUserDto,
+  ): Promise<ResponseModel<{ usuario: string; email: string; nome: string }>> {
     const emailExists = await this.findByEmail(createUserDto.email);
     if (emailExists) {
-      return {
-        status: 'failed',
+      throw new BadRequestException({
+        status: false,
         mensagem: {
           codigo: 400,
           texto: 'Email já existe',
         },
         conteudo: null,
-      };
+      });
     }
 
     const usernameExists = await this.findByUsername(createUserDto.usuario);
     if (usernameExists) {
       return {
-        status: 'failed',
+        status: false,
         mensagem: {
           codigo: 400,
           texto: 'Usuário já existe',
@@ -44,7 +47,7 @@ export class UserService {
     const createdUser = await this.prisma.usuario.create({ data });
 
     return {
-      status: 'sucess',
+      status: true,
       mensagem: {
         codigo: 201,
         texto: 'Usuário criado com sucesso',
