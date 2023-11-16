@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Tweet" ALTER COLUMN "likes" SET DEFAULT 0,
+ALTER COLUMN "comentarios" SET DEFAULT 0,
+ALTER COLUMN "retweets" SET DEFAULT 0;

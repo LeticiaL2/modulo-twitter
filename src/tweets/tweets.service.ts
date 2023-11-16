@@ -1,26 +1,60 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateTweetDto } from './dto/create-tweet.dto';
-import { UpdateTweetDto } from './dto/update-tweet.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { JwtService } from '@nestjs/jwt';
+import { UserFromJwt } from '../auth/models/UserFromJwt';
+import { Request } from 'express';
 
 @Injectable()
 export class TweetsService {
-  create(createTweetDto: CreateTweetDto) {
-    return 'This action adds a new tweet';
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly jwtService: JwtService,
+  ) {}
+
+  async create(createTweetDto: CreateTweetDto, usuario: UserFromJwt) {
+    try {
+      const data = {
+        ...createTweetDto,
+        usuarioId: usuario.id,
+        data_criacao: new Date(),
+      };
+
+      const tweet = await this.prisma.tweet.create({
+        data,
+      });
+
+      return {
+        status: true,
+        mensagem: {
+          codigo: 200,
+          texto: 'Tweet criado com sucesso.',
+        },
+        conteudo: {
+          ...tweet,
+        },
+      };
+    } catch (error) {
+      throw new UnauthorizedException('Usuário não autenticado.');
+    }
   }
 
-  findAll() {
-    return `This action returns all tweets`;
-  }
+  private getUsuarioFromToken(request: Request): UserFromJwt {
+    const authorizationHeader = request.headers.authorization;
 
-  findOne(id: number) {
-    return `This action returns a #${id} tweet`;
-  }
+    if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
+      throw new UnauthorizedException(
+        'Token JWT não encontrado na solicitação.',
+      );
+    }
 
-  update(id: number, updateTweetDto: UpdateTweetDto) {
-    return `This action updates a #${id} tweet`;
-  }
+    const token = authorizationHeader.replace('Bearer ', '');
+    const usuario = this.jwtService.decode(token) as UserFromJwt;
 
-  remove(id: number) {
-    return `This action removes a #${id} tweet`;
+    if (!usuario) {
+      throw new UnauthorizedException('Token JWT inválido.');
+    }
+
+    return usuario;
   }
 }

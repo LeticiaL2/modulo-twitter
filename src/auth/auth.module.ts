@@ -6,10 +6,12 @@ import { UserModule } from 'src/user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LoginValidationMiddleware } from './middlewares/login-validation.middleware';
+import { TweetsModule } from 'src/tweets/tweets.module';
 
 @Module({
   imports: [
     UserModule,
+    TweetsModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
     }),

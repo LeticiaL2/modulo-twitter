@@ -1,1 +1,6 @@
-export class CreateTweetDto {}
+export class CreateTweetDto {
+  texto: string;
+  comentario?: {
+    tweetId?: number;
+  };
+}
