@@ -1,9 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateTweetDto } from './dto/create-tweet.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { UserFromJwt } from '../auth/models/UserFromJwt';
-import { Request } from 'express';
 
 @Injectable()
 export class TweetsService {
@@ -17,12 +16,17 @@ export class TweetsService {
       const data = {
         ...createTweetDto,
         usuarioId: usuario.id,
-        data_criacao: new Date(),
       };
+
+      console.log(usuario);
+      console.log('data', data);
+      console.log('usuario.id', usuario.id);
 
       const tweet = await this.prisma.tweet.create({
         data,
       });
+
+      console.log('Tweet criado:', tweet);
 
       return {
         status: true,
@@ -35,26 +39,15 @@ export class TweetsService {
         },
       };
     } catch (error) {
-      throw new UnauthorizedException('Usuário não autenticado.');
+      console.error('Erro ao criar tweet:', error);
+      return {
+        status: false,
+        mensagem: {
+          codigo: 401,
+          texto: 'erro ao criar o tweet.',
+        },
+        conteudo: null,
+      };
     }
-  }
-
-  private getUsuarioFromToken(request: Request): UserFromJwt {
-    const authorizationHeader = request.headers.authorization;
-
-    if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
-      throw new UnauthorizedException(
-        'Token JWT não encontrado na solicitação.',
-      );
-    }
-
-    const token = authorizationHeader.replace('Bearer ', '');
-    const usuario = this.jwtService.decode(token) as UserFromJwt;
-
-    if (!usuario) {
-      throw new UnauthorizedException('Token JWT inválido.');
-    }
-
-    return usuario;
   }
 }

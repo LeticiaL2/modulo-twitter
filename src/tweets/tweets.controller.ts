@@ -15,6 +15,19 @@ export class TweetsController {
     @Body() createTweetDto: CreateTweetDto,
     @CurrentUser() user: UserFromJwt,
   ) {
+    console.log('Usuário autenticado:', user);
+    if (!user || !user.id) {
+      console.error('Usuário não autenticado ou informações inválidas.');
+      return {
+        status: false,
+        mensagem: {
+          codigo: 401,
+          texto: 'Usuário não autenticado.',
+        },
+        conteudo: null,
+      };
+    }
+
     return this.tweetsService.create(createTweetDto, user);
   }
 }

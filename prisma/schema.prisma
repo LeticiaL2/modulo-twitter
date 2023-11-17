@@ -9,6 +9,9 @@ datasource db {
 }
 
 model Usuario {
+  tweets           Tweet[]   @relation("usuarioTweets")
+  likes             Likes[] @relation("usuarioLikes")
+ 
   id               Int       @id @default(autoincrement())
   email            String    @unique @db.Text()
   usuario          String    @unique @db.Text()
@@ -18,18 +21,43 @@ model Usuario {
   data_criacao     DateTime  @default(now())
   data_atualizacao DateTime  @default(now())
   data_ativacao    DateTime  @default(now())
-
-  tweets           Tweet[]   @relation("usuario")
 }
 
 model Tweet {
+  usuario       Usuario  @relation("usuarioTweets", fields: [usuarioId], references: [id])
+  likes        Likes[]  @relation("tweetLikes")
+  comentarios  Comentarios[]   @relation("tweetComentarios")
+  retweets     Retweet[]   @relation("tweetRetweets")
+  
   id            Int      @id @default(autoincrement())
   texto         String   @db.VarChar(280) 
   usuarioId     Int
-  likes         Int     @default(0)
-  comentarios   Int     @default(0)
-  retweets      Int     @default(0)
   data_criacao  DateTime @default(now())
+}
 
-  usuario       Usuario  @relation("usuario", fields: [usuarioId], references: [id])
-  }
+model Likes {
+  usuario Usuario @relation("usuarioLikes", fields: [usuarioId], references: [id])
+  tweet Tweet @relation("tweetLikes", fields: [tweetId], references: [id])
+  id Int @id @default(autoincrement())
+  tweetId Int 
+  usuarioId Int  
+}
+
+model Comentarios {
+  tweet Tweet @relation("tweetComentarios", fields: [tweetPaiId], references: [id])
+
+  id Int @id @default(autoincrement())
+  tweetPaiId Int
+  tweetId Int  
+}
+
+model Retweet {
+  tweet Tweet @relation("tweetRetweets", fields: [tweetPaiId], references: [id])
+
+  id Int @id @default(autoincrement())
+  tweetPaiId Int
+  tweetId Int
+} 
+
+
+
