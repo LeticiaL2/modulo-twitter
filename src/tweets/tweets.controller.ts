@@ -1,9 +1,14 @@
-import { Controller, Post, Body, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Get, Param } from '@nestjs/common';
 import { TweetsService } from './tweets.service';
 import { CreateTweetDto } from './dto/create-tweet.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { UserFromJwt } from 'src/auth/models/UserFromJwt';
+import { TweetResponseDto } from './dto/tweet-response.dto';
+import { CreateLikeDto } from './dto/create-like.dto';
+import { ResponseModel } from 'src/auth/models/ResponseModels';
+import { Like } from './entities/like.entity';
+import { CreateComentarioDto } from './dto/create-comentario.dto';
 
 @Controller('tweets')
 export class TweetsController {
@@ -29,5 +34,42 @@ export class TweetsController {
     }
 
     return this.tweetsService.create(createTweetDto, user);
+  }
+
+  @Get()
+  @UseGuards(JwtAuthGuard)
+  async getAllTweets(
+    @CurrentUser() user: UserFromJwt,
+  ): Promise<TweetResponseDto[]> {
+    return this.tweetsService.getAllTweets(user);
+  }
+
+  @Post(':id/likes')
+  @UseGuards(JwtAuthGuard)
+  async createLike(
+    @Param('id') tweetId: string,
+    @CurrentUser() user: UserFromJwt,
+  ): Promise<ResponseModel<Like | null>> {
+    const createLikeDto: CreateLikeDto = {
+      tweetId: Number(tweetId),
+      usuarioId: user.id,
+    };
+
+    const result = await this.tweetsService.createLike(createLikeDto);
+    return this.tweetsService.handleLikeResponse(result);
+  }
+
+  @Post(':id/comentarios')
+  @UseGuards(JwtAuthGuard)
+  async createComentario(
+    @Param('id') tweetPaiId: string,
+    @Body() createComentarioDto: CreateComentarioDto,
+    @CurrentUser() user: UserFromJwt,
+  ) {
+    return this.tweetsService.createComentario(
+      createComentarioDto,
+      user,
+      Number(tweetPaiId),
+    );
   }
 }

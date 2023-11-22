@@ -11,6 +11,7 @@ datasource db {
 model Usuario {
   tweets           Tweet[]   @relation("usuarioTweets")
   likes             Likes[] @relation("usuarioLikes")
+
  
   id               Int       @id @default(autoincrement())
   email            String    @unique @db.Text()
@@ -24,14 +25,16 @@ model Usuario {
 }
 
 model Tweet {
-  usuario       Usuario  @relation("usuarioTweets", fields: [usuarioId], references: [id])
+  usuario      Usuario  @relation("usuarioTweets", fields: [usuarioId], references: [id])
   likes        Likes[]  @relation("tweetLikes")
-  comentarios  Comentarios[]   @relation("tweetComentarios")
+  comentarios  Comentarios[]   @relation("comentarioPai")
   retweets     Retweet[]   @relation("tweetRetweets")
-  
+
+
+comentarioPai   Comentarios[]  @relation("tweetComentarios")
   id            Int      @id @default(autoincrement())
   texto         String   @db.VarChar(280) 
-  usuarioId     Int
+  usuarioId     Int      @db.Integer
   data_criacao  DateTime @default(now())
 }
 
@@ -44,11 +47,14 @@ model Likes {
 }
 
 model Comentarios {
-  tweet Tweet @relation("tweetComentarios", fields: [tweetPaiId], references: [id])
+
+   tweet       Tweet   @relation("tweetComentarios", fields: [tweetId], references: [id])
+  tweetPai    Tweet?  @relation("comentarioPai", fields: [tweetPaiId], references: [id])
+
 
   id Int @id @default(autoincrement())
-  tweetPaiId Int
-  tweetId Int  
+  tweetPaiId Int?
+  tweetId Int
 }
 
 model Retweet {
@@ -57,7 +63,7 @@ model Retweet {
   id Int @id @default(autoincrement())
   tweetPaiId Int
   tweetId Int
-} 
+}  
 
 
 
