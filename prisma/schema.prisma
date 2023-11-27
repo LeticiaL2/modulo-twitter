@@ -28,12 +28,12 @@ model Tweet {
   usuario      Usuario  @relation("usuarioTweets", fields: [usuarioId], references: [id])
   likes        Likes[]  @relation("tweetLikes")
   comentarios  Comentarios[]   @relation("comentarioPai")
-  retweets     Retweet[]   @relation("tweetRetweets")
+  retweets     Retweet[]   @relation("retweetPai")
+  retweetPai     Retweet[]   @relation("retweetTweets")
+  comentarioPai   Comentarios[]  @relation("tweetComentarios")
 
-
-comentarioPai   Comentarios[]  @relation("tweetComentarios")
   id            Int      @id @default(autoincrement())
-  texto         String   @db.VarChar(280) 
+  texto         String?   @db.VarChar(280) 
   usuarioId     Int      @db.Integer
   data_criacao  DateTime @default(now())
 }
@@ -58,7 +58,8 @@ model Comentarios {
 }
 
 model Retweet {
-  tweet Tweet @relation("tweetRetweets", fields: [tweetPaiId], references: [id])
+  tweet            Tweet        @relation("retweetPai", fields: [tweetPaiId], references: [id])
+  tweetPai         Tweet        @relation("retweetTweets", fields: [tweetId], references: [id])
 
   id Int @id @default(autoincrement())
   tweetPaiId Int

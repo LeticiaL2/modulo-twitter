@@ -6,6 +6,9 @@ export class TweetResponseDto {
   nome: string;
   likes: number;
   comentarios: number;
-  //retweets: number;
+  retweets: number;
   data: Date;
+  comentariosArray?: any[];
+  tweetPaiId?: number; // Adiciona a propriedade tweetPaiId
+  tweetPai?: any[];
 }

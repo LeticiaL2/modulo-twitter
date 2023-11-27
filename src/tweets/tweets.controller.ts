@@ -9,6 +9,7 @@ import { CreateLikeDto } from './dto/create-like.dto';
 import { ResponseModel } from 'src/auth/models/ResponseModels';
 import { Like } from './entities/like.entity';
 import { CreateComentarioDto } from './dto/create-comentario.dto';
+import { CreateRetweetDto } from './dto/create-retweet.dto';
 
 @Controller('tweets')
 export class TweetsController {
@@ -55,8 +56,7 @@ export class TweetsController {
       usuarioId: user.id,
     };
 
-    const result = await this.tweetsService.createLike(createLikeDto);
-    return this.tweetsService.handleLikeResponse(result);
+    return this.tweetsService.createLike(createLikeDto);
   }
 
   @Post(':id/comentarios')
@@ -65,11 +65,32 @@ export class TweetsController {
     @Param('id') tweetPaiId: string,
     @Body() createComentarioDto: CreateComentarioDto,
     @CurrentUser() user: UserFromJwt,
-  ) {
+  ): Promise<ResponseModel<CreateComentarioDto | null>> {
     return this.tweetsService.createComentario(
       createComentarioDto,
       user,
       Number(tweetPaiId),
     );
+  }
+
+  @Post(':id/retweet')
+  @UseGuards(JwtAuthGuard)
+  async createRetweet(
+    @Param('id') tweetPaiId: string,
+    @Body() createRetweetDto: CreateRetweetDto,
+    @CurrentUser() user: UserFromJwt,
+  ) {
+    return this.tweetsService.createRetweet(
+      createRetweetDto,
+      user,
+      Number(tweetPaiId),
+    );
+  }
+
+  @Get(':id/detalhes')
+  async getTweetWithComments(
+    @Param('id') tweetId: string,
+  ): Promise<ResponseModel<TweetResponseDto | null>> {
+    return this.tweetsService.getTweetWithComments(Number(tweetId));
   }
 }

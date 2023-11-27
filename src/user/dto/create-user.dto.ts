@@ -1,6 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsEmail,
+  IsOptional,
   IsString,
   Matches,
   MaxLength,
@@ -29,12 +30,12 @@ export class CreateUserDto {
   })
   senha: string;
 
+  @IsOptional()
   @ApiPropertyOptional({
     description: 'Utilizado para exibir o nome no perfil',
     example: 'Rafael',
   })
-  @IsString()
-  nome: string;
+  nome?: string;
 
   @ApiProperty({
     description:

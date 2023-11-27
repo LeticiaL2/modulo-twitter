@@ -4,5 +4,6 @@ export class Tweet {
   data_criacao: Date;
   likes: number;
   comentarios: number;
+  retweets: number;
   usuarioId: number;
 }
