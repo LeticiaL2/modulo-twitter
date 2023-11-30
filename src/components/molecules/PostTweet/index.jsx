@@ -6,7 +6,7 @@ import UserPhoto from '../../atoms/UserPhoto'
 import { AuthContext } from '../../../contexts/auth'
 
 
-function PostTweet({ onAddTweet, placeholder }) {
+function PostTweet({ onAddTweet}) {
   const { user } = useContext(AuthContext)
   const [enteredTweet, setEnteredTweet] = useState('')
   const [isButtonDisabled, setIsButtonDisabled] = useState(true)
@@ -23,16 +23,7 @@ function PostTweet({ onAddTweet, placeholder }) {
     if (enteredTweet === '') return
 
     const tweetData = {
-      id: crypto.randomUUID(),
-      userId: user.id,
-      content: enteredTweet,
-      date: new Date(),
-      actions: {
-        comments: 0,
-        retweets: 0,
-        likes: 0,
-        views: 0,
-      },
+      texto: enteredTweet,
     }
     onAddTweet(tweetData)
     setEnteredTweet('')
@@ -46,7 +37,7 @@ function PostTweet({ onAddTweet, placeholder }) {
         <InputTweetContainer>
           <Input
             type="text"
-            placeholder={placeholder}
+            placeholder="What's happening?!"
             value={enteredTweet}
             onChange={handleTweetChange}
             maxLength={maxLetters}

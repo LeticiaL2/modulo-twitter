@@ -36,13 +36,10 @@ function LoginSection() {
     }
   }
 
-
   const [password, setPassword] = useState('')
   const [passwordError, setPasswordError] = useState('')
 
-
   const [httpError, setHttpError] = useState(null)
-
 
   const handleEmailInputChange = e => {
     setEmail(e.target.value)
@@ -69,28 +66,17 @@ function LoginSection() {
       return
     }
 
-    // if (email.trim() === '' && password.trim() === '') {
-    //   setEmailError('Email must not be empty.')
-    //   setPasswordError('Password must not be empty.')
-    //   return
-    // }
+    const log = await login(email, password)
+    log.status ? navigate('/') : setHttpError(log.mensagem.texto)
 
-    // if (email.trim() === '') {
-    //   setEmailError('Email must not be empty.')
-    //   return
+    // try {
+    //   const log = await login(email, password);
+    //   console.log(log)
+    //   navigate('/')
+    // } catch (error) {
+    //   console.log(error)
+    //   // setHttpError(error.response.data.mensagem.texto)
     // }
-
-    // if (password.trim() === '') {
-    //   setPasswordError('Password must not be empty.')
-    //   return;
-    // }
-
-    try {
-      await login(email, password);
-      navigate('/')
-    } catch (error) {
-      setHttpError('Invalid password or email.')
-    }
 
   };
 

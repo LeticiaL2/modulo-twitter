@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CommentIcon = ({color}) => {
+const CommentIcon = () => {
   return (
     <svg
       width="19px"

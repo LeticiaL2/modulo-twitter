@@ -1,11 +1,11 @@
 import React from 'react'
-import { Container } from './styles'
 import TweetDetails from '../../components/organisms/TweetDetails'
+import { Container } from './styles'
 
 function TweetPage() {
   return (
     <Container>
-      <TweetDetails/>
+      <TweetDetails />
     </Container>
   )
 }

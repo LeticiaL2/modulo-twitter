@@ -3,6 +3,7 @@ import Header from '../../organisms/Header'
 import PostTweet from '../../molecules/PostTweet'
 import TweetsList from '../../molecules/TweetsList'
 import { Api } from '../../../services/api'
+import { getUserLocalStorage } from '../../../contexts/util'
 
 
 function Main() {
@@ -10,11 +11,11 @@ function Main() {
 
   async function getTweets() {
     try {
-      const response = await Api.get('posts?_expand=user')
+      const response = await Api.get('api/v1/tweets', { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
       if (response.status !== 200) {
         throw new Error('Erro ao buscar os tweets')
       }
-      setTweets(response.data)
+      setTweets(response.data.conteudo)
     } catch (error) {
       console.log(error)
     }
@@ -27,7 +28,7 @@ function Main() {
 
   const handleAddTweet = async (tweet) => {
     try {
-      const response = await Api.post('posts', tweet)
+      const response = await Api.post('api/v1/tweets', tweet, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
 
       if (response.status !== 201) {
         throw new Error(response.data.message || 'Something went wrong')
@@ -39,13 +40,11 @@ function Main() {
     }
   }
 
-  const orderedTweets = [...tweets].reverse()
-
   return (
     <>
       <Header />
-      <PostTweet onAddTweet={handleAddTweet} placeholder="What's hapenning?!"/>
-      <TweetsList tweets={orderedTweets} />
+      <PostTweet onAddTweet={handleAddTweet} />
+      <TweetsList tweets={tweets} />
     </>
   );
 }

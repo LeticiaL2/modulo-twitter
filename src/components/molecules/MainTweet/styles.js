@@ -49,7 +49,7 @@ export const Content = styled.p`
 export const Footer = styled.footer`
   display: flex;
   flex-direction: column;
-  /* gap: 0.75rem; */
+  gap: 0.75rem;
   margin-top: 0.75rem;
   font-size: 13px;
   color: ${colors.light_gray};
@@ -58,5 +58,6 @@ export const Footer = styled.footer`
 export const DateContainer = styled.div`
   display: flex;
   font-size: 1rem;
+  padding-bottom: 0.5rem;
   border-bottom: 1px solid ${colors.dark_gray};
 `

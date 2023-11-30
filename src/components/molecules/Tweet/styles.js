@@ -61,8 +61,8 @@ export const Content = styled.p`
 
 export const Footer = styled.footer`
   display: flex;
+  justify-content: space-between;
   margin-top: 0.75rem;
   font-size: 13px;
-  justify-content: space-between;
   color: ${colors.light_gray};
 `

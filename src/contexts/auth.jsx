@@ -19,14 +19,15 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = async (email, password) => {
+      const response = await LoginRequest(email, password)
+      if (!response.status) {
+        return response
+      }
+      const payload = { token: response.conteudo.token, usuario: response.conteudo.usuario, name: response.conteudo.nome }
+      setUser(payload)
+      setUserLocalStorage(payload)
 
-    const response = await LoginRequest(email, password)
-    console.log(response)
-    const payload = { token: response.accessToken, id: response.user.id, name: response.user.name, username: response.user.username }
-
-
-    setUser(payload)
-    setUserLocalStorage(payload)
+      return response
   };
 
   const logout = async () => {
