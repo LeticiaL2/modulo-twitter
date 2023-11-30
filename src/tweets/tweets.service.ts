@@ -271,36 +271,34 @@ export class TweetsService {
     return response
   }
 
-  async findAll(): Promise<ResponseListModel<ResponseCreateTweetDTO>> {
+  // : Promise<ResponseListModel<ResponseCreateTweetDTO>>
+  async findAll(user: User) {
     const tweets = await this.tweetRepository.find({
-      relations: [
-        'usuario',
-        'likes',
-        'likes.usuario',
-        'comentarios',
-        'tweetPai',
-        'retweets',
-        'retweetPai',
-        'retweetPai.tweetPai',
-        'retweetPai.tweetPai.likes',
-        'retweetPai.tweetPai.comentarios',
-        'retweetPai.tweetPai.retweets',
-        'retweetPai.tweetPai.usuario',
-      ],
+      relations: {
+        usuario: true,
+        likes: {
+          usuario: true,
+        },
+        comentarios: true,
+        tweetPai: true,
+        retweets: {
+          tweet: {
+            usuario: true,
+          },
+        },
+        retweetPai: {
+          tweetPai: {
+            likes: true,
+            comentarios: true,
+            retweets: true,
+            usuario: true,
+          },
+        },
+      },
+      order: {
+        data_criacao: 'DESC',
+      },
     })
-
-    // const aa = await this.tweetRepository.find({
-    //   relations: {
-    //     usuario: true,
-    //     likes: true,
-    //     comentarios: true,
-    //     tweetPai: true,
-    //     retweets: true,
-    //     retweetPai: {
-    //       tweetPai: true,
-    //     },
-    //   },
-    // })
 
     const mappedTweets = tweets
       .filter(
@@ -314,6 +312,10 @@ export class TweetsService {
           usuarioId: tweet.usuario.id,
           nome: tweet.usuario.nome,
           usuario: tweet.usuario.usuario,
+          isLikedByUser: tweet.likes.some(like => like.usuario.id === user.id),
+          isRetweetedByUser: tweet.retweets.some(
+            retweet => retweet.tweet.usuario.id === user.id,
+          ),
           likes: tweet.likes.length,
           comentarios: tweet.comentarios.length,
           retweets: tweet.retweets.length,
@@ -376,52 +378,46 @@ export class TweetsService {
     return response
   }
 
-  async findOne(tweetId: string) {
+  async findOne(tweetId: string, user: User) {
     const tweet = await this.tweetRepository.findOne({
       where: { id: tweetId },
-      relations: [
-        'usuario',
-        'likes',
-        'retweets',
-        'retweetPai',
-        'retweetPai.tweet',
-        'retweetPai.tweet.likes',
-        'retweetPai.tweet.comentarios',
-        'retweetPai.tweet.retweets',
-        'retweetPai.tweet.usuario',
-        'comentarios',
-        'comentarios.tweet',
-        'comentarios.tweet.likes',
-        'comentarios.tweet.comentarios',
-        'comentarios.tweet.retweets',
-        'comentarios.tweet.usuario',
-      ],
+      relations: {
+        usuario: true,
+        likes: {
+          usuario: true,
+        },
+        retweets: {
+          tweet: {
+            usuario: true,
+          },
+        },
+        retweetPai: {
+          tweet: {
+            likes: true,
+            comentarios: true,
+            retweets: true,
+            usuario: true,
+          },
+        },
+        comentarios: {
+          tweet: {
+            likes: {
+              usuario: true,
+            },
+            comentarios: true,
+            retweets: {
+              tweet: {
+                usuario: true,
+              },
+            },
+            usuario: true,
+          },
+        },
+      },
+      order: {
+        data_criacao: 'DESC',
+      },
     })
-
-    // const aa = await this.tweetRepository.findOne({
-    //   where: { id: tweetId },
-    //   relations: {
-    //     usuario: true,
-    //     likes: true,
-    //     retweets: true,
-    //     retweetPai: {
-    //       tweet: {
-    //         likes: true,
-    //         comentarios: true,
-    //         retweets: true,
-    //         usuario: true,
-    //       },
-    //     },
-    //     comentarios: {
-    //       tweet: {
-    //         likes: true,
-    //         comentarios: true,
-    //         retweets: true,
-    //         usuario: true,
-    //       },
-    //     },
-    //   },
-    // })
 
     if (!tweet) {
       throw new NotFoundException({
@@ -441,6 +437,10 @@ export class TweetsService {
       usuario: tweet.usuario.usuario,
       usuarioId: tweet.usuario.id,
       nome: tweet.usuario.nome,
+      isLikedByUser: tweet.likes.some(like => like.usuario.id === user.id),
+      isRetweetedByUser: tweet.retweets.some(
+        retweet => retweet.tweet.usuario.id === user.id,
+      ),
       likes: tweet.likes.length,
       comentarios: tweet.comentarios.length,
       retweets: tweet.retweets.length,
@@ -478,6 +478,10 @@ export class TweetsService {
                 usuario: usuarioComentario.usuario,
                 usuarioId: usuarioComentario.id,
                 nome: usuarioComentario.nome,
+                isLikedByUser: likes.some(like => like.usuario.id === user.id),
+                isRetweetedByUser: retweets.some(
+                  retweet => retweet.tweet.usuario.id === user.id,
+                ),
                 likes: likes.length,
                 comentarios: comentarios.length,
                 retweets: retweets.length,

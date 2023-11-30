@@ -74,15 +74,15 @@ export class TweetsController {
   @Get()
   @ApiOperation({ summary: 'Lista todos os tweets' })
   @ApiResponseCustomList(ResponseListModel, ResponseCreateTweetDTO, 200)
-  findAll() {
-    return this.tweetsService.findAll()
+  findAll(@Request() req: AuthRequest) {
+    return this.tweetsService.findAll(req.user)
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Busca um tweet' })
   @ApiResponseCustom(ResponseModel, ResponseCreateTweetDTO, 200)
-  findOne(@Param('id') tweetId: string) {
-    return this.tweetsService.findOne(tweetId)
+  findOne(@Param('id') tweetId: string, @Request() req: AuthRequest) {
+    return this.tweetsService.findOne(tweetId, req.user)
   }
 
   @Delete(':id')
