@@ -1,13 +1,26 @@
 import React, { useState } from "react";
 import UserPhoto from "../../atoms/user-photo/user-photo";
 import ButtonIcon from "../../atoms/button-icon/button-icon";
-import { LinkContainerTweet, ContainerTweetCard, TopTweetCard, ContentContainer, FooterTweetCard, NameProfile, User, ContentTweet, ShowMore } from "./styles";
+import axios from "axios";
+import {
+  LinkContainerTweet,
+  ContainerTweetCard,
+  TopTweetCard,
+  ContentContainer,
+  FooterTweetCard,
+  NameProfile,
+  User,
+  ContentTweet,
+  ShowMore,
+} from "./styles";
 import { formatDistanceToNow, formatISO } from "date-fns";
 
 function TweetCard(props) {
   const [expanded, setExpanded] = useState(false);
   const charLimit = 140;
-  const { text } = props;
+  const { texto } = props;
+  const [liked, setLiked] = useState(props.liked);
+  const [likesCount, setLikesCount] = useState(props.likes);
 
   const handleToggleExpand = () => {
     setExpanded(!expanded);
@@ -19,8 +32,33 @@ function TweetCard(props) {
     }
   };
 
-  const displayText = text.length > charLimit ? `${text.slice(0, charLimit)}...` : text;
-  
+  const handleButtonClick = async () => {
+    try {
+      const token = JSON.parse(localStorage.getItem("accessToken"));
+      const response = await axios.post(
+        `http://localhost:8000/tweets/${props.id}/likes`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Ação realizada com sucesso:", response.data);
+
+      // Atualiza o estado local para refletir a mudança de curtida
+      setLiked(!liked);
+      setLikesCount(liked ? likesCount - 1 : likesCount + 1);
+    } catch (error) {
+      console.error("Erro ao realizar a ação:", error);
+    }
+  };
+
+  const displaytexto =
+    texto && texto.length > charLimit
+      ? `${texto.slice(0, charLimit)}...`
+      : texto;
+
   function formatTimeAgo(date) {
     const now = new Date();
     const secondsAgo = Math.floor((now - date) / 1000);
@@ -35,7 +73,7 @@ function TweetCard(props) {
         if (hoursAgo < 24) {
           return `${hoursAgo}h`;
         } else {
-          const options = { day: 'numeric', month: 'short' };
+          const options = { day: "numeric", month: "short" };
           return date.toLocaleDateString(undefined, options);
         }
       }
@@ -45,31 +83,41 @@ function TweetCard(props) {
   const timeAgo = formatTimeAgo(new Date(props.date));
 
   return (
-    <LinkContainerTweet to={`/tweet/${props.id}`} state={{ tweetInfo: props }}>
-      <ContainerTweetCard>
-        <TopTweetCard>
-          <UserPhoto />
-          <NameProfile>{props.nameProfile}</NameProfile>
-          <User>{props.user} • {timeAgo}</User>
-        </TopTweetCard>
-        <ContentContainer>
+    <ContainerTweetCard>
+      <TopTweetCard>
+        <UserPhoto />
+        <NameProfile>{props.nome}</NameProfile>
+        <User>
+          {props.usuario} • {timeAgo}
+        </User>
+      </TopTweetCard>
+      <ContentContainer>
+        <LinkContainerTweet
+          to={`/tweets/${props.id}/detalhes`}
+          state={{ tweetInfo: props }}
+          onClick={() => console.log("aaaaaaaa")}
+        >
           <ContentTweet>
-            {displayText}
-            {text.length > charLimit && (
+            {displaytexto}
+            {texto && texto.length > charLimit && (
               <ShowMore onClick={handleToggleExpand}>
                 {expanded ? "Mostrar Menos" : "Mostrar Mais"}
               </ShowMore>
             )}
           </ContentTweet>
-        </ContentContainer>
-        <FooterTweetCard>
-          <ButtonIcon iconType="reply" count={props.qtdReply} />
-          <ButtonIcon iconType="retweet" count={props.qtdRt} />
-          <ButtonIcon iconType="heart" count={props.qtdFav} />
-          <ButtonIcon iconType="eye" count={props.qtdView} />
-        </FooterTweetCard>
-      </ContainerTweetCard>
-    </LinkContainerTweet>
+        </LinkContainerTweet>
+      </ContentContainer>
+      <FooterTweetCard>
+        <ButtonIcon iconType="reply" count={props.comentarios} />
+        <ButtonIcon iconType="retweet" count={props.retweets} />
+        <ButtonIcon
+          iconType={liked ? "heart-filled" : "heart"}
+          count={likesCount}
+          onClick={handleButtonClick}
+          $color={liked ? "red" : undefined}
+        />
+      </FooterTweetCard>
+    </ContainerTweetCard>
   );
 }
 

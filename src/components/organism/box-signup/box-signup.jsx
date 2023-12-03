@@ -1,112 +1,123 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import Button from "../../atoms/button/button";
 import { useNavigate } from "react-router-dom";
 import FieldInput from "../../atoms/field-input/field-input";
-import {Container, ContainerSignup, FormContainer, ActionContainer, LinkButton, ErrorMessage } from "./styles"
-
+import {
+  Container,
+  ContainerSignup,
+  FormContainer,
+  ActionContainer,
+  LinkButton,
+  ErrorMessage,
+} from "./styles";
 
 const BoxSignup = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [usuario, setUsuario] = useState("");
+  const [senha, setsenha] = useState("");
+  const [confirmsenha, setConfirmsenha] = useState("");
   const [error, setError] = useState("");
 
-  function validationPassword(password) {
+  function validationsenha(senha) {
     const uppercase = /[A-Z]/;
     const number = /\d/;
-    const specialCharacter = /[!@#\\$_%^&*]/; 
-  
+    const specialCharacter = /[!@#\\$_%^&*]/;
+
     return (
-      uppercase.test(password) &&
-      number.test(password) &&
-      specialCharacter.test(password)
+      uppercase.test(senha) &&
+      number.test(senha) &&
+      specialCharacter.test(senha)
     );
   }
 
   const handleSubmit = (e) => {
-        e.preventDefault();
+    e.preventDefault();
 
-        if (password !== confirmPassword) {
-          setError("As senhas não coincidem.");
-          return;
+    if (senha !== confirmsenha) {
+      setError("As senhas não coincidem.");
+      return;
+    }
+
+    if (!validationsenha(senha)) {
+      setError("A senha não atende aos critérios");
+      return;
+    }
+
+    const userData = {
+      email: email,
+      usuario: usuario,
+      senha: senha,
+    };
+
+    fetch("http://localhost:8000/usuario", {
+      method: "POST",
+      body: JSON.stringify(userData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(async (response) => {
+        const data = await response.json();
+
+        if (!response.ok || !data.status) {
+          throw new Error(data.mensagem.texto);
         }
 
-        if (!validationPassword(password)) {
-          setError("A senha não atende aos criterios");
-          return;
-        }
-
-        const userData = {
-          email: email,
-          password: password,
-        };
-
-        fetch("http://localhost:3001/users", {
-          method: "POST",
-          body: JSON.stringify(userData),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          .then((response) => {
-            if (response.status === 400) {
-              setError("Este email já foi cadastrado.");
-              return;
-            }
-            return response.json();
-          })
-          .then((user) => {
-            if (user) {
-              console.log("Usuário cadastrado com sucesso:", user);
-              navigate("/login");
-            }
-          });
-      };
+        console.log("Usuário cadastrado com sucesso:", data);
+        navigate("/login");
+      })
+      .catch((error) => {
+        console.error("Erro ao cadastrar usuário:", error.message);
+        setError(error.message);
+      });
+  };
 
   return (
     <Container>
       <ContainerSignup>
         <FormContainer onSubmit={handleSubmit}>
-          
-            <FieldInput
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-       
-            <FieldInput
-              type="password"
-              placeholder="Senha"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+          <FieldInput
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-            <FieldInput
-              type="password"
-              placeholder="Confirmar Senha"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
+          <FieldInput
+            type="usuario"
+            placeholder="@Usuario"
+            value={usuario}
+            onChange={(e) => setUsuario(e.target.value)}
+          />
 
-          <ErrorMessage $show={error !== ''}>{error}</ErrorMessage> 
-          
+          <FieldInput
+            type="password"
+            placeholder="Senha"
+            value={senha}
+            onChange={(e) => setsenha(e.target.value)}
+          />
+
+          <FieldInput
+            type="password"
+            placeholder="Confirmar Senha"
+            value={confirmsenha}
+            onChange={(e) => setConfirmsenha(e.target.value)}
+          />
+
+          <ErrorMessage $show={error !== ""}>{error}</ErrorMessage>
+
           <ActionContainer>
-            
-            <Button  
-            $border="1px solid #808080" 
-            $backgroundColor="black"
-            color="#00acee"
-            $text="Avançar"/>
+            <Button
+              $border="1px solid #808080"
+              $backgroundColor="black"
+              color="#00acee"
+              $text="Avançar"
+            />
 
             <LinkButton to="/login">
-              <Button 
-              border= "1px solid white"
-              $text="Voltar" />
+              <Button border="1px solid white" $text="Voltar" />
             </LinkButton>
-
-
           </ActionContainer>
         </FormContainer>
       </ContainerSignup>

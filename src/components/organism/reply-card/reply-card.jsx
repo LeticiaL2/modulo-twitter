@@ -1,47 +1,40 @@
 import React from "react";
-import {ContainerReply, Container, TopTweetCard, NameProfile, User, ContentContainer, ContentTweet, FooterTweetCard} from './styles'
-import ButtonIcon from "../../atoms/button-icon/button-icon"
+import {
+  Container,
+  TopTweetCard,
+  NameProfile,
+  User,
+  ContentContainer,
+  ContentTweet,
+  FooterTweetCard,
+} from "./styles";
+import ButtonIcon from "../../atoms/button-icon/button-icon";
 import { formatTimeAgo } from "../../../utils/dateUtils";
 import UserPhoto from "../../atoms/user-photo/user-photo";
 
-
-const ReplyCard = ({ replies }) => {
-
-
-  if (!replies) {
-    return <></>;
-  }
-
-  
+const ReplyCard = ({ comentario }) => {
+  const timeAgo = formatTimeAgo(new Date(comentario.data_criacao));
 
   return (
-    <ContainerReply>
-      {replies.map((reply) => {
-        const timeAgo = formatTimeAgo(new Date(reply.date));
-        return (
-          <Container key={reply.id}>
-            <TopTweetCard>
-              <UserPhoto />
-              <NameProfile>{reply.nameProfile}</NameProfile>
-              <User>{reply.user} • {timeAgo}</User>
-            </TopTweetCard>
+    <Container>
+      <TopTweetCard>
+        <UserPhoto />
+        <NameProfile>{comentario.nome}</NameProfile>
+        <User>
+          {comentario.usuario} • {timeAgo}
+        </User>
+      </TopTweetCard>
 
-            <ContentContainer>
-              <ContentTweet>
-                {reply.textTweet}
-              </ContentTweet>
-            </ContentContainer>
+      <ContentContainer>
+        <ContentTweet>{comentario.texto}</ContentTweet>
+      </ContentContainer>
 
-            <FooterTweetCard>
-              <ButtonIcon iconType="reply" count={reply.qtdReply} />
-              <ButtonIcon iconType="retweet" count={reply.qtdRt} />
-              <ButtonIcon iconType="heart" count={reply.qtdFav} />
-              <ButtonIcon iconType="eye" count={reply.qtdView} />
-            </FooterTweetCard>
-          </Container>
-        );
-      })}
-    </ContainerReply>
+      <FooterTweetCard>
+        <ButtonIcon iconType="reply" count={comentario.comentarios} />
+        <ButtonIcon iconType="retweet" count={comentario.retweets} />
+        <ButtonIcon iconType="heart" count={comentario.likes} />
+      </FooterTweetCard>
+    </Container>
   );
 };
 

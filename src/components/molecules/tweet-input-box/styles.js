@@ -1,63 +1,54 @@
 import styled from "styled-components";
 
-
 export const TweetBoxInput = styled.div`
-    padding: 15px;
-    border: 1px solid #565656;
-    display: flex;
-    flex-direction: column;
-    color: white;
-    align-items: flex-end;
-`
-
-
+  padding: ${(props) => props.padding || "15px"};
+  border: ${(props) => props.border || "1px solid #565656"};
+  display: flex;
+  flex-direction: column;
+  color: white;
+  align-items: flex-end;
+`;
 
 export const UserContainer = styled.div`
-    display: flex;
-    padding: 0px;
-    border-radius: 10px;
-    width: 100%;
-    margin: 0;
-    align-items: center;
-`
+  display: flex;
+  padding: 0px;
+  border-radius: 10px;
+  width: 100%;
+  margin: 0;
+  align-items: center;
+`;
 
 export const FooterContainerInput = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center; 
-  padding: 0px; 
+  align-items: center;
+  padding: 0px;
   width: 40%;
 
+  @media screen and (max-width: 950px) {
+    width: 45%;
+  }
 
-  @media screen and (max-width: 950px){
-      width: 45%;
-        
-    }
+  @media screen and (max-width: 600px) {
+    width: 50%;
+  }
 
-    @media screen and (max-width: 600px){
-        width: 50%;
-       
-    }
-
-    @media screen and (max-width: 500px){
-        width: 55%;
-       
-    }
-`
+  @media screen and (max-width: 500px) {
+    width: 55%;
+  }
+`;
 
 export const FormContainer = styled.form`
-display: flex;
-justify-content: flex-start;
-align-items: center;
-width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
 
-
-@media screen and (max-width: 500px){
-        display: flex;
-        justify-content: flex-start;
-    }
-
-`
+  @media screen and (max-width: 500px) {
+    display: flex;
+    justify-content: flex-start;
+  }
+`;
 
 export const TextInput = styled.textarea`
   width: 100%;
@@ -74,9 +65,7 @@ export const TextInput = styled.textarea`
   &::placeholder {
     color: #ccc;
   }
-
-`
-
+`;
 
 export const CharCount = styled.div`
   display: flex;
@@ -85,7 +74,5 @@ export const CharCount = styled.div`
   color: rgb(113, 118, 123);
   font-size: 0.8rem;
   width: 100%;
-  padding:0;
+  padding: 0;
 `;
-  
-

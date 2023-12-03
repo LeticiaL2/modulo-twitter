@@ -1,14 +1,14 @@
-// ListTweets.jsx
 import React from "react";
-import TweetCard from "../../organism/tweet-card/tweet-card";
 import { Container } from "./styles";
+import TweetCard from "../../organism/tweet-card/tweet-card";
 
-const ListTweets = ({ tweets, fetchTweets }) => {
-  const reversedTweets = [...tweets].reverse();
+function ListComments({ comentariosArray, fetchTweets }) {
+  const reversedComentarios = [...comentariosArray].reverse();
+  console.log("comentariosArray:", comentariosArray);
 
   return (
     <>
-      {reversedTweets.map((tweet, index) => (
+      {reversedComentarios.map((tweet, index) => (
         <Container key={index}>
           <TweetCard
             id={tweet.id}
@@ -18,7 +18,7 @@ const ListTweets = ({ tweets, fetchTweets }) => {
             comentarios={tweet.comentarios}
             retweets={tweet.retweets}
             likes={tweet.likes}
-            date={tweet.data}
+            date={tweet.data_criacao}
             tweetPai={tweet.tweetPai}
             liked={tweet.liked}
             comentariosArray={tweet.comentariosArray}
@@ -27,6 +27,6 @@ const ListTweets = ({ tweets, fetchTweets }) => {
       ))}
     </>
   );
-};
+}
 
-export default ListTweets;
+export default ListComments;
