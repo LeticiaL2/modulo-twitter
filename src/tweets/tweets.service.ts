@@ -81,6 +81,7 @@ export class TweetsService {
             usuario: tweetRetweetPai.usuario.usuario,
             nome: tweetRetweetPai.usuario.nome,
             likes: tweetRetweetPai.likes.length,
+            liked: tweetRetweetPai.liked,
             comentarios: tweetRetweetPai.comentarios.length,
             retweets: tweetRetweetPai.retweets.length,
             data: tweetRetweetPai.data_criacao,
@@ -119,6 +120,8 @@ export class TweetsService {
             tweetPai = await this.getTweetByTweetPaiId(tweetPaiId);
           }
 
+          const comentariosArray = await this.getTweetWithComments(tweet.id);
+
           return {
             id: tweet.id,
             texto: tweet.texto,
@@ -126,10 +129,13 @@ export class TweetsService {
             usuario: usuario.usuario,
             nome: tweet.usuario.nome,
             likes: tweet.likes.length,
+            liked: tweet.liked,
             comentarios: tweet.comentarios.length,
             retweets: tweet.retweets.length,
             data: tweet.data_criacao,
             tweetPai: tweetPai ? [tweetPai] : null,
+            comentariosArray:
+              comentariosArray?.conteudo?.comentariosArray || [],
           };
         }),
       );
@@ -179,6 +185,12 @@ export class TweetsService {
         });
 
         if (deletedLike.count > 0) {
+          // Remover o like com sucesso, agora atualize a propriedade liked no tweet
+          await this.prisma.tweet.update({
+            where: { id: createLikeDto.tweetId },
+            data: { liked: false }, // Configurar liked para false ao remover um like
+          });
+
           return {
             status: true,
             mensagem: {
@@ -194,6 +206,12 @@ export class TweetsService {
             tweetId: createLikeDto.tweetId,
             usuarioId: createLikeDto.usuarioId,
           },
+        });
+
+        // Criar o like com sucesso, agora atualize a propriedade liked no tweet
+        await this.prisma.tweet.update({
+          where: { id: createLikeDto.tweetId },
+          data: { liked: true }, // Configurar liked para true ao adicionar um like
         });
 
         return {
@@ -394,6 +412,7 @@ export class TweetsService {
       usuarioId: comentario.usuarioId,
       nome: comentario.usuario.nome,
       likes: comentario.likes.length,
+      liked: comentario.liked,
       comentarios: comentario.comentarios.length,
       retweets: comentario.retweets.length,
       data_criacao: comentario.data_criacao,
@@ -406,6 +425,7 @@ export class TweetsService {
       usuario: tweetOriginal.usuario.usuario,
       nome: tweetOriginal.usuario.nome,
       likes: tweetOriginal.likes.length,
+      liked: tweetOriginal.liked,
       comentarios: tweetOriginal.comentarios.length,
       retweets: tweetOriginal.retweets.length,
       data: tweetOriginal.data_criacao,

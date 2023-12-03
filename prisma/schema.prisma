@@ -36,6 +36,7 @@ model Tweet {
   texto         String?   @db.VarChar(280) 
   usuarioId     Int      @db.Integer
   data_criacao  DateTime @default(now())
+  liked         Boolean  @default(false)
 }
 
 model Likes {

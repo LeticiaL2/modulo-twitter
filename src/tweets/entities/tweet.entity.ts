@@ -3,6 +3,7 @@ export class Tweet {
   id: number;
   data_criacao: Date;
   likes: number;
+  liked: boolean;
   comentarios: number;
   retweets: number;
   usuarioId: number;
