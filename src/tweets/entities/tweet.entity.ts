@@ -7,4 +7,6 @@ export class Tweet {
   comentarios: number;
   retweets: number;
   usuarioId: number;
+  usuario: string;
+  nome: string;
 }

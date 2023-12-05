@@ -39,10 +39,8 @@ export class TweetsController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  async getAllTweets(
-    @CurrentUser() user: UserFromJwt,
-  ): Promise<TweetResponseDto[]> {
-    return this.tweetsService.getAllTweets(user);
+  async getAllTweets(): Promise<TweetResponseDto[]> {
+    return this.tweetsService.getAllTweets();
   }
 
   @Post(':id/likes')

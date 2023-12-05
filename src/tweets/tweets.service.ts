@@ -66,7 +66,12 @@ export class TweetsService {
           id: tweetPaiId,
         },
         include: {
-          usuario: true,
+          usuario: {
+            select: {
+              usuario: true,
+              nome: true,
+            },
+          },
           likes: true,
           comentarios: true,
           retweets: true,
@@ -93,7 +98,7 @@ export class TweetsService {
     }
   }
 
-  async getAllTweets(usuario: UserFromJwt): Promise<TweetResponseDto[]> {
+  async getAllTweets(): Promise<TweetResponseDto[]> {
     try {
       const tweets = await this.prisma.tweet.findMany({
         where: {
@@ -107,6 +112,9 @@ export class TweetsService {
           comentarios: true,
           retweets: true,
           retweetPai: true,
+        },
+        orderBy: {
+          data_criacao: 'asc',
         },
       });
 
@@ -126,7 +134,7 @@ export class TweetsService {
             id: tweet.id,
             texto: tweet.texto,
             usuarioId: tweet.usuarioId,
-            usuario: usuario.usuario,
+            usuario: tweet.usuario.usuario,
             nome: tweet.usuario.nome,
             likes: tweet.likes.length,
             liked: tweet.liked,
@@ -208,10 +216,9 @@ export class TweetsService {
           },
         });
 
-        // Criar o like com sucesso, agora atualize a propriedade liked no tweet
         await this.prisma.tweet.update({
           where: { id: createLikeDto.tweetId },
-          data: { liked: true }, // Configurar liked para true ao adicionar um like
+          data: { liked: true },
         });
 
         return {
@@ -404,6 +411,9 @@ export class TweetsService {
         retweets: true,
         usuario: true,
       },
+      orderBy: {
+        data_criacao: 'desc',
+      },
     });
 
     const formattedComentarios = tweetsComentarios.map((comentario) => ({
@@ -411,6 +421,7 @@ export class TweetsService {
       texto: comentario.texto,
       usuarioId: comentario.usuarioId,
       nome: comentario.usuario.nome,
+      usuario: comentario.usuario.usuario,
       likes: comentario.likes.length,
       liked: comentario.liked,
       comentarios: comentario.comentarios.length,

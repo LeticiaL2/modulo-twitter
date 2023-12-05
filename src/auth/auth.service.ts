@@ -43,6 +43,8 @@ export class AuthService {
         nome: user.nome,
         acessToken: jwtToken,
         data_expiracao,
+        email: user.email,
+        id: user.id,
       },
     };
     return response;
