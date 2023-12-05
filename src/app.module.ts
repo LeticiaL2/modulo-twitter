@@ -7,6 +7,7 @@ import { Users } from './users/entity/users.entity';
 
 
 //TODO: passar database para database/
+//TODO: ocultar credenciais
 @Module({
   imports: [TypeOrmModule.forRoot({
     type: 'mysql',

@@ -8,24 +8,24 @@ export class Users {
     @Column()
     email: string;
 
-    @Column()
-    usuario: string;
+    // @Column()
+    // usuario: string;
 
     @Column()
     nome: string;
 
-    @Column()
-    senha: string;
+    // @Column()
+    // senha: string;
 
-    @Column()
-    ativo: boolean
+    // @Column()
+    // ativo: boolean
 
-    @Column()
-    data_criacao: Date;
+    // @Column()
+    // data_criacao: Date;
 
-    @Column()
-    data_atualizacao: Date;
+    // @Column()
+    // data_atualizacao: Date;
 
-    @Column()
-    data_ativacao: Date;
+    // @Column()
+    // data_ativacao: Date;
 }
