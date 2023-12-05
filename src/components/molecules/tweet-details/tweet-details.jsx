@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
-import perfil from "../../../assets/perfil.png";
+import React, { useState } from "react";
 import axios from "axios";
-import { AuthContext } from "../../../contexts/auth";
+import ptBR from "date-fns/locale/pt-BR";
 import { useLocation } from "react-router-dom";
 import {
   TweetDetailsContainer,
@@ -25,21 +24,8 @@ const TweetDetails = (props) => {
   const tweetInfo = (location.state && location.state.tweetInfo) || {};
   console.log("tweetInfo:", tweetInfo);
 
-  const [expanded, setExpanded] = useState(false);
-  const charLimit = 140;
-  const { texto } = props;
   const [liked, setLiked] = useState(tweetInfo.liked);
   const [likesCount, setLikesCount] = useState(tweetInfo.likes);
-
-  const handleToggleExpand = () => {
-    setExpanded(!expanded);
-  };
-
-  const handleTweetClick = (e) => {
-    if (expanded) {
-      e.preventDefault();
-    }
-  };
 
   const handleButtonClick = async () => {
     try {
@@ -55,7 +41,6 @@ const TweetDetails = (props) => {
       );
       console.log("Ação realizada com sucesso:", response.data);
 
-      // Atualiza o estado local para refletir a mudança de curtida
       setLiked(!liked);
       setLikesCount(liked ? likesCount - 1 : likesCount + 1);
     } catch (error) {
@@ -63,44 +48,14 @@ const TweetDetails = (props) => {
     }
   };
 
-  const displaytexto =
-    texto && texto.length > charLimit
-      ? `${texto.slice(0, charLimit)}...`
-      : texto;
-
   function formatTimeAgo(date) {
-    const now = new Date();
-    const secondsAgo = Math.floor((now - date) / 1000);
-    if (secondsAgo < 60) {
-      return `${secondsAgo}s`;
-    } else {
-      const minutesAgo = Math.floor(secondsAgo / 60);
-      if (minutesAgo < 60) {
-        return `${minutesAgo}m`;
-      } else {
-        const hoursAgo = Math.floor(minutesAgo / 60);
-        if (hoursAgo < 24) {
-          return `${hoursAgo}h`;
-        } else {
-          const options = { day: "numeric", month: "short" };
-          return date.toLocaleDateString(undefined, options);
-        }
-      }
-    }
+    const formattedDateTime = format(date, "HH:mm · dd, MMM  yyyy", {
+      locale: ptBR,
+    });
+    return `${formattedDateTime}`;
   }
 
   const timeAgo = formatTimeAgo(new Date(tweetInfo.date));
-
-  /*   let formattedDate = "";
-
-  if (tweetInfo.date && !isNaN(new Date(tweetInfo.date).getTime())) {
-    formattedDate = format(new Date(tweetInfo.date), "HH:mm • MMM, yyyy");
-  } else {
-    console.error("Invalid date value:", tweetInfo.date);
-    formattedDate = "Invalid Date";
-  }
-
-  console.log("formattedDate:", formattedDate);*/
 
   return (
     <TweetDetailsContainer>

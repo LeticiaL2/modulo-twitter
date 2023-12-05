@@ -50,6 +50,8 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
       const { acessToken, user: loggedUser } = data.conteudo;
 
+      setUser(data);
+
       localStorage.setItem("user", JSON.stringify(loggedUser));
       localStorage.setItem("accessToken", JSON.stringify(acessToken));
 
@@ -57,56 +59,9 @@ export const AuthProvider = ({ children }) => {
 
       console.log("token recebido", acessToken);
 
-      const meResponse = await fetch("http://localhost:8000/me", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${acessToken}`,
-        },
-      });
-
-      if (meResponse.ok) {
-        const userData = await meResponse.json();
-        setUser(userData);
-        navigate("/");
-      }
+      navigate("/");
     }
   };
-
-  /*const login = async (email, password) => {
-    const response = await fetch(`http://localhost:8000/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok && data.mensagem.codigo === 201) {
-      const { acessToken, user: loggedUser } = data.conteudo;
-
-      console.log("Token recebido:", acessToken);
-
-      localStorage.setItem("accessToken", acessToken);
-      localStorage.setItem("user", JSON.stringify(loggedUser));
-
-      setToken(acessToken);
-      setUser(loggedUser);
-
-      // Navegue para a página desejada
-      navigate("/");
-    } else {
-      console.error("Erro ao realizar o login:", data.mensagem.mensagem);
-
-      // Atualize o estado de erro
-      const errorContainer = document.getElementById("error-container");
-      errorContainer.textContent = "Credenciais inválidas";
-      errorContainer.style.display = "block";
-
-      // Você pode querer lançar um novo erro aqui ou tomar medidas adicionais com base no erro recebido
-    }
-  };*/
 
   const logout = async () => {
     console.log("logout");

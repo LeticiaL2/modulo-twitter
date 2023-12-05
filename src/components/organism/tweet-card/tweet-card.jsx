@@ -13,7 +13,6 @@ import {
   ContentTweet,
   ShowMore,
 } from "./styles";
-import { formatDistanceToNow, formatISO } from "date-fns";
 
 function TweetCard(props) {
   const [expanded, setExpanded] = useState(false);
@@ -24,12 +23,6 @@ function TweetCard(props) {
 
   const handleToggleExpand = () => {
     setExpanded(!expanded);
-  };
-
-  const handleTweetClick = (e) => {
-    if (expanded) {
-      e.preventDefault();
-    }
   };
 
   const handleButtonClick = async () => {
@@ -46,7 +39,6 @@ function TweetCard(props) {
       );
       console.log("Ação realizada com sucesso:", response.data);
 
-      // Atualiza o estado local para refletir a mudança de curtida
       setLiked(!liked);
       setLikesCount(liked ? likesCount - 1 : likesCount + 1);
     } catch (error) {

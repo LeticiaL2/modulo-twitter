@@ -3,12 +3,11 @@ import { Container } from "./styles";
 import TweetCard from "../../organism/tweet-card/tweet-card";
 
 function ListComments({ comentariosArray, fetchTweets }) {
-  const reversedComentarios = [...comentariosArray].reverse();
   console.log("comentariosArray:", comentariosArray);
 
   return (
     <>
-      {reversedComentarios.map((tweet, index) => (
+      {comentariosArray.map((tweet, index) => (
         <Container key={index}>
           <TweetCard
             id={tweet.id}

@@ -1,8 +1,10 @@
 import styled from "styled-components";
 
-export const TweetBoxInput = styled.div`
+export const TweetBoxInput = styled.div.attrs((props) => ({
+  as: "div",
+}))`
   padding: ${(props) => props.padding || "15px"};
-  border: ${(props) => props.border || "1px solid #565656"};
+  border: ${(props) => props.$border || "1px solid #565656"};
   display: flex;
   flex-direction: column;
   color: white;

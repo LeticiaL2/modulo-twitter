@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import Button from "../../atoms/button/button";
 import UserPhoto from "../../atoms/user-photo/user-photo";
-import perfil from "../../../assets/perfil.png";
-import { format } from "date-fns";
 import {
   TweetBoxInput,
   FooterContainerInput,
@@ -44,7 +42,7 @@ function TweetInput(props) {
   };
 
   return (
-    <TweetBoxInput border={props.border} padding={props.padding}>
+    <TweetBoxInput $border={props.$border} padding={props.padding}>
       <UserContainer>
         <UserPhoto />
         <FormContainer>

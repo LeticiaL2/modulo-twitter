@@ -15,6 +15,7 @@ const BoxSignup = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [usuario, setUsuario] = useState("");
+  const [nome, setNome] = useState("");
   const [senha, setsenha] = useState("");
   const [confirmsenha, setConfirmsenha] = useState("");
   const [error, setError] = useState("");
@@ -48,6 +49,7 @@ const BoxSignup = () => {
       email: email,
       usuario: usuario,
       senha: senha,
+      nome: nome,
     };
 
     fetch("http://localhost:8000/usuario", {
@@ -89,6 +91,13 @@ const BoxSignup = () => {
             placeholder="@Usuario"
             value={usuario}
             onChange={(e) => setUsuario(e.target.value)}
+          />
+
+          <FieldInput
+            type="nome"
+            placeholder="Nome"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
           />
 
           <FieldInput

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import "./styles";
 import TweetDetails from "../../components/molecules/tweet-details/tweet-details";
 import { BoxCenter, Container } from "./styles";
@@ -8,6 +8,7 @@ import axios from "axios";
 import { AuthContext } from "../../contexts/auth";
 import { useLocation } from "react-router-dom";
 import ListComments from "../../components/molecules/list-comentarios/list-comentarios";
+import HeaderHome from "../../components/molecules/header-home/header-home";
 
 function DetailsPage() {
   const { user } = useContext(AuthContext);
@@ -15,10 +16,9 @@ function DetailsPage() {
   const tweetInfo = (location.state && location.state.tweetInfo) || {};
   const [tweets, setTweets] = useState([]);
 
-  const fetchTweets = async () => {
+  const fetchTweets = useCallback(async () => {
     try {
       const token = JSON.parse(localStorage.getItem("accessToken"));
-
       const response = await axios.get(
         `http://localhost:8000/tweets/${tweetInfo.id}/detalhes`,
         {
@@ -36,12 +36,11 @@ function DetailsPage() {
     } catch (error) {
       console.error("Erro ao buscar tweets:", error);
     }
-  };
+  }, [tweetInfo.id]);
 
   const addTweet = async (tweetObject) => {
     try {
       const token = JSON.parse(localStorage.getItem("accessToken"));
-
       await axios.post(
         `http://localhost:8000/tweets/${tweetInfo.id}/comentarios`,
         tweetObject,
@@ -60,14 +59,15 @@ function DetailsPage() {
 
   useEffect(() => {
     fetchTweets();
-  }, []);
+  }, [fetchTweets]);
 
   return (
     <Container>
       <BoxCenter>
+        <HeaderHome buttonText="Voltar" />
         <TweetDetails></TweetDetails>
         <TweetInput
-          border="1px 1px 1px 1px solid red"
+          $border="none"
           buttonText="Reply"
           placeholder="Post your reply!"
           src={perfil}

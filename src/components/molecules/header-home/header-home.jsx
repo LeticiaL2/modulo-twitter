@@ -1,42 +1,54 @@
-import React, {useContext} from "react";
-import UserPhoto from '../../atoms/user-photo/user-photo'; // Importe o componente UserPhoto
-import { HeaderContainer, LogoX,ContainerPhoto, ContainerLogo, ContainerLogout } from './styles';
-import Button from "../../atoms/button/button"
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom"; // Alteração aqui
+import UserPhoto from "../../atoms/user-photo/user-photo";
+import {
+  HeaderContainer,
+  LogoX,
+  ContainerPhoto,
+  ContainerLogo,
+  ContainerLogout,
+} from "./styles";
+import Button from "../../atoms/button/button";
 import { AuthContext } from "../../../contexts/auth";
 
+function HeaderHome({ buttonText }) {
+  const { logout } = useContext(AuthContext);
+  const navigate = useNavigate(); // Alteração aqui
 
+  const handleLogout = () => {
+    logout();
+  };
 
-
-function HeaderHome() {
-
-    const {logout} = useContext(AuthContext)
-    
-    const handleLogout = () => {
-      logout();
-    };
-
+  const handleButtonClick = () => {
+    if (buttonText === "Sair") {
+      handleLogout();
+    } else {
+      // Utilizando navigate para voltar para a página anterior
+      navigate(-1);
+    }
+  };
 
   return (
     <HeaderContainer>
-        <ContainerPhoto>
-            <UserPhoto/>
-        </ContainerPhoto>
-        
-        <ContainerLogo>
-            <LogoX/>
-        </ContainerLogo>
+      <ContainerPhoto>
+        <UserPhoto />
+      </ContainerPhoto>
 
-        <ContainerLogout>
-            <Button
-                $border="1px solid white"
-                $backgroundColor="black"
-                color="#00acee"
-                $text="Sair"
-                onClick={handleLogout}/>
-        </ContainerLogout>
+      <ContainerLogo>
+        <LogoX />
+      </ContainerLogo>
 
+      <ContainerLogout>
+        <Button
+          $border="1px solid white"
+          $backgroundColor="black"
+          color="#00acee"
+          $text={buttonText}
+          onClick={handleButtonClick}
+        />
+      </ContainerLogout>
     </HeaderContainer>
   );
-};
+}
 
 export default HeaderHome;
