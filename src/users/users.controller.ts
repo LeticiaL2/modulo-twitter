@@ -4,7 +4,7 @@ import { UpdateUsersDto } from './dto/update-users.dto';
 import { CreateUsersDto } from './dto/create-users.dto';
 
 
-@Controller('users')
+@Controller('api/v1/usuarios')
 export class UsersController {
     constructor(private usersService: UsersService) {}
 
