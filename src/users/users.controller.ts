@@ -9,6 +9,7 @@ import { BadRequestExceptionFilter } from './filter/http-exception.filter';
 export class UsersController {
     constructor(private usersService: UsersService) {}
 
+    //remover
     @Get()
     getUsers() {
         return this.usersService.get();
@@ -20,6 +21,7 @@ export class UsersController {
         return this.usersService.create(createUsersDto);
     }
 
+    //remover
     @Patch('/:userId')
     update(
         @Body() updateUsersDto: UpdateUsersDto, 
@@ -28,11 +30,13 @@ export class UsersController {
         return this.usersService.update(updateUsersDto, userId);
     }
 
+    //remover
     @Get('/:userId')
     getUser(@Param('userId', ParseIntPipe) userId: number) {
         return this.usersService.show(userId);
     }
 
+    //remover
     @Delete('/:userId')
     deleteUser(@Param('userId', ParseIntPipe) userId: number) {
         return this.usersService.delete(userId);

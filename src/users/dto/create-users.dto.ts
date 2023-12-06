@@ -2,33 +2,27 @@ import { IsEmail, IsNotEmpty, IsString, IsStrongPassword, Length } from "class-v
 
 export class CreateUsersDto {
 
-    @IsString()
-    @Length(1, 50)
+    @IsString({ message: 'Nome em formato inválido' })
+    @Length(1, 50, { message: 'Nome deve conter menos de 50 caracteres' }) 
     @IsNotEmpty({ message: 'Nome é obrigatório' })
-    //@IsNotEmpty()
     nome: string;
     
     
-    @IsEmail({}, { message: 'Formato de email inválido' })
-    //@IsEmail()
-    @Length(1, 50)
+    @IsEmail({}, { message: 'Email em formato inválido' })
+    @Length(1, 50, { message: 'Email deve conter menos de 50 caracteres' })
     @IsNotEmpty({ message: 'Email é obrigatório'})
-    //@IsNotEmpty()
     email: string;
 
     
-    @IsString()
+    @IsString({ message: 'Usuário em formato inválido' })
     @IsNotEmpty({ message: 'Usuário é obrigatório' })
-    @Length(1, 50)
-    //@IsNotEmpty()
+    @Length(1, 50, { message: 'Usuário deve conter menos de 50 caracteres' })
     usuario: string;
     
-    // 1+ simbolo, 1+ maiscula, 1+ minuscula, 1+ numero, 8+ tamanho 
-    //@IsStrongPassword()
-    @IsStrongPassword({}, { message: 'A senha deve ser mais forte'})
-    //@IsNotEmpty()
-    @IsString()
-    @Length(1, 50)
+    // 1+ simbolo, 1+ maiscula, 1+ minuscula, 1+ numero, 8+ tamanho total
+    @IsStrongPassword({}, { message: 'Senha deve ser mais forte'})
+    @IsString({ message: 'Senha em formato inválido' })
+    @Length(1, 50, { message: 'Senha deve conter menos de 50 caracteres' })
     @IsNotEmpty({ message: 'Senha é obrigatória'})
     senha: string;
 }

@@ -13,7 +13,7 @@ export class UsersService {
         private usersRepository: Repository<Users>,
     ) {}
 
-
+    //remover
     get(): Promise<Users[]>{ 
         return this.usersRepository.find();
     }
@@ -55,14 +55,17 @@ export class UsersService {
         return successResponse;
     }
 
+    //remover
     update( updateUsersDto: UpdateUsersDto, userId : number) {
         return this.usersRepository.update(userId, updateUsersDto);
     }
 
+    //remover
     show( id: number ) {
         return this.usersRepository.findOne({ where: { id } });
     }
 
+    //remover
     delete( userId: number ) {
         return this.usersRepository.delete(userId);
     }
