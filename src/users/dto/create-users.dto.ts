@@ -2,34 +2,33 @@ import { IsEmail, IsNotEmpty, IsString, IsStrongPassword, Length } from "class-v
 
 export class CreateUsersDto {
 
+    @IsString()
+    @Length(1, 50)
     @IsNotEmpty({ message: 'Nome é obrigatório' })
     //@IsNotEmpty()
-    @Length(1, 50)
-    @IsString()
     nome: string;
-
-
-    @IsNotEmpty({ message: 'Email é obrigatório'})
-    //@IsNotEmpty()
-    @Length(1, 50)
+    
+    
     @IsEmail({}, { message: 'Formato de email inválido' })
     //@IsEmail()
+    @Length(1, 50)
+    @IsNotEmpty({ message: 'Email é obrigatório'})
+    //@IsNotEmpty()
     email: string;
 
     
+    @IsString()
     @IsNotEmpty({ message: 'Usuário é obrigatório' })
-    //@IsNotEmpty()
     @Length(1, 50)
-    @IsString()
+    //@IsNotEmpty()
     usuario: string;
-
     
-    @IsNotEmpty({ message: 'Senha é obrigatória'})
-    //@IsNotEmpty()
-    @Length(1, 50)
-    @IsString()
     // 1+ simbolo, 1+ maiscula, 1+ minuscula, 1+ numero, 8+ tamanho 
     //@IsStrongPassword()
     @IsStrongPassword({}, { message: 'A senha deve ser mais forte'})
+    //@IsNotEmpty()
+    @IsString()
+    @Length(1, 50)
+    @IsNotEmpty({ message: 'Senha é obrigatória'})
     senha: string;
 }

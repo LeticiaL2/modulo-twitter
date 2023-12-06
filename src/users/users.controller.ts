@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UseFilters } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUsersDto } from './dto/update-users.dto';
 import { CreateUsersDto } from './dto/create-users.dto';
+import { BadRequestExceptionFilter } from './filter/http-exception.filter';
 
 
 @Controller('api/v1/usuarios')
@@ -14,6 +15,7 @@ export class UsersController {
     }
 
     @Post()
+    @UseFilters(new BadRequestExceptionFilter())
     store(@Body() createUsersDto: CreateUsersDto) {
         return this.usersService.create(createUsersDto);
     }
