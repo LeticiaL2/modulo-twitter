@@ -10,3 +10,7 @@ export const databaseConfig = {
     entities: [__dirname + '/../**/*.entity{.ts,.js}'],
     synchronize: true,
 };
+
+export const jwtSecret = {
+    secret: process.env.JWT_SECRET,
+};
