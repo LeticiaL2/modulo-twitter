@@ -11,6 +11,9 @@ export const databaseConfig = {
     synchronize: true,
 };
 
-export const jwtSecret = {
+export const jwtOptions = {
     secret: process.env.JWT_SECRET,
+    signOptions: { 
+        expiresIn: process.env.JWT_EXPIRES_IN 
+    },
 };
