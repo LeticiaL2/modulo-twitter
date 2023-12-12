@@ -13,8 +13,9 @@ export class TweetsController {
 
     @UseGuards(JwtAuthGuard)
     @Get()
-    profile() {
-        return { message: 'Protected Route'};
+    async getTweets(@Res() res) {
+        const tweets = await this.tweetsService.getTweets();
+        res.status(200).json(tweets);
     }
 
     @UseGuards(JwtAuthGuard)

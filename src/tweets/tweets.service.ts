@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Tweets } from './entity/tweets.entity';
 import { Users } from 'src/users/entity/users.entity';
 
+
 @Injectable()
 export class TweetsService {
     constructor(
@@ -13,6 +14,34 @@ export class TweetsService {
         @InjectRepository(Users)
         private usersRepository: Repository<Users>,
     ) {}
+
+    async getTweets() {
+        const tweets =  await this.tweetsRepository.find({ relations: ["usuario"], where: { excluido: false } });
+
+        const formattedTweets = tweets.map(tweet => ({
+            id: tweet.id,
+            texto: tweet.texto,
+            usuarioId: tweet.usuario.id,
+            usuario: tweet.usuario.usuario,
+            nome: tweet.usuario.nome,
+            likes: null, //TODO
+            liked: null, //TODO
+            comentarios: null, //TODO
+            retweets: null, //TODO
+            data: tweet.data_criacao,
+        }));
+
+        return {
+            status: true,
+            mensagem: {
+                codigo: 200,
+                texto: 'Tweets encontrados com sucesso!'
+            },
+            conteudo: formattedTweets,
+        };
+
+    }
+
     
     async create(createTweetDto: CreateTweetDto, userId: number) {
         const user = await this.usersRepository.findOne({ where : { id: userId } });
