@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CreateTweetDto } from './dto/create-tweets.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Tweets } from './entity/tweets.entity';
 import { Users } from 'src/users/entity/users.entity';
+import { response } from 'express';
 
 
 @Injectable()
@@ -43,7 +44,7 @@ export class TweetsService {
     }
 
     
-    async create(createTweetDto: CreateTweetDto, userId: number) {
+    async postTweet(createTweetDto: CreateTweetDto, userId: number) {
         const user = await this.usersRepository.findOne({ where : { id: userId } });
         const newTweet = this.tweetsRepository.create({ ...createTweetDto, usuario: user });
         await this.tweetsRepository.save(newTweet);
@@ -70,4 +71,36 @@ export class TweetsService {
 
         return response;
     }
+
+    async deleteTweet(id: number, userId: number) {
+        const tweet = await this.tweetsRepository.findOne({ 
+            where: { id },
+            relations: ["usuario"],
+        });
+
+        if (!tweet) {
+            throw new NotFoundException('Tweet não encontrado');
+        }
+
+        if (tweet.usuario.id !== userId) {
+            throw new UnauthorizedException('Você não tem permissão para excluir este tweet');
+        }
+
+        tweet.excluido = true;
+        tweet.texto = '';
+        await this.tweetsRepository.save(tweet);
+        
+        const response = {
+            status: true,
+            mensagem: {
+                codigo: 200,
+                texto: 'Tweet excluído com sucesso!'
+            },
+            conteudo: null
+        };
+
+
+        return response;
+    }
+
 }

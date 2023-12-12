@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/jwt.auth.guard';
@@ -20,9 +20,17 @@ export class TweetsController {
 
     @UseGuards(JwtAuthGuard)
     @Post()
-    async create(@Req() req, @Res() res) {
-        const tweet = await this.tweetsService.create(req.body, req.user.id);
+    async postTweet(@Req() req, @Res() res) {
+        const tweet = await this.tweetsService.postTweet(req.body, req.user.id);
         res.status(201).json(tweet);
+    }
+
+
+    @UseGuards(JwtAuthGuard)
+    @Delete(':id')
+    async deleteTweet(@Param('id') id: number, @Req() req, @Res() res){
+        const result = await this.tweetsService.deleteTweet(id, req.user.id);
+        res.status(200).json(result);
     }
 
 }
