@@ -270,7 +270,6 @@ export class TweetsService {
 
     return response
   }
-
   // : Promise<ResponseListModel<ResponseCreateTweetDTO>>
   async findAll(user: User) {
     const tweets = await this.tweetRepository.find({
@@ -287,11 +286,33 @@ export class TweetsService {
           },
         },
         retweetPai: {
-          tweetPai: {
-            likes: true,
-            comentarios: true,
-            retweets: true,
+          tweet: {
             usuario: true,
+          },
+          tweetPai: {
+            likes: { usuario: true },
+            comentarios: true,
+            retweets: {
+              tweet: {
+                usuario: true,
+              },
+            },
+            usuario: true,
+            retweetPai: {
+              tweet: {
+                usuario: true,
+              },
+              tweetPai: {
+                likes: { usuario: true },
+                comentarios: true,
+                retweets: {
+                  tweet: {
+                    usuario: true,
+                  },
+                },
+                usuario: true,
+              },
+            },
           },
         },
       },
@@ -309,63 +330,74 @@ export class TweetsService {
         return {
           id: tweet.id,
           texto: tweet.texto,
+          usuario: tweet.usuario.usuario,
           usuarioId: tweet.usuario.id,
           nome: tweet.usuario.nome,
-          usuario: tweet.usuario.usuario,
-          isLikedByUser: tweet.likes.some(like => like.usuario.id === user.id),
-          isRetweetedByUser: tweet.retweets.some(
-            retweet => retweet.tweet.usuario.id === user.id,
-          ),
           likes: tweet.likes.length,
           comentarios: tweet.comentarios.length,
           retweets: tweet.retweets.length,
           data: tweet.data_criacao,
+          isLikedByUser: tweet.likes.some(like => like.usuario.id === user.id),
+          isRetweetedByUser: tweet.retweets.some(
+            retweet => retweet.tweet.usuario.id === user.id,
+          ),
           retweetPai: tweet.retweetPai[0]
             ? {
                 id: tweet.retweetPai[0].tweetPai.id,
                 texto: tweet.retweetPai[0].tweetPai.texto,
-                data: tweet.retweetPai[0].tweetPai.data_criacao,
                 usuario: tweet.retweetPai[0].tweetPai.usuario.usuario,
                 usuarioId: tweet.retweetPai[0].tweetPai.usuario.id,
                 nome: tweet.retweetPai[0].tweetPai.usuario.nome,
                 likes: tweet.retweetPai[0].tweetPai.likes.length,
                 comentarios: tweet.retweetPai[0].tweetPai.comentarios.length,
                 retweets: tweet.retweetPai[0].tweetPai.retweets.length,
+                data: tweet.retweetPai[0].tweetPai.data_criacao,
+                isLikedByUser: tweet.retweetPai[0].tweetPai.likes.some(
+                  like => like.usuario.id === user.id,
+                ),
+                isRetweetedByUser: tweet.retweetPai[0].tweetPai.retweets.some(
+                  retweet => retweet.tweet.usuario.id === user.id,
+                ),
+                retweetPai: tweet.retweetPai[0].tweetPai.retweetPai[0]
+                  ? {
+                      id: tweet.retweetPai[0].tweetPai.retweetPai[0].tweetPai
+                        .id,
+                      texto:
+                        tweet.retweetPai[0].tweetPai.retweetPai[0].tweetPai
+                          .texto,
+                      usuario:
+                        tweet.retweetPai[0].tweetPai.retweetPai[0].tweetPai
+                          .usuario.usuario,
+                      usuarioId:
+                        tweet.retweetPai[0].tweetPai.retweetPai[0].tweetPai
+                          .usuario.id,
+                      nome: tweet.retweetPai[0].tweetPai.retweetPai[0].tweetPai
+                        .usuario.nome,
+                      likes:
+                        tweet.retweetPai[0].tweetPai.retweetPai[0].tweetPai
+                          .likes.length,
+                      comentarios:
+                        tweet.retweetPai[0].tweetPai.retweetPai[0].tweetPai
+                          .comentarios.length,
+                      retweets:
+                        tweet.retweetPai[0].tweetPai.retweetPai[0].tweetPai
+                          .retweets.length,
+                      data: tweet.retweetPai[0].tweetPai.retweetPai[0].tweetPai
+                        .data_criacao,
+                      isLikedByUser:
+                        tweet.retweetPai[0].tweetPai.retweetPai[0].tweetPai.likes.some(
+                          like => like.usuario.id === user.id,
+                        ),
+                      isRetweetedByUser:
+                        tweet.retweetPai[0].tweetPai.retweetPai[0].tweetPai.retweets.some(
+                          retweet => retweet.tweet.usuario.id === user.id,
+                        ),
+                    }
+                  : null,
               }
             : null,
         }
       })
-
-    // const mappedTweets2 = tweets.reduce((acc, tweet) => {
-    //   if (Object.keys(tweet.tweetPai).length === 0) {
-    //     acc.push({
-    //       id: tweet.id,
-    //       texto: tweet.texto,
-    //       usuarioId: tweet.usuario.id,
-    //       nome: tweet.usuario.nome,
-    //       usuario: tweet.usuario.usuario,
-    //       likes: tweet.likes.length,
-    //       comentarios: tweet.comentarios.length,
-    //       retweets: tweet.retweets.length,
-    //       data: tweet.data_criacao,
-    //       tweetPai: tweet.tweetPai,
-    //       retweetPai:tweet.retweetPai[0]
-    //         ? {
-    //             id: tweet.retweetPai[0].tweet.id,
-    //             texto: tweet.retweetPai[0].tweet.texto,
-    //             data: tweet.retweetPai[0].tweet.data_criacao,
-    //             usuario: tweet.retweetPai[0].tweet.usuario.usuario,
-    //             usuarioId: tweet.retweetPai[0].tweet.usuario.id,
-    //             nome: tweet.retweetPai[0].tweet.usuario.nome,
-    //             likes: tweet.retweetPai[0].tweet.likes.length,
-    //             comentarios: tweet.retweetPai[0].tweet.comentarios.length,
-    //             retweets: tweet.retweetPai[0].tweet.retweets.length,
-    //           }
-    //         : null,
-    //     })
-    //   }
-    //   return acc
-    // }, [])
 
     const response = {
       status: true,
@@ -392,10 +424,7 @@ export class TweetsService {
           },
         },
         retweetPai: {
-          tweet: {
-            likes: true,
-            comentarios: true,
-            retweets: true,
+          tweetPai: {
             usuario: true,
           },
         },
@@ -445,17 +474,17 @@ export class TweetsService {
       comentarios: tweet.comentarios.length,
       retweets: tweet.retweets.length,
       excluido: tweet.excluido,
-      tweetPai: tweet.retweetPai[0]
+      retweetPai: tweet.retweetPai[0]
         ? {
-            id: tweet.retweetPai[0].tweet.id,
-            texto: tweet.retweetPai[0].tweet.texto,
-            data: tweet.retweetPai[0].tweet.data_criacao,
-            usuario: tweet.retweetPai[0].tweet.usuario.usuario,
-            usuarioId: tweet.retweetPai[0].tweet.usuario.id,
-            nome: tweet.retweetPai[0].tweet.usuario.nome,
-            likes: tweet.retweetPai[0].tweet.likes.length,
-            comentarios: tweet.retweetPai[0].tweet.comentarios.length,
-            retweets: tweet.retweetPai[0].tweet.retweets.length,
+            id: tweet.retweetPai[0].tweetPai.id,
+            texto: tweet.retweetPai[0].tweetPai.texto,
+            data: tweet.retweetPai[0].tweetPai.data_criacao,
+            usuario: tweet.retweetPai[0].tweetPai.usuario.usuario,
+            usuarioId: tweet.retweetPai[0].tweetPai.usuario.id,
+            nome: tweet.retweetPai[0].tweetPai.usuario.nome,
+            // likes: tweet.retweetPai[0].tweetPai.likes.length,
+            // comentarios: tweet.retweetPai[0].tweetPai.comentarios.length,
+            // retweets: tweet.retweetPai[0].tweetPai.retweets.length,
           }
         : null,
       comentariosArray:
