@@ -1,8 +1,8 @@
 import React from 'react';
-import { UserPhotoImg } from './style';
+import { Container } from './style';
 
 function UserPhoto(props) {
-  return <UserPhotoImg src={props.src} />;
+  return <Container {...props} />;
 }
 
 export default UserPhoto;

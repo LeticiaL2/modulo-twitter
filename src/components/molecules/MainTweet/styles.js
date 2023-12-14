@@ -10,7 +10,7 @@ export const TweetContainer = styled.article`
   width: 90%;
 `
 
-export const Header = styled.header`
+export const HeaderContainer = styled.header`
   display: flex;
   gap: 0.75rem;
 `
@@ -21,7 +21,7 @@ export const DivDisplay = styled.div`
   width: 100%;
 `
 
-export const UserInfo = styled.div`
+export const UserInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.1rem;
@@ -33,17 +33,22 @@ export const UserInfo = styled.div`
   }
 `
 
-export const GrayContainer = styled.div`
-  display: flex;
-  color: ${colors.light_gray};
-`
-
-export const Content = styled.p`
+export const Content = styled.div`
   display: flex;
   flex-direction: column;
   word-break: break-word;
   line-height: 20px;
   margin-top: 0.75rem;
+`
+export const RetweetContainer = styled.div`
+  border: 1px solid rgba(113, 118, 123, 0.5);
+  border-radius: 0.75rem;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+
+  &:hover {
+    background-color: rgba(113, 118, 123, 0.18);
+  }
 `
 
 export const Footer = styled.footer`

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import Header from '../../organisms/Header'
+import { getUserLocalStorage } from '../../../contexts/util'
+import { Api } from '../../../services/api'
 import PostTweet from '../../molecules/PostTweet'
 import TweetsList from '../../molecules/TweetsList'
-import { Api } from '../../../services/api'
-import { getUserLocalStorage } from '../../../contexts/util'
+import Header from '../../organisms/Header'
 
 
 function Main() {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Container, FormContainer } from './styles';
 import Input from '../../atoms/Input';
@@ -131,6 +131,11 @@ function SignupSection() {
     confirmPasswordIsValid(e.target.value)
   }
 
+  const isButtonDisabled = useMemo(() => {
+    return !(emailIsValid(email) && passwordIsValid(password) && usernameIsValid(username) && nameisValid(name) && confirmPasswordIsValid(confirmPassword));
+  }, [email, password, username, name, confirmPassword]);
+
+
   const handleSignup = async (e) => {
     e.preventDefault();
 
@@ -207,7 +212,7 @@ function SignupSection() {
         {confirmPasswordError && <p className='error-text'>{confirmPasswordError}</p>}
 
         {httpError && <p className='error-text'>{httpError}</p>}
-        <Button $fontSize="1.2rem">Criar conta</Button>
+        <Button $fontSize="1.2rem" disabled={isButtonDisabled}>Criar conta</Button>
       </FormContainer>
       <p>
         Já possui uma conta? <Link to="/login">Faça login</Link>
