@@ -1,7 +1,7 @@
 import { Controller, Delete, Get, Param, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from 'src/auth/auth.service';
-import { JwtAuthGuard } from 'src/auth/jwt.auth.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
 import { TweetsService } from './tweets.service';
 import { request } from 'http';
 
