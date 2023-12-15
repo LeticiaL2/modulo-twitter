@@ -3,6 +3,7 @@ import { Users } from '../../users/entity/users.entity';
 
 @Entity('Tweet')
 export class Tweets {
+    
     @PrimaryGeneratedColumn()
     id: number;
 

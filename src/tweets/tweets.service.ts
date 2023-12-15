@@ -1,10 +1,11 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ConsoleLogger, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CreateTweetDto } from './dto/create-tweets.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Tweets } from './entity/tweets.entity';
 import { Users } from 'src/users/entity/users.entity';
 import { response } from 'express';
+import { Likes } from './entity/likes.entity';
 
 
 @Injectable()
@@ -14,23 +15,35 @@ export class TweetsService {
         private tweetsRepository: Repository<Tweets>,
         @InjectRepository(Users)
         private usersRepository: Repository<Users>,
+        @InjectRepository(Likes)
+        private likesRepository: Repository<Likes>,
     ) {}
 
-    async getTweets() {
-        const tweets =  await this.tweetsRepository.find({ relations: ["usuario"], where: { excluido: false } });
+    async getTweets(userId: number) {
+        const tweets =  await this.tweetsRepository.find({ 
+            relations: ["usuario"], 
+            where: { excluido: false } 
+        });
 
-        const formattedTweets = tweets.map(tweet => ({
-            id: tweet.id,
-            texto: tweet.texto,
-            usuarioId: tweet.usuario.id,
-            usuario: tweet.usuario.usuario,
-            nome: tweet.usuario.nome,
-            likes: null, //TODO
-            liked: null, //TODO
-            comentarios: null, //TODO
-            retweets: null, //TODO
-            data: tweet.data_criacao,
+
+        const formattedTweets = await Promise.all(tweets.map( async (tweet) => {
+            const likes = await this.getLikesCount(tweet.id);
+            const liked = await this.userLikedTweet(userId, tweet.id);
+
+            return {
+                id: tweet.id,
+                texto: tweet.texto,
+                usuarioId: tweet.usuario.id,
+                usuario: tweet.usuario.usuario,
+                nome: tweet.usuario.nome,
+                likes: likes, 
+                liked: liked,
+                comentarios: null, //TODO
+                retweets: null, //TODO
+                data: tweet.data_criacao,
+            };
         }));
+    
 
         return {
             status: true,
@@ -103,4 +116,103 @@ export class TweetsService {
         return response;
     }
 
+
+    async likeTweet(tweetId: number, userId: number) {
+        const tweet = await this.tweetsRepository.findOne({ where: { id: tweetId } });
+
+        if (!tweet) {
+            throw new NotFoundException('Tweet não encontrado');
+        }
+
+        const user = await this.usersRepository.findOne({ where: { id: userId } });
+
+        if (!user) {
+            throw new NotFoundException('Usuário não encontrado');
+        }
+
+        const existingLike = await this.userLikedTweet(userId, tweetId) 
+
+        if (existingLike) {
+            throw new BadRequestException('Você já curtiu este tweet');
+        }
+
+        const newLike = this.likesRepository.create({ tweet, usuario: user });
+        await this.likesRepository.save(newLike);
+
+        const response = {
+            status: true,
+            mensagem: {
+                codigo: 200,
+                texto: 'Tweet curtido com sucesso!'
+            },
+            conteudo: true
+        };
+
+        return response;
+
+    }
+
+    async dislikeTweet(tweetId: number, userId: number) {
+
+        const tweet = await this.tweetsRepository.findOne({ where: { id: tweetId } });
+    
+        if (!tweet) {
+            throw new NotFoundException('Tweet não encontrado');
+        }
+    
+        const user = await this.usersRepository.findOne({ where: { id: userId } });
+    
+        if (!user) {
+            throw new NotFoundException('Usuário não encontrado');
+        }
+
+        const existingLike = await this.likesRepository.findOne({
+            where: {
+                tweet: { id: tweetId },
+                usuario: { id: userId }
+            },
+            relations: ['tweet', 'usuario']
+        });
+
+
+    
+        if (!existingLike) {
+            throw new NotFoundException('Like não encontrado');
+        }
+    
+        await this.likesRepository.remove(existingLike);
+    
+        const response = {
+            status: true,
+            mensagem: {
+                codigo: 200,
+                texto: 'Tweet descurtido com sucesso!'
+            },
+            conteudo: true
+        };
+    
+        return response;
+    }
+
+
+
+
+    async getLikesCount(tweetId: number): Promise<number> {
+        return this.likesRepository.count({ 
+            where: { 
+                tweet: { id: tweetId } 
+            }
+        });
+    }
+
+    async userLikedTweet(userId: number, tweetId: number): Promise<boolean> {
+        const like = await this.likesRepository.findOne({ 
+            where: { 
+                usuario: { id: userId }, 
+                tweet: { id: tweetId } 
+            }
+        });
+        
+        return like ? true : false;
+    }
 }

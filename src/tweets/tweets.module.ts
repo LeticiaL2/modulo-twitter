@@ -4,9 +4,10 @@ import { TweetsService } from './tweets.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Tweets } from './entity/tweets.entity';
 import { Users } from 'src/users/entity/users.entity';
+import { Likes } from './entity/likes.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Tweets, Users])],
+  imports: [TypeOrmModule.forFeature([Tweets, Users, Likes])],
   controllers: [TweetsController],
   providers: [TweetsService]
 })

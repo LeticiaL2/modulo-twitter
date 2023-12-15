@@ -13,8 +13,8 @@ export class TweetsController {
 
     @UseGuards(JwtAuthGuard)
     @Get()
-    async getTweets(@Res() res) {
-        const tweets = await this.tweetsService.getTweets();
+    async getTweets(@Req() req, @Res() res) {
+        const tweets = await this.tweetsService.getTweets(req.user.id);
         res.status(200).json(tweets);
     }
 
@@ -33,4 +33,18 @@ export class TweetsController {
         res.status(200).json(result);
     }
 
+
+    @UseGuards(JwtAuthGuard)
+    @Post(':id/likes')
+    async likeTweet(@Param('id') id: number, @Req() req, @Res() res){
+        const result = await this.tweetsService.likeTweet(id, req.user.id);
+        res.status(200).json(result);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Delete(':id/likes')
+    async dislikeTweet(@Param('id') id: number, @Req() req, @Res() res) {
+        const result = await this.tweetsService.dislikeTweet(id, req.user.id);
+        res.status(200).json(result);
+    }
 }
