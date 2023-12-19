@@ -9,6 +9,8 @@ export class TweetResponseDto {
   comentarios: number;
   retweets: number;
   data: Date;
+  retweeted: boolean;
+  isDeleted: boolean;
   comentariosArray?: any[];
   tweetPaiId?: number;
   tweetPai?: any[];

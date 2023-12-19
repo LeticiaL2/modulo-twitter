@@ -1,4 +1,12 @@
-import { Controller, Post, Body, UseGuards, Get, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  Get,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { TweetsService } from './tweets.service';
 import { CreateTweetDto } from './dto/create-tweet.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -39,8 +47,10 @@ export class TweetsController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  async getAllTweets(): Promise<TweetResponseDto[]> {
-    return this.tweetsService.getAllTweets();
+  async getAllTweets(
+    @CurrentUser() user: UserFromJwt,
+  ): Promise<TweetResponseDto[]> {
+    return this.tweetsService.getAllTweets(user.id);
   }
 
   @Post(':id/likes')
@@ -90,5 +100,13 @@ export class TweetsController {
     @Param('id') tweetId: string,
   ): Promise<ResponseModel<TweetResponseDto | null>> {
     return this.tweetsService.getTweetWithComments(Number(tweetId));
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  async deleteTweet(
+    @Param('id') tweetId: string,
+  ): Promise<ResponseModel<TweetResponseDto | null>> {
+    return this.tweetsService.deleteTweet(Number(tweetId));
   }
 }

@@ -87,6 +87,8 @@ export class TweetsService {
             nome: tweetRetweetPai.usuario.nome,
             likes: tweetRetweetPai.likes.length,
             liked: tweetRetweetPai.liked,
+            retweeted: tweetRetweetPai.retweeted,
+            isDeleted: tweetRetweetPai.isDeleted,
             comentarios: tweetRetweetPai.comentarios.length,
             retweets: tweetRetweetPai.retweets.length,
             data: tweetRetweetPai.data_criacao,
@@ -98,13 +100,12 @@ export class TweetsService {
     }
   }
 
-  async getAllTweets(): Promise<TweetResponseDto[]> {
+  async getAllTweets(usuarioId: number): Promise<TweetResponseDto[]> {
     try {
       const tweets = await this.prisma.tweet.findMany({
         where: {
-          comentarioPai: {
-            none: {},
-          },
+          comentarioPai: { none: {} },
+          isDeleted: false,
         },
         include: {
           usuario: true,
@@ -114,7 +115,7 @@ export class TweetsService {
           retweetPai: true,
         },
         orderBy: {
-          data_criacao: 'asc',
+          data_criacao: 'desc',
         },
       });
 
@@ -130,6 +131,24 @@ export class TweetsService {
 
           const comentariosArray = await this.getTweetWithComments(tweet.id);
 
+          const existingLike = await this.prisma.likes.findFirst({
+            where: {
+              tweetId: tweet.id,
+              usuarioId: usuarioId,
+            },
+          });
+
+          const liked = !!existingLike;
+
+          const existingRetweet = await this.prisma.retweet.findFirst({
+            where: {
+              tweetId: tweet.id,
+              usuarioId: usuarioId,
+            },
+          });
+
+          const retweeted = !!existingRetweet;
+
           return {
             id: tweet.id,
             texto: tweet.texto,
@@ -137,10 +156,12 @@ export class TweetsService {
             usuario: tweet.usuario.usuario,
             nome: tweet.usuario.nome,
             likes: tweet.likes.length,
-            liked: tweet.liked,
+            liked: liked,
             comentarios: tweet.comentarios.length,
             retweets: tweet.retweets.length,
             data: tweet.data_criacao,
+            retweeted: retweeted,
+            isDeleted: tweet.isDeleted,
             tweetPai: tweetPai ? [tweetPai] : null,
             comentariosArray:
               comentariosArray?.conteudo?.comentariosArray || [],
@@ -184,7 +205,7 @@ export class TweetsService {
         },
       });
 
-      if (existingLike) {
+      if (existingLike && existingLike.usuarioId === createLikeDto.usuarioId) {
         const deletedLike = await this.prisma.likes.deleteMany({
           where: {
             tweetId: createLikeDto.tweetId,
@@ -193,10 +214,9 @@ export class TweetsService {
         });
 
         if (deletedLike.count > 0) {
-          // Remover o like com sucesso, agora atualize a propriedade liked no tweet
           await this.prisma.tweet.update({
             where: { id: createLikeDto.tweetId },
-            data: { liked: false }, // Configurar liked para false ao remover um like
+            data: { liked: false },
           });
 
           return {
@@ -224,7 +244,7 @@ export class TweetsService {
         return {
           status: true,
           mensagem: {
-            codigo: 200,
+            codigo: 201,
             texto: 'Like criado com sucesso.',
           },
           conteudo: newLike,
@@ -275,6 +295,7 @@ export class TweetsService {
         data: {
           tweetId: tweet.id,
           tweetPaiId: tweetPaiId,
+          usuarioId: usuario.id,
         },
       });
 
@@ -327,10 +348,30 @@ export class TweetsService {
         };
       }
 
+      const existingRetweet = await this.prisma.tweet.findFirst({
+        where: {
+          id: tweetPaiId,
+          retweeted: true,
+          usuarioId: usuario.id,
+        },
+      });
+
+      if (existingRetweet) {
+        return {
+          status: false,
+          mensagem: {
+            codigo: 200,
+            texto: 'Você já retuitou este tweet.',
+          },
+          conteudo: null,
+        };
+      }
+
       const tweet = await this.prisma.tweet.create({
         data: {
           texto: createRetweetDto.texto,
           usuarioId: usuario.id,
+          retweeted: true,
         },
       });
 
@@ -338,10 +379,16 @@ export class TweetsService {
         data: {
           tweetId: tweet.id,
           tweetPaiId: tweetPaiId,
+          usuarioId: usuario.id,
         },
       });
 
-      console.log('Rt criado:', retweet);
+      console.log('Retweet criado:', retweet);
+
+      await this.prisma.tweet.update({
+        where: { id: tweetPaiId },
+        data: { retweeted: true },
+      });
 
       return {
         status: true,
@@ -349,19 +396,15 @@ export class TweetsService {
           codigo: 200,
           texto: 'Retweet criado com sucesso.',
         },
-        conteudo: {
-          ...retweet,
-          texto: tweet.texto,
-          tipo: 'retweet',
-        },
+        conteudo: retweet,
       };
     } catch (error) {
-      console.error('Erro ao criar Retweet:', error);
+      console.error('Erro ao criar retweet:', error);
       return {
         status: false,
         mensagem: {
           codigo: 401,
-          texto: 'Erro ao criar o Retweet.',
+          texto: 'Erro ao criar retweet.',
         },
         conteudo: null,
       };
@@ -424,9 +467,11 @@ export class TweetsService {
       usuario: comentario.usuario.usuario,
       likes: comentario.likes.length,
       liked: comentario.liked,
+      retweeted: comentario.retweeted,
+      isDeleted: comentario.isDeleted,
       comentarios: comentario.comentarios.length,
       retweets: comentario.retweets.length,
-      data_criacao: comentario.data_criacao,
+      data: comentario.data_criacao,
     }));
 
     const formattedTweet: TweetResponseDto = {
@@ -437,6 +482,8 @@ export class TweetsService {
       nome: tweetOriginal.usuario.nome,
       likes: tweetOriginal.likes.length,
       liked: tweetOriginal.liked,
+      retweeted: tweetOriginal.retweeted,
+      isDeleted: tweetOriginal.isDeleted,
       comentarios: tweetOriginal.comentarios.length,
       retweets: tweetOriginal.retweets.length,
       data: tweetOriginal.data_criacao,
@@ -451,5 +498,46 @@ export class TweetsService {
       },
       conteudo: formattedTweet,
     };
+  }
+
+  async deleteTweet(
+    tweetId: number,
+  ): Promise<ResponseModel<TweetResponseDto | null>> {
+    try {
+      const updatedTweet = await this.prisma.tweet.update({
+        where: { id: tweetId },
+        data: { isDeleted: true },
+      });
+
+      if (!updatedTweet) {
+        return {
+          status: false,
+          mensagem: {
+            codigo: 404,
+            texto: 'Tweet não encontrado.',
+          },
+          conteudo: null,
+        };
+      }
+
+      return {
+        status: true,
+        mensagem: {
+          codigo: 200,
+          texto: 'Tweet excluído com sucesso.',
+        },
+        conteudo: null,
+      };
+    } catch (error) {
+      console.error('Erro ao excluir tweet:', error);
+      return {
+        status: false,
+        mensagem: {
+          codigo: 500,
+          texto: 'Erro ao excluir tweet.',
+        },
+        conteudo: null,
+      };
+    }
   }
 }

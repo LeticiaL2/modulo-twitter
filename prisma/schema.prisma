@@ -11,6 +11,8 @@ datasource db {
 model Usuario {
   tweets           Tweet[]   @relation("usuarioTweets")
   likes             Likes[] @relation("usuarioLikes")
+  comentarios       Comentarios[] @relation("usuarioComentarios")
+  retweets          Retweet[] @relation("usuarioRetweet")
 
  
   id               Int       @id @default(autoincrement())
@@ -37,6 +39,8 @@ model Tweet {
   usuarioId     Int      @db.Integer
   data_criacao  DateTime @default(now())
   liked         Boolean  @default(false)
+  retweeted     Boolean @default(false)
+  isDeleted      Boolean @default(false)
 }
 
 model Likes {
@@ -48,23 +52,27 @@ model Likes {
 }
 
 model Comentarios {
-
-   tweet       Tweet   @relation("tweetComentarios", fields: [tweetId], references: [id])
-  tweetPai    Tweet?  @relation("comentarioPai", fields: [tweetPaiId], references: [id])
+usuario Usuario @relation("usuarioComentarios", fields: [usuarioId], references: [id])
+tweet       Tweet   @relation("tweetComentarios", fields: [tweetId], references: [id])
+tweetPai    Tweet?  @relation("comentarioPai", fields: [tweetPaiId], references: [id])
 
 
   id Int @id @default(autoincrement())
   tweetPaiId Int?
   tweetId Int
+  usuarioId Int 
 }
 
 model Retweet {
+  usuario Usuario @relation("usuarioRetweet", fields: [usuarioId], references: [id])
+
   tweet            Tweet        @relation("retweetPai", fields: [tweetPaiId], references: [id])
   tweetPai         Tweet        @relation("retweetTweets", fields: [tweetId], references: [id])
 
   id Int @id @default(autoincrement())
   tweetPaiId Int
   tweetId Int
+  usuarioId Int 
 }  
 
 
