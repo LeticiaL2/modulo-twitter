@@ -6,6 +6,7 @@ import { Tweets } from './entity/tweets.entity';
 import { Users } from 'src/users/entity/users.entity';
 import { response } from 'express';
 import { Likes } from './entity/likes.entity';
+import { Comments } from './entity/comments.entity';
 
 
 @Injectable()
@@ -17,6 +18,8 @@ export class TweetsService {
         private usersRepository: Repository<Users>,
         @InjectRepository(Likes)
         private likesRepository: Repository<Likes>,
+        @InjectRepository(Comments)
+        private commentsRepository: Repository<Comments>,
     ) {}
 
     async getTweets(userId: number) {
@@ -27,8 +30,9 @@ export class TweetsService {
 
 
         const formattedTweets = await Promise.all(tweets.map( async (tweet) => {
-            const likes = await this.getLikesCount(tweet.id);
+            const likesCount = await this.getLikesCount(tweet.id);
             const liked = await this.userLikedTweet(userId, tweet.id);
+            const commentsCount = await this.getCommentsCount(tweet.id);
 
             return {
                 id: tweet.id,
@@ -36,9 +40,9 @@ export class TweetsService {
                 usuarioId: tweet.usuario.id,
                 usuario: tweet.usuario.usuario,
                 nome: tweet.usuario.nome,
-                likes: likes, 
+                likes: likesCount, 
                 liked: liked,
-                comentarios: null, //TODO
+                comentarios: commentsCount,
                 retweets: null, //TODO
                 data: tweet.data_criacao,
             };
@@ -195,12 +199,130 @@ export class TweetsService {
     }
 
 
+    async postComment(tweetId: number, createTweetDto: CreateTweetDto, userId: number) {
+        const tweetPai = await this.tweetsRepository.findOne({ where: { id: tweetId } });
+    
+        if (!tweetPai) {
+            throw new NotFoundException('Tweet não encontrado');
+        }
+    
+        const user = await this.usersRepository.findOne({ where: { id: userId } });
+    
+        if (!user) {
+            throw new NotFoundException('Usuário não encontrado');
+        }
+    
+        // Crie um novo tweet para o comentário
+        const newTweet = this.tweetsRepository.create({ ...createTweetDto, usuario: user });
+        await this.tweetsRepository.save(newTweet);
+    
+        // Crie uma nova entrada na tabela de comentários
+        const newComment = this.commentsRepository.create({ tweetPai, tweet: newTweet });
+        await this.commentsRepository.save(newComment);
+    
+        const response = {
+            status: true,
+            mensagem: {
+                codigo: 201,
+                texto: 'Comentário criado com sucesso!'
+            },
+            conteudo: {
+                id: newTweet.id,
+                texto: newTweet.texto,
+                usuarioId: user.id,
+                usuario: user.usuario,
+                nome: user.nome,
+                likes: 0,
+                comentarios: 0,
+                retweets: 0,
+                data: newTweet.data_criacao
+            }
+        };
+    
+        return response;
+    }
+    
+
+    async getTweetDetails(tweetId: number) {
+
+        const tweet = await this.tweetsRepository.findOne({ 
+            where: { id: tweetId },
+            relations: ['usuario']
+        });
+        
+    
+        if (!tweet) {
+            throw new NotFoundException('Tweet não encontrado');
+        }
+    
+        const comments = await this.commentsRepository.find({ 
+            where: { 
+                tweetPai: { id: tweetId },
+            },
+            relations: ['tweetPai', 'tweet', 'tweet.usuario'],
+        });
+    
+        const formattedComments = await Promise.all(comments.map(async comment => {
+            const likesCount = await this.getLikesCount(comment.tweet.id);
+            const commentsCount = await this.getCommentsCount(comment.tweet.id);
+            
+        
+            return {
+                id: comment.tweet.id,
+                texto: comment.tweet.texto,
+                usuarioId: comment.tweet.usuario.id,
+                usuario: comment.tweet.usuario.usuario,
+                nome: comment.tweet.usuario.nome,
+                likes: likesCount,
+                comentarios: commentsCount,
+                retweets: 0, //TODO
+                data: comment.tweet.data_criacao
+            };
+        }));
+
+
+        const likesCount = await this.getLikesCount(tweet.id);
+        const commentsCount = await this.getCommentsCount(tweet.id);
+    
+        const response = {
+            status: true,
+            mensagem: {
+                codigo: 200,
+                texto: 'Detalhes do tweet recuperados com sucesso!'
+            },
+            conteudo: {
+                id: tweet.id,
+                texto: tweet.texto,
+                usuarioId: tweet.usuario.id,
+                usuario: tweet.usuario.usuario,
+                nome: tweet.usuario.nome,
+                likes: likesCount,
+                comentarios: commentsCount,
+                comentariosLista: formattedComments,
+                retweets: 0, //TODO
+                data: tweet.data_criacao
+            }
+        };
+    
+        return response;
+    }
+    
+
+
 
 
     async getLikesCount(tweetId: number): Promise<number> {
         return this.likesRepository.count({ 
             where: { 
                 tweet: { id: tweetId } 
+            }
+        });
+    }
+
+    async getCommentsCount(tweetId: number): Promise<number> {
+        return this.commentsRepository.count({ 
+            where: { 
+                tweetPai: { id: tweetId } 
             }
         });
     }

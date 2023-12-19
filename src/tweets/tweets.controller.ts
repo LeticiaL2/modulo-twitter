@@ -47,4 +47,17 @@ export class TweetsController {
         const result = await this.tweetsService.dislikeTweet(id, req.user.id);
         res.status(200).json(result);
     }
+
+    @UseGuards(JwtAuthGuard)
+    @Post(':id/comentarios')
+    async postComment(@Param('id') id: number, @Req() req, @Res() res) {
+        const result = await this.tweetsService.postComment(id, req.body, req.user.id);
+        res.status(200).json(result);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get(':id')
+    async getTweetDetails(@Param('id') id: number) {
+        return this.tweetsService.getTweetDetails(id);
+    }
 }
