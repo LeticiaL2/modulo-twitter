@@ -68,3 +68,12 @@ export const ShowMore = styled.span`
     text-decoration: underline;
   }
 `;
+
+export const Reposted = styled.span`
+  font-size: 0.8rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  margin-left: 12%;
+  color: #565656;
+`;

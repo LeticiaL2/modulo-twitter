@@ -31,9 +31,9 @@ const AppRoutes = () => {
     <Routers>
       <AuthProvider>
         <Routes>
-          <Route exact path="/login" element={<LoginPage />} />
+          <Route exact path="login" element={<LoginPage />} />
 
-          <Route exact path="/signup" element={<SignupPage />} />
+          <Route exact path="signup" element={<SignupPage />} />
 
           <Route
             exact
@@ -47,7 +47,7 @@ const AppRoutes = () => {
 
           <Route
             exact
-            path="/tweets/:tweetId/detalhes"
+            path="tweets/:id/detalhes"
             element={
               <Private>
                 <DetailsPage />

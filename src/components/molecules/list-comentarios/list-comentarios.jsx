@@ -2,7 +2,7 @@ import React from "react";
 import { Container } from "./styles";
 import TweetCard from "../../organism/tweet-card/tweet-card";
 
-function ListComments({ comentariosArray, fetchTweets }) {
+function ListComments({ comentariosArray, fetchTweets, setTweets }) {
   console.log("comentariosArray:", comentariosArray);
 
   return (
@@ -21,6 +21,7 @@ function ListComments({ comentariosArray, fetchTweets }) {
             tweetPai={tweet.tweetPai}
             liked={tweet.liked}
             comentariosArray={tweet.comentariosArray}
+            fetchTweets={fetchTweets}
           />
         </Container>
       ))}

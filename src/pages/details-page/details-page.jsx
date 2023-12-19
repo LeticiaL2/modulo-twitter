@@ -4,62 +4,47 @@ import TweetDetails from "../../components/molecules/tweet-details/tweet-details
 import { BoxCenter, Container } from "./styles";
 import TweetInput from "../../components/molecules/tweet-input-box/tweet-input-box";
 import perfil from "../../assets/perfil.png";
+import { get, post } from "../../api/api";
 import axios from "axios";
 import { AuthContext } from "../../contexts/auth";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ListComments from "../../components/molecules/list-comentarios/list-comentarios";
 import HeaderHome from "../../components/molecules/header-home/header-home";
+import ListTweets from "../../components/organism/list-tweets/list-tweets";
 
 function DetailsPage() {
   const { user } = useContext(AuthContext);
-  const location = useLocation();
-  const tweetInfo = (location.state && location.state.tweetInfo) || {};
-  const [tweets, setTweets] = useState([]);
+  const { id } = useParams();
+  const [commentsList, setCommentsList] = useState([]);
 
-  const fetchTweets = useCallback(async () => {
+  const getTweets = async () => {
+    console.log("id aqui", id);
     try {
-      const token = JSON.parse(localStorage.getItem("accessToken"));
-      const response = await axios.get(
-        `http://localhost:8000/tweets/${tweetInfo.id}/detalhes`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await get(`tweets/${id}/detalhes`);
 
-      console.log(
-        "peguei os comentarios: ",
-        response.data.conteudo.comentariosArray
-      );
-      setTweets(response.data.conteudo.comentariosArray);
+      console.log("Dados da API:", response);
+      console.log("comentarios", response.conteudo.comentariosArray);
+      setCommentsList(response.conteudo.comentariosArray);
     } catch (error) {
-      console.error("Erro ao buscar tweets:", error);
-    }
-  }, [tweetInfo.id]);
-
-  const addTweet = async (tweetObject) => {
-    try {
-      const token = JSON.parse(localStorage.getItem("accessToken"));
-      await axios.post(
-        `http://localhost:8000/tweets/${tweetInfo.id}/comentarios`,
-        tweetObject,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      fetchTweets();
-    } catch (error) {
-      console.error("Erro ao adicionar o tweet:", error);
+      console.error("Erro ao buscar dados da API:", error);
     }
   };
 
   useEffect(() => {
-    fetchTweets();
-  }, [fetchTweets]);
+    getTweets();
+  }, [id]);
+
+  const addTweet = async (tweetObject) => {
+    try {
+      const response = await post(`tweets/${id}/comentarios`, tweetObject);
+      console.log("Resposta da API após o POST:", response);
+      setCommentsList((prevList) => [...prevList, response.conteudo]);
+
+      getTweets();
+    } catch (error) {
+      console.error("Erro ao realizar o POST na API:", error);
+    }
+  };
 
   return (
     <Container>
@@ -78,7 +63,7 @@ function DetailsPage() {
           likes={0}
           onTweet={addTweet}
         />
-        <ListComments comentariosArray={tweets} fetchTweets={fetchTweets} />
+        <ListTweets tweets={commentsList} />
       </BoxCenter>
     </Container>
   );

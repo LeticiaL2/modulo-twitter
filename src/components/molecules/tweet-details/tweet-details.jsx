@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ptBR from "date-fns/locale/pt-BR";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import {
   TweetDetailsContainer,
   TopTweet,
@@ -18,16 +18,30 @@ import ButtonIcon from "../../atoms/button-icon/button-icon";
 import UserPhoto from "../../atoms/user-photo/user-photo";
 import Button from "../../atoms/button/button";
 import { format } from "date-fns";
+import { get, post } from "../../../api/api";
+import Actions from "../actions/actions";
 
-const TweetDetails = (props) => {
-  const location = useLocation();
-  const tweetInfo = (location.state && location.state.tweetInfo) || {};
-  console.log("tweetInfo:", tweetInfo);
+const TweetDetails = () => {
+  const { id } = useParams();
+  const [postTweet, setPostTweet] = useState({});
+  const getTweets = async () => {
+    console.log("id aqui", id);
+    try {
+      const response = await get(`tweets/${id}/detalhes`);
 
-  const [liked, setLiked] = useState(tweetInfo.liked);
-  const [likesCount, setLikesCount] = useState(tweetInfo.likes);
+      console.log("Dados da API:", response);
+      console.log("tweet detalhes aqui", response.conteudo);
+      setPostTweet(response.conteudo);
+    } catch (error) {
+      console.error("Erro ao buscar dados da API:", error);
+    }
+  };
 
-  const handleButtonClick = async () => {
+  useEffect(() => {
+    getTweets();
+  }, [id]);
+
+  /* const handleButtonClick = async () => {
     try {
       const token = JSON.parse(localStorage.getItem("accessToken"));
       const response = await axios.post(
@@ -43,27 +57,36 @@ const TweetDetails = (props) => {
 
       setLiked(!liked);
       setLikesCount(liked ? likesCount - 1 : likesCount + 1);
+      props.fetchTweets();
     } catch (error) {
       console.error("Erro ao realizar a ação:", error);
     }
-  };
+  }; */
 
   function formatTimeAgo(date) {
-    const formattedDateTime = format(date, "HH:mm · dd, MMM  yyyy", {
-      locale: ptBR,
-    });
-    return `${formattedDateTime}`;
+    try {
+      if (date && !isNaN(date.getTime())) {
+        const formattedDateTime = format(date, "HH:mm · dd, MMM yyyy", {
+          locale: ptBR,
+        });
+        return `${formattedDateTime}`;
+      } else {
+        return "Data inválida";
+      }
+    } catch (error) {
+      console.error("Erro ao formatar a data:", error);
+      return "Data inválida";
+    }
   }
-
-  const timeAgo = formatTimeAgo(new Date(tweetInfo.date));
+  const timeAgo = formatTimeAgo(new Date(postTweet.data));
 
   return (
     <TweetDetailsContainer>
       <TopTweet>
         <TopTweetLeft>
           <UserPhoto />
-          <NameProfile>{tweetInfo.nome}</NameProfile>
-          <User>{tweetInfo.usuario}</User>
+          <NameProfile>{postTweet.nome}</NameProfile>
+          <User>{postTweet.usuario}</User>
         </TopTweetLeft>
         <TopTweetRight>
           <Button
@@ -77,20 +100,20 @@ const TweetDetails = (props) => {
       </TopTweet>
 
       <ContentContainer>
-        <ContentTweet>{tweetInfo.texto}</ContentTweet>
+        <ContentTweet>{postTweet.texto}</ContentTweet>
 
         <TweetDate>{timeAgo}</TweetDate>
       </ContentContainer>
 
       <FooterTweetCard>
-        <ButtonIcon iconType="reply" count={tweetInfo.comentarios} />
-        <ButtonIcon iconType="retweet" count={tweetInfo.retweets} />
-        <ButtonIcon
-          iconType={liked ? "heart-filled" : "heart"}
-          count={likesCount}
-          onClick={handleButtonClick}
-          $color={liked ? "red" : undefined}
-        />
+        <Actions
+          tweetId={postTweet.id}
+          comentarios={postTweet.comentarios}
+          likes={postTweet.likes}
+          liked={postTweet.liked}
+          retweets={postTweet.retweets}
+          retweeted={postTweet.retweeted}
+        ></Actions>
       </FooterTweetCard>
     </TweetDetailsContainer>
   );

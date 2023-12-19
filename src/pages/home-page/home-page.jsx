@@ -7,19 +7,39 @@ import { Container, BoxCenter } from "./styles";
 import HeaderHome from "../../components/molecules/header-home/header-home";
 import GlobalStyles from "../../styles/global-style";
 import { AuthContext } from "../../contexts/auth";
+import { get, post } from "../../api/api";
 
 function HomePage() {
   const { user } = useContext(AuthContext);
   const [tweets, setTweets] = useState([]);
-  const [tweetsLoaded, setTweetsLoaded] = useState(false);
+
+  const getTweets = async () => {
+    try {
+      const response = await get("tweets");
+
+      setTweets(response);
+      console.log("Dados da API:", response);
+    } catch (error) {
+      console.error("Erro ao buscar dados da API:", error);
+    }
+  };
 
   useEffect(() => {
-    if (tweetsLoaded) {
-      fetchTweets();
-    }
-  }, [tweetsLoaded]);
+    getTweets();
+  }, []);
 
   const addTweet = async (tweetObject) => {
+    try {
+      const response = await post("tweets", tweetObject);
+      console.log("Resposta da API após o POST:", response);
+
+      getTweets();
+    } catch (error) {
+      console.error("Erro ao realizar o POST na API:", error);
+    }
+  };
+
+  /* const addTweet = async (tweetObject) => {
     try {
       const token = JSON.parse(localStorage.getItem("accessToken"));
 
@@ -37,9 +57,9 @@ function HomePage() {
     } catch (error) {
       console.error("Erro ao adicionar o tweet:", error);
     }
-  };
+  }; */
 
-  const fetchTweets = async () => {
+  /*  const fetchTweets = async () => {
     try {
       const token = JSON.parse(localStorage.getItem("accessToken"));
 
@@ -56,7 +76,7 @@ function HomePage() {
 
   useEffect(() => {
     fetchTweets();
-  }, []);
+  }, []);  */
 
   return (
     <Container>
@@ -75,7 +95,7 @@ function HomePage() {
           likes={0}
           onTweet={addTweet}
         />
-        <ListTweets tweets={tweets} fetchTweets={fetchTweets} />
+        <ListTweets tweets={tweets} />
       </BoxCenter>
     </Container>
   );
