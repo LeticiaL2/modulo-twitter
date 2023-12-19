@@ -7,6 +7,7 @@ import { Users } from 'src/users/entity/users.entity';
 import { response } from 'express';
 import { Likes } from './entity/likes.entity';
 import { Comments } from './entity/comments.entity';
+import { Retweets } from './entity/retweets.entity';
 
 
 @Injectable()
@@ -20,6 +21,8 @@ export class TweetsService {
         private likesRepository: Repository<Likes>,
         @InjectRepository(Comments)
         private commentsRepository: Repository<Comments>,
+        @InjectRepository(Retweets)
+        private retweetsRepository: Repository<Retweets>,
     ) {}
 
     async getTweets(userId: number) {
@@ -215,11 +218,9 @@ export class TweetsService {
             throw new NotFoundException('Usuário não encontrado');
         }
     
-        // Crie um novo tweet para o comentário
         const newTweet = this.tweetsRepository.create({ ...createTweetDto, usuario: user });
         await this.tweetsRepository.save(newTweet);
     
-        // Crie uma nova entrada na tabela de comentários
         const newComment = this.commentsRepository.create({ tweetPai, tweet: newTweet });
         await this.commentsRepository.save(newComment);
     
@@ -311,6 +312,50 @@ export class TweetsService {
     }
     
 
+
+
+    async postRetweet(tweetId: number, createTweetDto: CreateTweetDto, userId: number) {
+        const tweetPai = await this.tweetsRepository.findOne({ where: { id: tweetId } });
+    
+        if (!tweetPai) {
+            throw new NotFoundException('Tweet não encontrado');
+        }
+    
+        const user = await this.usersRepository.findOne({ where: { id: userId } });
+    
+        if (!user) {
+            throw new NotFoundException('Usuário não encontrado');
+        }
+    
+        const newTweet = this.tweetsRepository.create({ ...createTweetDto, usuario: user });
+        await this.tweetsRepository.save(newTweet);
+    
+        const newRetweet = this.retweetsRepository.create({ tweetPai, tweet: newTweet });
+        await this.retweetsRepository.save(newRetweet);
+    
+        const response = {
+            status: true,
+            mensagem: {
+                codigo: 201,
+                texto: 'Retweet realizado com sucesso!'
+            },
+            conteudo: {
+                id: newTweet.id,
+                texto: newTweet.texto,
+                usuarioId: user.id,
+                usuario: user.usuario,
+                nome: user.nome,
+                likes: 0,
+                comentarios: 0,
+                retweets: 0,
+                data: newTweet.data_criacao
+            }
+        };
+    
+        return response;
+    }
+    
+      
 
 
 

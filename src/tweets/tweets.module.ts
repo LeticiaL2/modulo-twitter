@@ -6,9 +6,10 @@ import { Tweets } from './entity/tweets.entity';
 import { Users } from 'src/users/entity/users.entity';
 import { Likes } from './entity/likes.entity';
 import { Comments } from './entity/comments.entity';
+import { Retweets } from './entity/retweets.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Tweets, Users, Likes, Comments])],
+  imports: [TypeOrmModule.forFeature([Tweets, Users, Likes, Comments, Retweets])],
   controllers: [TweetsController],
   providers: [TweetsService]
 })
