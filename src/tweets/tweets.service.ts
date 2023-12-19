@@ -23,10 +23,13 @@ export class TweetsService {
     ) {}
 
     async getTweets(userId: number) {
-        const tweets =  await this.tweetsRepository.find({ 
-            relations: ["usuario"], 
-            where: { excluido: false } 
-        });
+
+        const tweets =  await this.tweetsRepository.createQueryBuilder("tweet")
+            .leftJoinAndSelect("tweet.usuario", "usuario")
+            .leftJoin(Comments, "comentario", "comentario.tweetId = tweet.id")
+            .where("comentario.tweetId IS NULL")
+            .andWhere("tweet.excluido = false")
+            .getMany();
 
 
         const formattedTweets = await Promise.all(tweets.map( async (tweet) => {
