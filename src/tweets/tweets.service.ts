@@ -270,8 +270,10 @@ export class TweetsService {
 
     return response
   }
-  // : Promise<ResponseListModel<ResponseCreateTweetDTO>>
-  async findAll(user: User) {
+
+  async findAll(
+    user: User,
+  ): Promise<ResponseListModel<ResponseCreateTweetDTO>> {
     const tweets = await this.tweetRepository.find({
       relations: {
         usuario: true,
@@ -335,11 +337,15 @@ export class TweetsService {
           nome: tweet.usuario.nome,
           likes: tweet.likes.length,
           comentarios: tweet.comentarios.length,
-          retweets: tweet.retweets.length,
+          retweets: tweet.retweets.filter(
+            retweet => retweet.tweet.excluido === false,
+          ).length,
           data: tweet.data_criacao,
           isLikedByUser: tweet.likes.some(like => like.usuario.id === user.id),
           isRetweetedByUser: tweet.retweets.some(
-            retweet => retweet.tweet.usuario.id === user.id,
+            retweet =>
+              retweet.tweet.usuario.id === user.id &&
+              retweet.tweet.excluido === false,
           ),
           retweetPai: tweet.retweetPai[0]
             ? {
@@ -350,13 +356,18 @@ export class TweetsService {
                 nome: tweet.retweetPai[0].tweetPai.usuario.nome,
                 likes: tweet.retweetPai[0].tweetPai.likes.length,
                 comentarios: tweet.retweetPai[0].tweetPai.comentarios.length,
-                retweets: tweet.retweetPai[0].tweetPai.retweets.length,
+                retweets: tweet.retweetPai[0].tweetPai.retweets.filter(
+                  retweet => retweet.tweet.excluido === false,
+                ).length,
+                isRemoved: tweet.retweetPai[0].tweetPai.excluido,
                 data: tweet.retweetPai[0].tweetPai.data_criacao,
                 isLikedByUser: tweet.retweetPai[0].tweetPai.likes.some(
                   like => like.usuario.id === user.id,
                 ),
                 isRetweetedByUser: tweet.retweetPai[0].tweetPai.retweets.some(
-                  retweet => retweet.tweet.usuario.id === user.id,
+                  retweet =>
+                    retweet.tweet.usuario.id === user.id &&
+                    retweet.tweet.excluido === false,
                 ),
                 retweetPai: tweet.retweetPai[0].tweetPai.retweetPai[0]
                   ? {
@@ -380,8 +391,12 @@ export class TweetsService {
                         tweet.retweetPai[0].tweetPai.retweetPai[0].tweetPai
                           .comentarios.length,
                       retweets:
+                        tweet.retweetPai[0].tweetPai.retweetPai[0].tweetPai.retweets.filter(
+                          retweet => retweet.tweet.excluido === false,
+                        ).length,
+                      isRemoved:
                         tweet.retweetPai[0].tweetPai.retweetPai[0].tweetPai
-                          .retweets.length,
+                          .excluido,
                       data: tweet.retweetPai[0].tweetPai.retweetPai[0].tweetPai
                         .data_criacao,
                       isLikedByUser:
@@ -390,7 +405,9 @@ export class TweetsService {
                         ),
                       isRetweetedByUser:
                         tweet.retweetPai[0].tweetPai.retweetPai[0].tweetPai.retweets.some(
-                          retweet => retweet.tweet.usuario.id === user.id,
+                          retweet =>
+                            retweet.tweet.usuario.id === user.id &&
+                            retweet.tweet.excluido === false,
                         ),
                     }
                   : null,
@@ -466,14 +483,27 @@ export class TweetsService {
       usuario: tweet.usuario.usuario,
       usuarioId: tweet.usuario.id,
       nome: tweet.usuario.nome,
+      isRemoved: tweet.excluido,
       isLikedByUser: tweet.likes.some(like => like.usuario.id === user.id),
       isRetweetedByUser: tweet.retweets.some(
-        retweet => retweet.tweet.usuario.id === user.id,
+        retweet =>
+          retweet.tweet.usuario.id === user.id &&
+          retweet.tweet.excluido === false,
       ),
+      retweetedIdWithoutQuote: tweet.retweets.map(retweet => {
+        if (
+          retweet.tweet.usuario.id === user.id &&
+          retweet.tweet.texto === null &&
+          retweet.tweet.excluido === false
+        ) {
+          return retweet.tweet.id
+        }
+      })[0],
       likes: tweet.likes.length,
       comentarios: tweet.comentarios.length,
-      retweets: tweet.retweets.length,
-      excluido: tweet.excluido,
+      retweets: tweet.retweets.filter(
+        retweet => retweet.tweet.excluido === false,
+      ).length,
       retweetPai: tweet.retweetPai[0]
         ? {
             id: tweet.retweetPai[0].tweetPai.id,

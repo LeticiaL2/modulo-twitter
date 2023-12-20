@@ -85,7 +85,7 @@ export class TweetsController {
     return this.tweetsService.findOne(tweetId, req.user)
   }
 
-  @Delete(':id')
+  @Delete(':id/delete')
   delete(@Param('id') tweetId: string, @Request() req: AuthRequest) {
     return this.tweetsService.deleteTweet(tweetId, req.user)
   }
