@@ -2,52 +2,36 @@ import React, { useEffect, useState } from 'react'
 import { getUserLocalStorage } from '../../../contexts/util'
 import Api from '../../../services/api'
 import { colors } from '../../../styles/colors'
+import DropdownItem from '../../atoms/DropdownItem'
+import DropdownMenu from '../../atoms/DropdownMenu'
 import AnalyticsIcon from '../../atoms/SVGIcons/AnalyticsIcon'
 import CommentIcon from '../../atoms/SVGIcons/CommentIcon'
 import LikeIcon from '../../atoms/SVGIcons/LikeIcon'
+import QuoteIcon from '../../atoms/SVGIcons/QuoteIcon'
 import RetweetIcon from '../../atoms/SVGIcons/RetweetIcon'
 import ShareIcon from '../../atoms/SVGIcons/ShareIcon'
-import { ActionContainer, FooterContainer } from './styles'
-import DropdownMenu from '../../atoms/DropdownMenu'
 import Span from '../../atoms/Span'
-import DropdownItem from '../../atoms/DropdownItem'
-import QuoteIcon from '../../atoms/SVGIcons/QuoteIcon'
+import { ActionContainer, FooterContainer } from './styles'
 
-const ListActions = ({ tweetId, comentarios, isLikedByUser, likes, isRetweetedByUser, retweets, onClickModal, onClickRetweetModal, onClickWithoutQuote }) => {
+const ListActions = ({ tweetId, comentarios, isLikedByUser, likes, isRetweetedByUser, isRetweetedWithoutQuoteByUser, retweets, onClickModal, onClickRetweetModal, onClickWithoutQuote, onClickUndoRetweet }) => {
   const [likedBoolean, setLikedBoolean] = useState(isLikedByUser)
   const [likesCount, setLikesCount] = useState(likes)
 
   const [retweetedBoolean, setRetweetedBoolean] = useState(isRetweetedByUser)
+  const [retweetedWithoutQuoteBoolean, setRetweetedWithoutQuoteBoolean] = useState(isRetweetedWithoutQuoteByUser.length > 0 ? true : false)
   const [retweetsCount, setRetweetsCount] = useState(retweets)
-
 
   // const [isCommented, setIsCommented] = useState(false)
   // const [commentsCount, setCommentsCount] = useState(comentarios)
-
   const [openRetweetDropdown, setOpenRetweetDropdown] = useState(false)
-
-  // const closeDropdown = () => setShowDropdown(false);
-
-  // useEffect(() => {
-  //   // const handleRetweetDropdown
-  //   if (showDropdown) {
-  //     document.addEventListener('click', closeDropdown);
-  //   } else {
-  //     document.removeEventListener('click', closeDropdown);
-  //   }
-
-  //   // Limpa o ouvinte de evento quando o componente é desmontado
-  //   return () => {
-  //     document.removeEventListener('click', closeDropdown);
-  //   };
-  // }, [showDropdown]);
 
   useEffect(() => {
     setLikedBoolean(isLikedByUser)
     setLikesCount(likes)
     setRetweetedBoolean(isRetweetedByUser)
+    setRetweetedWithoutQuoteBoolean(isRetweetedWithoutQuoteByUser.length > 0 ? true : false)
     setRetweetsCount(retweets)
-  }, [isLikedByUser, isRetweetedByUser, likes, retweets])
+  }, [isLikedByUser, isRetweetedByUser, isRetweetedWithoutQuoteByUser, likes, retweets])
 
   const handleLike = async (e) => {
     e.stopPropagation()
@@ -88,17 +72,13 @@ const ListActions = ({ tweetId, comentarios, isLikedByUser, likes, isRetweetedBy
 
   const handleRetweetDropdown = async (e) => {
     e.stopPropagation()
-    setOpenRetweetDropdown(true)
-    // const response = await Api.post(`api/v1/tweets/${tweetId}/retweets`, {}, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
-    // console.log(response.data)
-    // if (response.data.mensagem.codigo === 201) {
-    //   setRetweetedBoolean(prev => !prev)
-    //   setRetweetsCount(prev => prev + 1)
-    // } else {
-    //   setRetweetedBoolean(prev => !prev)
-    //   setRetweetsCount(prev => prev - 1)
+    setOpenRetweetDropdown(!openRetweetDropdown)
+  }
 
-    // }
+  const handleUndoRetweet = async (e) => {
+    e.stopPropagation()
+    onClickUndoRetweet(isRetweetedWithoutQuoteByUser[0].tweet.id)
+    setOpenRetweetDropdown(!openRetweetDropdown)
   }
 
   const handleAnalytics = (e) => {
@@ -119,9 +99,9 @@ const ListActions = ({ tweetId, comentarios, isLikedByUser, likes, isRetweetedBy
         <RetweetIcon />
         <Span>{retweetsCount === 0 ? '' : retweetsCount}</Span>
         <DropdownMenu showDropdown={openRetweetDropdown} setShowDropdown={setOpenRetweetDropdown}>
-          {!retweetedBoolean ?
-            <DropdownItem icon={<RetweetIcon />} onClick={handleRetweetWithoutQuote}>Retweet</DropdownItem>
-            : <DropdownItem icon={<RetweetIcon />}>Undo repost</DropdownItem>
+          {retweetedWithoutQuoteBoolean ?
+            <DropdownItem icon={<RetweetIcon />} onClick={handleUndoRetweet}>Undo repost</DropdownItem>
+            : <DropdownItem icon={<RetweetIcon />} onClick={handleRetweetWithoutQuote}>Retweet</DropdownItem>
           }
           <DropdownItem icon={<QuoteIcon />} onClick={handleRetweetWithQuote}>Quote</DropdownItem>
         </DropdownMenu>

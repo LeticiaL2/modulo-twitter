@@ -20,4 +20,5 @@ padding: .5rem 1rem;
 background-color: ${colors.black};
 width: 90%;
 max-width: 600px;
+border-radius: .5rem;
 `

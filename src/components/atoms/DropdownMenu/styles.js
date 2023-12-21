@@ -3,7 +3,7 @@ import { colors } from "../../../styles/colors";
 
 export const Container = styled.div`
   position: absolute;
-  top: 0;
+  top: 24px;
   right: 0;
   background-color: ${colors.black};
   border-radius: 0.75rem;

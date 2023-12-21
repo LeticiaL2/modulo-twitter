@@ -9,6 +9,7 @@ import { Container, RetweetContainer } from './styles'
 
 const TweetUserContent = ({ content, retweetPai }) => {
   const [showMore, setShowMore] = useState(false)
+  // const [isRemoved, setIsRemoved] = useState(retweetPai?.isRemoved ? true : false)
   const navigate = useNavigate()
 
   const text = content === null ? '' : content.length > 150 ?
@@ -21,7 +22,6 @@ const TweetUserContent = ({ content, retweetPai }) => {
     setShowMore(!showMore)
   }
 
-  console.log(retweetPai)
 
   const handleNavigate = (e) => {
     e.stopPropagation()
@@ -36,12 +36,18 @@ const TweetUserContent = ({ content, retweetPai }) => {
       {text}
       {text.length === 150 && !showMore && <Span $fontColor={colors.blue} onClick={handleShow}>Show more</Span>}
       {text.length > 150 && showMore && <Span $fontColor={colors.blue} onClick={handleShow}>Show Less</Span>}
-      {retweetPai && <RetweetContainer onClick={handleNavigate}>
-        <div style={{display: 'flex', gap: '0.5rem'}}>
-          <UserPhoto src="https://cdn.pixabay.com/photo/2021/01/04/10/41/icon-5887126_1280.png" $width="20px" $height="20px" />
-          <TweetUserInfo nome={retweetPai.nome} usuario={retweetPai.usuario} dataFormatada={formattedDate}/>
-        </div>
-        {retweetPai.texto}
+      {retweetPai && <RetweetContainer onClick={!retweetPai?.isRemoved ? handleNavigate : (e) => e.stopPropagation()}>
+        {
+          retweetPai.isRemoved ? <Span $fontColor={colors.gray}>This tweet is no longer available</Span> :
+            <>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <UserPhoto src="https://cdn.pixabay.com/photo/2021/01/04/10/41/icon-5887126_1280.png" $width="20px" $height="20px" />
+                <TweetUserInfo nome={retweetPai.nome} usuario={retweetPai.usuario} dataFormatada={formattedDate} />
+              </div>
+              {retweetPai.texto}
+            </>
+        }
+
       </RetweetContainer>
       }
     </Container>

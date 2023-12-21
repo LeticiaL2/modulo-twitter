@@ -16,11 +16,9 @@ function Modal({ showModal, setShowModal, children, userData, isComment }) {
     }
   }
 
-  async function handleReplyTweetWithoutQuote() {
-    console.log(userData)
-    return
+  async function handleCommentTweet(replyData) {
     try {
-      const response = await Api.post(`api/v1/tweets/${userData.id}/retweets`, {}, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
+      const response = await Api.post(`api/v1/tweets/${userData.id}/comentarios`, replyData, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
       setShowModal(false)
     } catch (error) {
       console.log(error)
@@ -52,7 +50,7 @@ function Modal({ showModal, setShowModal, children, userData, isComment }) {
               <div style={{ display: 'flex', gap: '1rem', width: '100%' }}>
                 {children}
               </div>
-              <ReplyTweet onReplyTweet={handleReplyTweetWithoutQuote} postUser={userData.usuario} />
+              <ReplyTweet onReplyTweet={handleCommentTweet} postUser={userData.usuario} />
             </div>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
               {/* <Button>Reply</Button> */}
