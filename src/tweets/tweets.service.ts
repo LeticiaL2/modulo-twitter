@@ -347,6 +347,12 @@ export class TweetsService {
               retweet.tweet.usuario.id === user.id &&
               retweet.tweet.excluido === false,
           ),
+          isRetweetedWithoutQuoteByUser: tweet.retweets.filter(
+            retweet =>
+              retweet.tweet.usuario.id === user.id &&
+              retweet.tweet.texto === null &&
+              retweet.tweet.excluido === false,
+          ),
           retweetPai: tweet.retweetPai[0]
             ? {
                 id: tweet.retweetPai[0].tweetPai.id,
@@ -369,6 +375,13 @@ export class TweetsService {
                     retweet.tweet.usuario.id === user.id &&
                     retweet.tweet.excluido === false,
                 ),
+                isRetweetedWithoutQuoteByUser:
+                  tweet.retweetPai[0].tweetPai.retweets.filter(
+                    retweet =>
+                      retweet.tweet.usuario.id === user.id &&
+                      retweet.tweet.texto === null &&
+                      retweet.tweet.excluido === false,
+                  ),
                 retweetPai: tweet.retweetPai[0].tweetPai.retweetPai[0]
                   ? {
                       id: tweet.retweetPai[0].tweetPai.retweetPai[0].tweetPai
@@ -490,15 +503,11 @@ export class TweetsService {
           retweet.tweet.usuario.id === user.id &&
           retweet.tweet.excluido === false,
       ),
-      retweetedIdWithoutQuote: tweet.retweets.map(retweet => {
-        if (
-          retweet.tweet.usuario.id === user.id &&
+      isRetweetedWithoutQuoteByUser: tweet.retweets.filter(retweet => {
+        retweet.tweet.usuario.id === user.id &&
           retweet.tweet.texto === null &&
           retweet.tweet.excluido === false
-        ) {
-          return retweet.tweet.id
-        }
-      })[0],
+      }),
       likes: tweet.likes.length,
       comentarios: tweet.comentarios.length,
       retweets: tweet.retweets.filter(
@@ -512,9 +521,6 @@ export class TweetsService {
             usuario: tweet.retweetPai[0].tweetPai.usuario.usuario,
             usuarioId: tweet.retweetPai[0].tweetPai.usuario.id,
             nome: tweet.retweetPai[0].tweetPai.usuario.nome,
-            // likes: tweet.retweetPai[0].tweetPai.likes.length,
-            // comentarios: tweet.retweetPai[0].tweetPai.comentarios.length,
-            // retweets: tweet.retweetPai[0].tweetPai.retweets.length,
           }
         : null,
       comentariosArray:
@@ -533,17 +539,25 @@ export class TweetsService {
               return {
                 id,
                 texto,
-                data: data_criacao,
                 usuario: usuarioComentario.usuario,
                 usuarioId: usuarioComentario.id,
                 nome: usuarioComentario.nome,
-                isLikedByUser: likes.some(like => like.usuario.id === user.id),
-                isRetweetedByUser: retweets.some(
-                  retweet => retweet.tweet.usuario.id === user.id,
-                ),
                 likes: likes.length,
                 comentarios: comentarios.length,
                 retweets: retweets.length,
+                data: data_criacao,
+                isLikedByUser: likes.some(like => like.usuario.id === user.id),
+                isRetweetedByUser: retweets.some(
+                  retweet =>
+                    retweet.tweet.usuario.id === user.id &&
+                    retweet.tweet.excluido === false,
+                ),
+                isRetweetedWithoutQuoteByUser: retweets.filter(
+                  retweet =>
+                    retweet.tweet.usuario.id === user.id &&
+                    retweet.tweet.texto === null &&
+                    retweet.tweet.excluido === false,
+                ),
               }
             })
           : [],
