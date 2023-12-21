@@ -1,0 +1,16 @@
+.Menu{
+    // background-color: aqua;
+    // height: 100vh;
+    max-width: 259px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+.Logo{
+    display: flex;
+    align-items: center;
+    height: 50px;
+    width: 50px;
+}
