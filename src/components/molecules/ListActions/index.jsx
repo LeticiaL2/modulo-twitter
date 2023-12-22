@@ -79,6 +79,7 @@ const ListActions = ({ tweetId, comentarios, isLikedByUser, likes, isRetweetedBy
     e.stopPropagation()
     onClickUndoRetweet(isRetweetedWithoutQuoteByUser[0].tweet.id)
     setOpenRetweetDropdown(!openRetweetDropdown)
+    
   }
 
   const handleAnalytics = (e) => {

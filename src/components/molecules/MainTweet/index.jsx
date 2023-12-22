@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { colors } from '../../../styles/colors';
 import DotIcon from '../../atoms/SVGIcons/DotIcon';
 import MoreIcon from '../../atoms/SVGIcons/MoreIcon';
@@ -21,16 +21,17 @@ import { useNavigate } from 'react-router-dom';
 import Modal from '../Modal';
 import Api from '../../../services/api';
 import { getUserLocalStorage } from '../../../contexts/util';
+import { TweetContext } from '../../organisms/Main';
 
 function MainTweet({ userData }) {
   const [openCommentModal, setOpenCommentModal] = useState(false)
   const [openRetweetModal, setOpenRetweetModal] = useState(false)
+  const { refreshTweet } = useContext(TweetContext)
   const navigate = useNavigate()
   const { id: tweetId, texto: content, data: date, nome, usuario, isLikedByUser, isRetweetedByUser, isRetweetedWithoutQuoteByUser, retweetPai } = userData;
   const hourFormatted = format(new Date(date), 'KK:mm a')
   const dateFormatted = format(new Date(date), 'LLL d, yyyy')
 
-console.log(userData)
 
   const handleRetweetLink = (e) => {
     e.stopPropagation()

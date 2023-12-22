@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUserLocalStorage } from '../../../contexts/util';
 import Api from '../../../services/api';
@@ -13,25 +13,27 @@ import {
   MainInfoContainer,
   TweetContainer
 } from './styles';
+import { TweetContext } from '../../organisms/Main';
 
 function Tweet({ userData }) {
   const [openCommentModal, setOpenCommentModal] = useState(false)
   const [openRetweetModal, setOpenRetweetModal] = useState(false)
+  const {refreshTweet} = useContext(TweetContext)
   const navigate = useNavigate()
 
   const tweet = userData.retweetPai && userData.texto === null ? userData.retweetPai : userData
-  const { id: tweetId, isLikedByUser, isRetweetedByUser, isRetweetedWithoutQuoteByUser, comentarios, likes, retweets } = tweet
+  const { id: tweetId, isLikedByUser, isRetweetedByUser, isRetweetedWithoutQuoteByUser, comentarios, likes, retweets, isRemoved } = tweet
   const handleTweetClick = () => {
     if (openCommentModal || openRetweetModal) return
     navigate(`/tweet/${tweetId}`)
   }
-  const handleDropdownRetweet = async (e) => {
 
-  }
+console.log(isRemoved)
 
   const handleRetweetWithoutQuote = async () => {
     try {
       const response = await Api.post(`api/v1/tweets/${tweetId}/retweets`, {}, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
+      refreshTweet()
     } catch (error) {
       console.log(error)
     }
@@ -40,6 +42,16 @@ function Tweet({ userData }) {
   const handleUndoRetweet = async (id) => {
     try {
       const response = await Api.delete(`api/v1/tweets/${id}`, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
+      refreshTweet()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleRemoveTweet = async () => {
+    try {
+      const response = await Api.delete(`api/v1/tweets/${userData.id}`, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
+      refreshTweet()
     } catch (error) {
       console.log(error)
     }
@@ -55,7 +67,7 @@ function Tweet({ userData }) {
         <MainInfoContainer>
           <UserPhoto src="https://cdn.pixabay.com/photo/2021/01/04/10/41/icon-5887126_1280.png" />
           <BodyContainer>
-            <BodyTweet userData={tweet} />
+            <BodyTweet userData={tweet} username={userData.usuario} onClickRemoveTweet={handleRemoveTweet}/>
             <ListActions
               onClickModal={() => setOpenCommentModal(true)}
               onClickRetweetModal={() => setOpenRetweetModal(true)}

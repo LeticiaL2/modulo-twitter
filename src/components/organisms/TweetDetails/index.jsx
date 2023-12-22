@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import MainTweet from '../../molecules/MainTweet'
 import Header from '../../organisms/Header'
 import { Api } from '../../../services/api'
@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom'
 import ReplyTweet from '../../molecules/ReplyTweet'
 import TweetsList from '../../molecules/TweetsList'
 import { getUserLocalStorage } from '../../../contexts/util'
+import { TweetContext } from '../Main'
 
 function TweetDetails() {
   const { id } = useParams()
@@ -46,14 +47,16 @@ function TweetDetails() {
     }
   }
 
+  const contextValue = useMemo(() => ({ refreshTweet: getTweet }), [])
+
 
   return (
-    <>
+    <TweetContext.Provider value={contextValue}>
       <Header />
       {tweet && <MainTweet userData={tweet} />}
       {postUser && <ReplyTweet onReplyTweet={handleReplyTweet} postUser={postUser} />}
       {commentsList.length !== 0 && <TweetsList tweets={commentsList} />}
-    </>
+    </TweetContext.Provider>
   )
 }
 

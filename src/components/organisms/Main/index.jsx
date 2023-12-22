@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { createContext, useEffect, useMemo, useState } from 'react'
 import { getUserLocalStorage } from '../../../contexts/util'
 import { Api } from '../../../services/api'
 import PostTweet from '../../molecules/PostTweet'
 import TweetsList from '../../molecules/TweetsList'
 import Header from '../../organisms/Header'
 
+export const TweetContext = createContext()
 
 function Main() {
   const [tweets, setTweets] = useState([])
@@ -40,12 +41,15 @@ function Main() {
     }
   }
 
+  const contextValue = useMemo(() => ({ refreshTweet: getTweets }), [])
+
+
   return (
-    <>
+    <TweetContext.Provider value={contextValue}>
       <Header />
       <PostTweet onAddTweet={handleAddTweet} />
       <TweetsList tweets={tweets} />
-    </>
+    </TweetContext.Provider>
   );
 }
 
