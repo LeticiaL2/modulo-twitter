@@ -341,6 +341,7 @@ export class TweetsService {
             retweet => retweet.tweet.excluido === false,
           ).length,
           data: tweet.data_criacao,
+          isRemoved: tweet.excluido,
           isLikedByUser: tweet.likes.some(like => like.usuario.id === user.id),
           isRetweetedByUser: tweet.retweets.some(
             retweet =>
@@ -533,6 +534,7 @@ export class TweetsService {
                 likes,
                 comentarios,
                 retweets,
+                excluido,
                 usuario: usuarioComentario,
               } = comentario.tweet
 
@@ -544,8 +546,10 @@ export class TweetsService {
                 nome: usuarioComentario.nome,
                 likes: likes.length,
                 comentarios: comentarios.length,
-                retweets: retweets.length,
+                retweets: retweets.filter(retweet => !retweet.tweet.excluido)
+                  .length,
                 data: data_criacao,
+                isRemoved: excluido,
                 isLikedByUser: likes.some(like => like.usuario.id === user.id),
                 isRetweetedByUser: retweets.some(
                   retweet =>
