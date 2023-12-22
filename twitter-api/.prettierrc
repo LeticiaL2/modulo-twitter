@@ -1,4 +1,14 @@
 {
   "singleQuote": true,
-  "trailingComma": "all"
+  "trailingComma": "all",
+  "semi": false,
+  "tabWidth": 1,
+  "useTabs": true,
+  "scripts": {
+    "format": "prettier --write ."
+  },
+  "key-spacing": ["error", {
+    "beforeColon": false,
+    "afterColon": true
+  }]
 }
