@@ -1,6 +1,7 @@
 import {
 	Body,
 	Controller,
+	Delete,
 	Get,
 	Param,
 	Patch,
@@ -42,5 +43,11 @@ export class UsuariosController {
 		@Param('id') id: string,
 	) {
 		return this.usuariosService.alterarUsuario(alterarUsuarioDto, id);
+	}
+
+	@Delete(':id')
+	async deletarUsuario(@Param('id') id: string) {
+		await this.usuariosService.deletarUsuario(id);
+		return { mensagem: 'Usuário removido com sucesso' };
 	}
 }
