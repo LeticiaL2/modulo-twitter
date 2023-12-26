@@ -3,6 +3,7 @@ import {
 	Controller,
 	Delete,
 	Get,
+	NotFoundException,
 	Param,
 	Patch,
 	Post,
@@ -27,6 +28,7 @@ export class UsuariosController {
 		return {
 			usuario,
 			mensagem: 'Usuário criado com sucesso.',
+			status: 201,
 		};
 	}
 
@@ -36,6 +38,7 @@ export class UsuariosController {
 		return {
 			usuario,
 			mensagem: 'Usuario encontrado',
+			status: 200,
 		};
 	}
 
@@ -44,22 +47,52 @@ export class UsuariosController {
 		@Body(ValidationPipe) alterarUsuarioDto: AlterarUsuarioDto,
 		@Param('id') id: string,
 	) {
-		return this.usuariosService.alterarUsuario(alterarUsuarioDto, id);
+		try {
+			const usuarioAlterado = await this.usuariosService.alterarUsuario(
+				alterarUsuarioDto,
+				id,
+			);
+			return {
+				usuarioAlterado,
+				mensagem: 'Usuário alterado com sucesso',
+				status: 200,
+			};
+		} catch (error) {
+			if (error instanceof NotFoundException) {
+				return {
+					mensagem: 'Usuário não encontrado',
+					status: 404,
+				};
+			} else {
+				return {
+					mensagem: 'Erro interno do servidor',
+					status: 500,
+				};
+			}
+		}
 	}
 
 	@Delete(':id')
 	async deletarUsuario(@Param('id') id: string) {
 		await this.usuariosService.deletarUsuario(id);
-		return { mensagem: 'Usuário removido com sucesso' };
+		return { mensagem: 'Usuário removido com sucesso', status: 200 };
 	}
 
 	@Get()
 	async encontrarUsuarios(@Query() consulta: EncontrarUsuariosParametrosDto) {
 		const encontrado = await this.usuariosService.encontrarUsuarios(consulta);
 
+		if (encontrado.usuarios.length === 0) {
+			return {
+				encontrado,
+				mensagem: 'Nenhum usuário foi encontrado',
+				status: 404,
+			};
+		}
 		return {
 			encontrado,
 			mensagem: 'Usuários encontrados',
+			status: 200,
 		};
 	}
 }

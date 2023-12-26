@@ -29,7 +29,7 @@ export class UsuariosRepository extends Repository<Usuario> {
 				? 100
 				: consultaDto.limite;
 
-		const { email, nome, usuario, ativo } = consultaDto;
+		const { email, nome, usuario, ativo, id } = consultaDto;
 		const consulta = this.createQueryBuilder('usuario');
 
 		consulta.where('usuario.ativo = :ativo', { ativo });
@@ -48,12 +48,17 @@ export class UsuariosRepository extends Repository<Usuario> {
 			});
 		}
 
+		if (id) {
+			consulta.andWhere('usuario.id ILIKE :id', { id: `%${id}` });
+		}
+
 		consulta.skip((consultaDto.pagina - 1) * consultaDto.limite);
 		consulta.take(+consultaDto.limite);
 		consulta.orderBy(
 			consultaDto.ordenar ? JSON.parse(consultaDto.ordenar) : undefined,
 		);
 		consulta.select([
+			'usuario.id',
 			'usuario.nome',
 			'usuario.usuario',
 			'usuario.email',
