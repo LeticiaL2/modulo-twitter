@@ -20,7 +20,6 @@ export class UsuariosRepository extends Repository<Usuario> {
 	): Promise<{ usuarios: Usuario[]; total: number }> {
 		consultaDto.ativo =
 			consultaDto.ativo === undefined ? true : consultaDto.ativo;
-		console.log('AQUIIIIII', consultaDto.pagina);
 		consultaDto.pagina =
 			consultaDto.pagina === undefined || consultaDto.pagina < 1
 				? 1
