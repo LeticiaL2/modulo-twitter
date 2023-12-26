@@ -1,7 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+	Injectable,
+	InternalServerErrorException,
+	NotFoundException,
+} from '@nestjs/common';
 import { UsuariosRepository } from './usuarios.repository';
 import { Usuario } from './usuario.entity';
 import { CriarUsuarioDto } from './dto/criar-usuario.dto';
+import { AlterarUsuarioDto } from './dto/alterar-usuario.dto';
 
 @Injectable()
 export class UsuariosService {
@@ -18,5 +23,28 @@ export class UsuariosService {
 		});
 		if (!usuario) throw new NotFoundException('Usuário não encontrado');
 		return usuario;
+	}
+
+	async alterarUsuario(
+		alterarUsuarioDto: AlterarUsuarioDto,
+		id: string,
+	): Promise<Usuario> {
+		const usuarioEncontrado = await this.encontrarUsuarioPeloId(id);
+		const { nome, email, usuario, ativo } = alterarUsuarioDto;
+
+		usuarioEncontrado.nome = nome ?? usuarioEncontrado.nome;
+		usuarioEncontrado.email = email ?? usuarioEncontrado.email;
+		usuarioEncontrado.usuario = usuario ?? usuarioEncontrado.usuario;
+		usuarioEncontrado.ativo =
+			ativo === undefined ? usuarioEncontrado.ativo : ativo;
+
+		try {
+			await usuarioEncontrado.save();
+			return usuarioEncontrado;
+		} catch (error) {
+			throw new InternalServerErrorException(
+				'Erro ao salvar novo usuário no banco de dados',
+			);
+		}
 	}
 }

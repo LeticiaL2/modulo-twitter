@@ -3,12 +3,14 @@ import {
 	Controller,
 	Get,
 	Param,
+	Patch,
 	Post,
 	ValidationPipe,
 } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
 import { CriarUsuarioDto } from './dto/criar-usuario.dto';
 import { RetornoUsuarioDto } from './dto/retorno-usuario.dto';
+import { AlterarUsuarioDto } from './dto/alterar-usuario.dto';
 
 @Controller('usuarios')
 export class UsuariosController {
@@ -32,5 +34,13 @@ export class UsuariosController {
 			usuario,
 			mensagem: 'Usuario encontrado',
 		};
+	}
+
+	@Patch(':id')
+	async alterarUsuario(
+		@Body(ValidationPipe) alterarUsuarioDto: AlterarUsuarioDto,
+		@Param('id') id: string,
+	) {
+		return this.usuariosService.alterarUsuario(alterarUsuarioDto, id);
 	}
 }
