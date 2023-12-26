@@ -7,11 +7,63 @@ import {
 import { Usuario } from './usuario.entity';
 import { CriarUsuarioDto } from './dto/criar-usuario.dto';
 import * as bcrypt from 'bcrypt';
+import { EncontrarUsuariosParametrosDto } from './dto/encontrar-usuarios-parametros.dto';
 
 @Injectable()
 export class UsuariosRepository extends Repository<Usuario> {
 	constructor(private dataSource: DataSource) {
 		super(Usuario, dataSource.createEntityManager());
+	}
+
+	async encontrarUsuarios(
+		consultaDto: EncontrarUsuariosParametrosDto,
+	): Promise<{ usuarios: Usuario[]; total: number }> {
+		consultaDto.ativo =
+			consultaDto.ativo === undefined ? true : consultaDto.ativo;
+		console.log('AQUIIIIII', consultaDto.pagina);
+		consultaDto.pagina =
+			consultaDto.pagina === undefined || consultaDto.pagina < 1
+				? 1
+				: consultaDto.limite;
+		consultaDto.limite =
+			consultaDto.limite === undefined || consultaDto.limite > 100
+				? 100
+				: consultaDto.limite;
+
+		const { email, nome, usuario, ativo } = consultaDto;
+		const consulta = this.createQueryBuilder('usuario');
+
+		consulta.where('usuario.ativo = :ativo', { ativo });
+
+		if (email) {
+			consulta.andWhere('usuario.email ILIKE :email', { email: `%${email}%` });
+		}
+
+		if (nome) {
+			consulta.andWhere('usuario.nome ILIKE :nome', { nome: `%${nome}` });
+		}
+
+		if (usuario) {
+			consulta.andWhere('usuario.usuario ILIKE :usuario', {
+				usuario: `%${usuario}%`,
+			});
+		}
+
+		consulta.skip((consultaDto.pagina - 1) * consultaDto.limite);
+		consulta.take(+consultaDto.limite);
+		consulta.orderBy(
+			consultaDto.ordenar ? JSON.parse(consultaDto.ordenar) : undefined,
+		);
+		consulta.select([
+			'usuario.nome',
+			'usuario.usuario',
+			'usuario.email',
+			'usuario.ativo',
+		]);
+
+		const [usuarios, total] = await consulta.getManyAndCount();
+
+		return { usuarios, total };
 	}
 
 	async criarUsuario(criarUsuarioDto: CriarUsuarioDto): Promise<Usuario> {

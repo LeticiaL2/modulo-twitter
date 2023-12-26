@@ -6,12 +6,14 @@ import {
 	Param,
 	Patch,
 	Post,
+	Query,
 	ValidationPipe,
 } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
 import { CriarUsuarioDto } from './dto/criar-usuario.dto';
 import { RetornoUsuarioDto } from './dto/retorno-usuario.dto';
 import { AlterarUsuarioDto } from './dto/alterar-usuario.dto';
+import { EncontrarUsuariosParametrosDto } from './dto/encontrar-usuarios-parametros.dto';
 
 @Controller('usuarios')
 export class UsuariosController {
@@ -49,5 +51,15 @@ export class UsuariosController {
 	async deletarUsuario(@Param('id') id: string) {
 		await this.usuariosService.deletarUsuario(id);
 		return { mensagem: 'Usuário removido com sucesso' };
+	}
+
+	@Get()
+	async encontrarUsuarios(@Query() consulta: EncontrarUsuariosParametrosDto) {
+		const encontrado = await this.usuariosService.encontrarUsuarios(consulta);
+
+		return {
+			encontrado,
+			mensagem: 'Usuários encontrados',
+		};
 	}
 }

@@ -7,6 +7,7 @@ import { UsuariosRepository } from './usuarios.repository';
 import { Usuario } from './usuario.entity';
 import { CriarUsuarioDto } from './dto/criar-usuario.dto';
 import { AlterarUsuarioDto } from './dto/alterar-usuario.dto';
+import { EncontrarUsuariosParametrosDto } from './dto/encontrar-usuarios-parametros.dto';
 
 @Injectable()
 export class UsuariosService {
@@ -54,5 +55,12 @@ export class UsuariosService {
 			throw new NotFoundException(
 				'Não foi encontrado um usuário com o ID informado',
 			);
+	}
+
+	async encontrarUsuarios(
+		consultaDto: EncontrarUsuariosParametrosDto,
+	): Promise<{ usuarios: Usuario[]; total: number }> {
+		const usuarios = await this.usuariosRepository.encontrarUsuarios(consultaDto);
+		return usuarios;
 	}
 }
