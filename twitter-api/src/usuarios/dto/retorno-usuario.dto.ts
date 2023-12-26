@@ -1,4 +1,4 @@
-import { Usuario } from './usuario.entity';
+import { Usuario } from '../usuario.entity';
 
 export class RetornoUsuarioDto {
 	usuario: Usuario;

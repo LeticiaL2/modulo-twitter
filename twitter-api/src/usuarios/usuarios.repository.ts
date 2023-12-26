@@ -5,7 +5,7 @@ import {
 	InternalServerErrorException,
 } from '@nestjs/common';
 import { Usuario } from './usuario.entity';
-import { CriarUsuarioDto } from './criar-usuario.dto';
+import { CriarUsuarioDto } from './dto/criar-usuario.dto';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
