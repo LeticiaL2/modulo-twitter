@@ -8,6 +8,7 @@ import {
 	Patch,
 	Post,
 	Query,
+	UseGuards,
 	ValidationPipe,
 } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
@@ -15,6 +16,7 @@ import { CriarUsuarioDto } from './dto/criar-usuario.dto';
 import { RetornoUsuarioDto } from './dto/retorno-usuario.dto';
 import { AlterarUsuarioDto } from './dto/alterar-usuario.dto';
 import { EncontrarUsuariosParametrosDto } from './dto/encontrar-usuarios-parametros.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('usuarios')
 export class UsuariosController {
@@ -33,6 +35,7 @@ export class UsuariosController {
 	}
 
 	@Get(':id')
+	@UseGuards(AuthGuard())
 	async encontrarUsuarioPeloId(@Param('id') id): Promise<RetornoUsuarioDto> {
 		const usuario = await this.usuariosService.encontrarUsuarioPeloId(id);
 		return {
@@ -43,6 +46,7 @@ export class UsuariosController {
 	}
 
 	@Patch(':id')
+	@UseGuards(AuthGuard())
 	async alterarUsuario(
 		@Body(ValidationPipe) alterarUsuarioDto: AlterarUsuarioDto,
 		@Param('id') id: string,
@@ -73,12 +77,14 @@ export class UsuariosController {
 	}
 
 	@Delete(':id')
+	@UseGuards(AuthGuard())
 	async deletarUsuario(@Param('id') id: string) {
 		await this.usuariosService.deletarUsuario(id);
 		return { mensagem: 'Usuário removido com sucesso', status: 200 };
 	}
 
 	@Get()
+	@UseGuards(AuthGuard())
 	async encontrarUsuarios(@Query() consulta: EncontrarUsuariosParametrosDto) {
 		const encontrado = await this.usuariosService.encontrarUsuarios(consulta);
 

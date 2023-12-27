@@ -8,6 +8,7 @@ import { Usuario } from './usuario.entity';
 import { CriarUsuarioDto } from './dto/criar-usuario.dto';
 import * as bcrypt from 'bcrypt';
 import { EncontrarUsuariosParametrosDto } from './dto/encontrar-usuarios-parametros.dto';
+import { CredenciaisDto } from 'src/autenticacao/credenciais.dto';
 
 @Injectable()
 export class UsuariosRepository extends Repository<Usuario> {
@@ -100,5 +101,16 @@ export class UsuariosRepository extends Repository<Usuario> {
 
 	private async encriptarSenha(senha: string, salt: string): Promise<string> {
 		return bcrypt.hash(senha, salt);
+	}
+
+	async checarCredenciais(credenciaisDto: CredenciaisDto): Promise<Usuario> {
+		const { email, senha } = credenciaisDto;
+		const usuario = await this.findOne({ where: { email, ativo: true } });
+
+		if (usuario && (await usuario.checarSenha(senha))) {
+			return usuario;
+		} else {
+			return null;
+		}
 	}
 }
