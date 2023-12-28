@@ -10,7 +10,7 @@ import { AutenticacaoService } from './autenticacao.service';
 import { CredenciaisDto } from './credenciais.dto';
 import { Usuario } from 'src/usuarios/usuario.entity';
 import { AuthGuard } from '@nestjs/passport';
-import { GetUsuario } from './get-usuario.decorator';
+import { GetUsuario } from '../usuarios/decorator/get-usuario.decorator';
 
 @Controller('autenticacao')
 export class AutenticacaoController {

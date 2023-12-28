@@ -17,6 +17,7 @@ import { RetornoUsuarioDto } from './dto/retorno-usuario.dto';
 import { AlterarUsuarioDto } from './dto/alterar-usuario.dto';
 import { EncontrarUsuariosParametrosDto } from './dto/encontrar-usuarios-parametros.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { GetIdUsuario } from './decorator/get-id-usuario.decorator';
 
 @Controller('usuarios')
 export class UsuariosController {
@@ -45,11 +46,11 @@ export class UsuariosController {
 		};
 	}
 
-	@Patch(':id')
+	@Patch()
 	@UseGuards(AuthGuard())
 	async alterarUsuario(
 		@Body(ValidationPipe) alterarUsuarioDto: AlterarUsuarioDto,
-		@Param('id') id: string,
+		@GetIdUsuario() id: string,
 	) {
 		try {
 			const usuarioAlterado = await this.usuariosService.alterarUsuario(
@@ -76,9 +77,9 @@ export class UsuariosController {
 		}
 	}
 
-	@Delete(':id')
+	@Delete()
 	@UseGuards(AuthGuard())
-	async deletarUsuario(@Param('id') id: string) {
+	async deletarUsuario(@GetIdUsuario() id: string) {
 		await this.usuariosService.deletarUsuario(id);
 		return { mensagem: 'Usuário removido com sucesso', status: 200 };
 	}
