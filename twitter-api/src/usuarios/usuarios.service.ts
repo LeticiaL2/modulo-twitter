@@ -60,6 +60,16 @@ export class UsuariosService {
 	async encontrarUsuarios(
 		consultaDto: EncontrarUsuariosParametrosDto,
 	): Promise<{ usuarios: Usuario[]; total: number }> {
+		consultaDto.ativo =
+			consultaDto.ativo === undefined ? true : consultaDto.ativo;
+		consultaDto.pagina =
+			consultaDto.pagina === undefined || consultaDto.pagina < 1
+				? 1
+				: consultaDto.limite;
+		consultaDto.limite =
+			consultaDto.limite === undefined || consultaDto.limite > 100
+				? 100
+				: consultaDto.limite;
 		const usuarios = await this.usuariosRepository.encontrarUsuarios(consultaDto);
 		return usuarios;
 	}
