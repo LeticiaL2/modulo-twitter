@@ -1,18 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import ButtonIcon from "../../atoms/button-icon/button-icon";
 import axios from "axios";
 import Dropdown from "../../atoms/dropdown/dropdown";
 import { Container, ButtonActionContainer } from "./styles";
 import OptionDropdown from "../../atoms/option-dropdown/option-dropdown";
-import Modal from "../modal/modal";
+import { TweetContext } from "../../../pages/home-page/home-page";
 
 const Actions = ({
+  onClickCommentModal,
+  onClickRetweetModal,
   tweetId,
   comentarios,
   liked,
   likes,
   retweets,
   retweeted,
+  tweetPai,
+  tweet,
   texto,
 }) => {
   const [likedBoolean, setLikedBoolean] = useState(liked);
@@ -29,6 +33,8 @@ const Actions = ({
   const isRetweeted = retweetedBoolean;
   const retweetId = tweetId;
 
+  const { refreshTweet } = useContext(TweetContext);
+
   useEffect(() => {
     setLikedBoolean(liked);
     setLikesCount(likes);
@@ -38,12 +44,18 @@ const Actions = ({
 
   console.log(retweetedBoolean);
 
-  const openModal = () => {
-    setShowModal((prev) => !prev);
+  const handleComment = async () => {
+    setOpenDropdown(false);
+    onClickCommentModal();
   };
 
   const handleToggleDropdown = () => {
     setOpenDropdown(!openDropdown);
+  };
+
+  const handleRetweetWithQuote = async () => {
+    setOpenDropdown(false);
+    onClickRetweetModal();
   };
 
   const handleButtonLike = async () => {
@@ -80,6 +92,7 @@ const Actions = ({
         },
       }
     );
+    refreshTweet();
 
     console.log("Ação realizada com sucesso:", response.data);
 
@@ -109,18 +122,26 @@ const Actions = ({
     }
   }; */
 
-  console.log("isRetweeted", isRetweeted);
+  console.log("actions data", tweet);
+
   return (
     <Container>
-      <ButtonIcon iconType="reply" count={comentarios} />
+      <ButtonIcon
+        onClick={handleComment}
+        iconType="reply"
+        count={comentarios}
+      />
 
       <ButtonActionContainer
         onClick={handleToggleDropdown}
         $color={retweetedBoolean ? "green" : "gray"}
       >
         <ButtonIcon iconType="retweet" count={retweetsCount} />
-
-        <Dropdown showDropdown={openDropdown} setShowDropdown={setOpenDropdown}>
+        <Dropdown
+          showDropdown={openDropdown}
+          setShowDropdown={setOpenDropdown}
+          tweetPai={tweet}
+        >
           {!retweeted ? (
             <OptionDropdown iconType={"Retweet"} onClick={handleButtonRetweet}>
               Retweet
@@ -128,12 +149,10 @@ const Actions = ({
           ) : (
             <OptionDropdown iconType={"Retweet"}>Undo Repost</OptionDropdown>
           )}
-          <OptionDropdown onClick={openModal} iconType={"Quote"}>
+          <OptionDropdown onClick={handleRetweetWithQuote} iconType={"Quote"}>
             Quote
           </OptionDropdown>
         </Dropdown>
-
-        <Modal showModal={showModal} setShowModal={setShowModal} />
       </ButtonActionContainer>
 
       <ButtonIcon

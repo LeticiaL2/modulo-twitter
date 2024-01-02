@@ -8,16 +8,24 @@ export const LinkContainerTweet = styled(Link)`
   width: 100%;
   margin: 0;
 `;
+
+export const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 0px;
+  margin-top: 5%;
+  padding: 0px;
+`;
+
 export const ContainerTweetCard = styled.div`
-  border: 1px solid #565656;
-  padding-bottom: 3%;
+  border: 2px solid #565656;
+  border-radius: 15px;
+  padding-bottom: 0;
   padding-right: 0;
   padding-left: 0;
-  margin: 0;
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
 `;
 
 export const TopTweetCard = styled.div`
@@ -28,8 +36,9 @@ export const TopTweetCard = styled.div`
 
 export const ContentContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  width: 92%;
+  margin-left: 2%;
 `;
 
 export const NameProfile = styled.h1`
@@ -51,8 +60,8 @@ export const User = styled.p`
 export const ContentTweet = styled.p`
   font-family: "Segoe UI", "Open Sans", "Helvetica Neue", sans-serif, Arial,
     sans-serif;
-  margin-left: 48px;
-  padding: 0;
+  margin-left: 5%;
+  padding-bottom: 6%;
   font-size: 1rem;
   overflow: hidden;
   word-wrap: break-word;

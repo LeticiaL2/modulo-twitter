@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback } from "react";
+import React, { useState, useEffect, useContext, useMemo } from "react";
 import "./styles";
 import TweetDetails from "../../components/molecules/tweet-details/tweet-details";
 import { BoxCenter, Container } from "./styles";
@@ -11,6 +11,7 @@ import { useParams } from "react-router-dom";
 import ListComments from "../../components/molecules/list-comentarios/list-comentarios";
 import HeaderHome from "../../components/molecules/header-home/header-home";
 import ListTweets from "../../components/organism/list-tweets/list-tweets";
+import { TweetContext } from "../home-page/home-page";
 
 function DetailsPage() {
   const { user } = useContext(AuthContext);
@@ -46,26 +47,24 @@ function DetailsPage() {
     }
   };
 
+  const contextValue = useMemo(() => ({ refreshTweet: getTweets }), []);
+
   return (
-    <Container>
-      <BoxCenter>
-        <HeaderHome buttonText="Voltar" />
-        <TweetDetails></TweetDetails>
-        <TweetInput
-          $border="none"
-          buttonText="Reply"
-          placeholder="Post your reply!"
-          src={perfil}
-          nome={user.nome}
-          usuario={user.usuario}
-          comentarios={0}
-          retweets={0}
-          likes={0}
-          onTweet={addTweet}
-        />
-        <ListTweets tweets={commentsList} />
-      </BoxCenter>
-    </Container>
+    <TweetContext.Provider value={contextValue}>
+      <Container>
+        <BoxCenter>
+          <HeaderHome buttonText="Voltar" />
+          <TweetDetails></TweetDetails>
+          <TweetInput
+            $border="none"
+            buttonText="Reply"
+            placeholder="Post your reply!"
+            onTweet={addTweet}
+          />
+          <ListTweets tweets={commentsList} />
+        </BoxCenter>
+      </Container>
+    </TweetContext.Provider>
   );
 }
 

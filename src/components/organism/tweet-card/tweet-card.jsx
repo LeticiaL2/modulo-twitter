@@ -4,6 +4,9 @@ import { FaRetweet } from "react-icons/fa";
 import ButtonIcon from "../../atoms/button-icon/button-icon";
 import axios from "axios";
 import Actions from "../../molecules/actions/actions";
+import Modal from "../../molecules/modal/modal";
+
+import Retweet from "../../molecules/retweet/retweet";
 import { useNavigate } from "react-router-dom";
 import {
   LinkContainerTweet,
@@ -20,9 +23,17 @@ import {
 
 function TweetCard({ userData }) {
   const navigate = useNavigate();
+
+  const tweet =
+    userData.retweetPai && userData.texto === null
+      ? userData.retweetPai
+      : userData;
   const { id, usuario, nome, texto, data, liked, retweeted } = userData;
   const [expanded, setExpanded] = useState(false);
   const charLimit = 140;
+
+  const [openCommentModal, setOpenCommentModal] = useState(false);
+  const [openRetweetModal, setOpenRetweetModal] = useState(false);
 
   const handleToggleExpand = () => {
     setExpanded(!expanded);
@@ -138,18 +149,16 @@ function TweetCard({ userData }) {
     navigate(`/tweets/${id}/detalhes`);
   };
 
-  console.log("data", userData);
-
   const timeAgo = formatTimeAgo(new Date(data));
   const isRetweet = !!userData.tweetPai;
-  console.log("tweet card retweeted:", retweeted);
+  console.log("userdata:", userData);
 
   return (
     <ContainerTweetCard>
       {isRetweet && !userData.texto && (
         <Reposted>
           {" "}
-          <FaRetweet /> @{usuario} reposted
+          <FaRetweet /> {usuario} reposted
         </Reposted>
       )}
       <>
@@ -172,9 +181,15 @@ function TweetCard({ userData }) {
               </ShowMore>
             )}
           </ContentTweet>
+          {texto && userData.tweetPai && (
+            <Retweet texto={userData.texto} tweetPai={userData.tweetPai[0]} />
+          )}
         </ContentContainer>
         <FooterTweetCard>
           <Actions
+            onClickModal={() => setOpenCommentModal(true)}
+            onClickRetweetModal={() => setOpenRetweetModal(true)}
+            onClickCommentModal={() => setOpenCommentModal(true)}
             tweetId={userData.id}
             comentarios={userData.comentarios}
             likes={userData.likes}
@@ -183,7 +198,22 @@ function TweetCard({ userData }) {
             retweeted={userData.retweeted}
             tweetPaiUsuario={userData.usuario}
             texto={userData.texto}
+            tweetPai={userData.tweetPai && userData.tweetPai[0]}
+            tweet={userData}
           ></Actions>
+
+          <Modal
+            showModal={openRetweetModal}
+            setShowModal={setOpenRetweetModal}
+            userData={userData}
+          />
+
+          <Modal
+            showModal={openCommentModal}
+            setShowModal={setOpenCommentModal}
+            userData={userData}
+            isComment={true}
+          />
         </FooterTweetCard>
       </>
     </ContainerTweetCard>

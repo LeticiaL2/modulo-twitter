@@ -10,6 +10,25 @@ export const Container = styled.div`
   background-color: rgba(228, 242, 247, 0.1);
 `;
 
+export const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0px;
+  padding: 0px;
+`;
+
+export const IconClose = styled.button`
+  border-style: none;
+  color: white;
+  font-size: 1.4em;
+  cursor: pointer;
+`;
+
+export const Draft = styled.div`
+  color: #00acee;
+`;
+
 export const ContainerModal = styled.div`
   position: fixed;
   top: 50%;
