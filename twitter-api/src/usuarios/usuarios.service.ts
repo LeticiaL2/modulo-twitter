@@ -92,21 +92,32 @@ export class UsuariosService {
 			);
 	}
 
-	async encontrarUsuarios(
-		consultaDto: EncontrarUsuariosParametrosDto,
-	): Promise<{ usuarios: Usuario[]; total: number }> {
+	async encontrarUsuarios(consultaDto: EncontrarUsuariosParametrosDto): Promise<{
+		usuarios: Usuario[];
+		total: number;
+		paginas: number;
+		paginaAtual: number;
+	}> {
 		consultaDto.ativo =
 			consultaDto.ativo === undefined ? true : consultaDto.ativo;
 		consultaDto.pagina =
 			consultaDto.pagina === undefined || consultaDto.pagina < 1
 				? 1
-				: consultaDto.limite;
+				: consultaDto.pagina;
 		consultaDto.limite =
 			consultaDto.limite === undefined || consultaDto.limite > 100
 				? 100
 				: consultaDto.limite;
-		const usuarios = await this.usuariosRepository.encontrarUsuarios(consultaDto);
-		return usuarios;
+		const usuariosEncontrados =
+			await this.usuariosRepository.encontrarUsuarios(consultaDto);
+
+		const { usuarios, total } = usuariosEncontrados;
+
+		const paginas = Math.ceil(total / consultaDto.limite);
+
+		const paginaAtual = Number(consultaDto.pagina);
+
+		return { usuarios, total, paginas, paginaAtual };
 	}
 
 	private async encriptarSenha(senha: string, salt: string): Promise<string> {
