@@ -194,7 +194,12 @@ export class TweetsService {
             throw new NotFoundException('Usuário não encontrado');
         }
 
-        const existingLike = await this.userLikedTweet(userId, tweetId) 
+        const existingLike = await this.likesRepository.findOne({ 
+            where: { 
+                usuario: { id: userId }, 
+                tweet: { id: tweetId } 
+            }
+        });
 
         if (existingLike) {
             throw new BadRequestException('Você já curtiu este tweet');
@@ -307,6 +312,8 @@ export class TweetsService {
             where: { id: tweetId },
             relations: ['usuario']
         });
+
+        //console.log(tweet);
         
     
         if (!tweet) {
@@ -317,15 +324,20 @@ export class TweetsService {
             where: { 
                 tweetPai: { id: tweetId },
             },
-            relations: ['tweetPai', 'cmtTweet', 'cmtTweet.usuario'],
+            relations: ['comentario', 'comentario.usuario'],
         });
+
+        //console.log(comments);
     
         const formattedComments = await Promise.all(comments.map(async comment => {
+
             const likesCount = await this.getLikesCount(comment.comentario.id);
             const commentsCount = await this.getCommentsCount(comment.comentario.id);
             const retweetsCount = await this.getRetweetsCount(comment.comentario.id);
+
+            //console.log(comment);
+
             
-        
             return {
                 id: comment.comentario.id,
                 texto: comment.comentario.texto,
@@ -363,6 +375,8 @@ export class TweetsService {
                 data: tweet.data_criacao
             }
         };
+
+        console.log(response)
     
         return response;
     }
@@ -441,25 +455,13 @@ export class TweetsService {
         });
     }
 
-    // Passar para dentro da função de like
-    async userLikedTweet(userId: number, tweetId: number): Promise<boolean> {
-        const like = await this.likesRepository.findOne({ 
-            where: { 
-                usuario: { id: userId }, 
-                tweet: { id: tweetId } 
-            }
-        });
-        
-        return like ? true : false;
-    }
-
-    // Nao utilizada
-    async userRetweetedTweet(userId: number, tweetId: number) {
-        const retweet = await this.retweetsRepository.createQueryBuilder("retweet")
-            .where("retweet.tweetId = :tweetId", { tweetId })
-            .andWhere("retweet.usuarioId = :userId", { userId })
-            .getOne();
+    // Nao utilizada, talvez util
+    // async userRetweetedTweet(userId: number, tweetId: number) {
+    //     const retweet = await this.retweetsRepository.createQueryBuilder("retweet")
+    //         .where("retweet.tweetId = :tweetId", { tweetId })
+    //         .andWhere("retweet.usuarioId = :userId", { userId })
+    //         .getOne();
     
-        return !!retweet;
-    }
+    //     return !!retweet;
+    // }
 }
