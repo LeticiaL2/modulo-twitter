@@ -27,7 +27,7 @@ export class AutenticacaoService {
 
 		const token = await this.jwtService.sign(jwtPayload);
 		const expiraEm = this.calcularDataExpiracaoDoToken(token);
-		return { token, expiraEm: expiraEm };
+		return { token, expire_date: expiraEm };
 	}
 
 	private calcularDataExpiracaoDoToken(token: string): string {

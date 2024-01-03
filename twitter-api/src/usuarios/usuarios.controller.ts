@@ -1,6 +1,7 @@
 import {
 	BadRequestException,
 	Body,
+	ConflictException,
 	Controller,
 	Delete,
 	Get,
@@ -29,23 +30,73 @@ export class UsuariosController {
 	async criarUsuario(
 		@Body(ValidationPipe) criarUsuarioDto: CriarUsuarioDto,
 	): Promise<RetornoUsuarioDto> {
-		const usuario = await this.usuariosService.criarUsuario(criarUsuarioDto);
-		return {
-			usuario,
-			mensagem: 'Usuário criado com sucesso.',
-			status: 201,
-		};
+		try {
+			const usuario = await this.usuariosService.criarUsuario(criarUsuarioDto);
+			return {
+				conteudo: usuario,
+				mensagem: {
+					codigo: 201,
+					texto: 'Usuário criado com sucesso.',
+				},
+				status: true,
+			};
+		} catch (error) {
+			if (error instanceof ConflictException)
+				return {
+					conteudo: null,
+					mensagem: {
+						codigo: 409,
+						texto: 'Endereço de email já está em uso',
+					},
+					status: false,
+				};
+			else
+				return {
+					conteudo: null,
+					mensagem: {
+						codigo: 500,
+						texto: 'Erro interno do servidor',
+					},
+					status: false,
+				};
+		}
 	}
 
 	@Get(':id')
 	@UseGuards(AuthGuard())
 	async encontrarUsuarioPeloId(@Param('id') id): Promise<RetornoUsuarioDto> {
 		const usuario = await this.usuariosService.encontrarUsuarioPeloId(id);
-		return {
-			usuario,
-			mensagem: 'Usuario encontrado',
-			status: 200,
-		};
+
+		try {
+			return {
+				conteudo: usuario,
+				mensagem: {
+					codigo: 200,
+					texto: 'Usuario encontrado',
+				},
+				status: true,
+			};
+		} catch (error) {
+			if (error instanceof NotFoundException)
+				return {
+					conteudo: usuario,
+					mensagem: {
+						codigo: 404,
+						texto: 'Usuario não encontrado',
+					},
+					status: false,
+				};
+			else {
+				return {
+					conteudo: null,
+					mensagem: {
+						codigo: 500,
+						texto: 'Erro interno do servidor',
+					},
+					status: false,
+				};
+			}
+		}
 	}
 
 	@Patch()
@@ -59,21 +110,33 @@ export class UsuariosController {
 				alterarUsuarioDto,
 				id,
 			);
+
 			return {
-				usuarioAlterado,
-				mensagem: 'Usuário alterado com sucesso',
-				status: 200,
+				conteudo: usuarioAlterado,
+				mensagem: {
+					codigo: 200,
+					texto: 'Usuário alterado com sucesso',
+				},
+				status: true,
 			};
 		} catch (error) {
 			if (error instanceof NotFoundException) {
 				return {
-					mensagem: 'Usuário não encontrado',
-					status: 404,
+					conteudo: null,
+					mensagem: {
+						codigo: 404,
+						texto: 'Usuário não encontrado',
+					},
+					status: false,
 				};
 			} else {
 				return {
-					mensagem: 'Erro interno do servidor',
-					status: 500,
+					conteudo: null,
+					mensagem: {
+						codigo: 500,
+						texto: 'Erro interno do servidor',
+					},
+					status: false,
 				};
 			}
 		}
@@ -90,26 +153,42 @@ export class UsuariosController {
 				alterarSenhaDto,
 				id,
 			);
+
 			return {
-				usuarioAlterado,
-				mensagem: 'Senha alterada com sucesso',
-				status: 200,
+				conteudo: usuarioAlterado,
+				mensagem: {
+					codigo: 200,
+					texto: 'Senha alterada com sucesso',
+				},
+				status: true,
 			};
 		} catch (error) {
 			if (error instanceof NotFoundException) {
 				return {
-					mensagem: 'Usuário não encontrado',
-					status: 404,
+					conteudo: null,
+					mensagem: {
+						codigo: 404,
+						texto: 'Usuário não encontrado',
+					},
+					status: false,
 				};
 			} else if (error instanceof BadRequestException) {
 				return {
-					mensagem: 'As senhas não conferem',
-					status: 400,
+					conteudo: null,
+					mensagem: {
+						codigo: 400,
+						texto: 'As senhas não conferem',
+					},
+					status: false,
 				};
 			} else {
 				return {
-					mensagem: 'Erro interno do servidor',
-					status: 500,
+					conteudo: null,
+					mensagem: {
+						codigo: 500,
+						texto: 'Erro interno do servidor',
+					},
+					status: false,
 				};
 			}
 		}
@@ -119,25 +198,72 @@ export class UsuariosController {
 	@UseGuards(AuthGuard())
 	async deletarUsuario(@GetIdUsuario() id: string) {
 		await this.usuariosService.deletarUsuario(id);
-		return { mensagem: 'Usuário removido com sucesso', status: 200 };
+
+		try {
+			return {
+				conteudo: null,
+				mensagem: {
+					codigo: 200,
+					texto: 'Usuário removido com sucesso',
+				},
+				status: true,
+			};
+		} catch (error) {
+			if (error instanceof NotFoundException)
+				return {
+					conteudo: null,
+					mensagem: {
+						codigo: 404,
+						texto: 'Usuario não encontrado',
+					},
+					status: false,
+				};
+			else {
+				return {
+					conteudo: null,
+					mensagem: {
+						codigo: 500,
+						texto: 'Erro interno do servidor',
+					},
+					status: false,
+				};
+			}
+		}
 	}
 
 	@Get()
 	@UseGuards(AuthGuard())
 	async encontrarUsuarios(@Query() consulta: EncontrarUsuariosParametrosDto) {
-		const encontrado = await this.usuariosService.encontrarUsuarios(consulta);
+		try {
+			const encontrado = await this.usuariosService.encontrarUsuarios(consulta);
 
-		if (encontrado.usuarios.length === 0) {
+			if (encontrado.usuarios.length === 0) {
+				return {
+					conteudo: encontrado,
+					mensagem: {
+						codigo: 404,
+						texto: 'Nenhum usuário foi encontrado',
+					},
+					status: false,
+				};
+			}
 			return {
-				encontrado,
-				mensagem: 'Nenhum usuário foi encontrado',
-				status: 404,
+				conteudo: encontrado,
+				mensagem: {
+					codigo: 200,
+					texto: 'Usuários encontrados',
+				},
+				status: true,
+			};
+		} catch (error) {
+			return {
+				conteudo: null,
+				mensagem: {
+					codigo: 500,
+					texto: 'Erro interno do servidor',
+				},
+				status: false,
 			};
 		}
-		return {
-			encontrado,
-			mensagem: 'Usuários encontrados',
-			status: 200,
-		};
 	}
 }

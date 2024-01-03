@@ -86,10 +86,7 @@ export class UsuariosService {
 
 	async deletarUsuario(idUsuario: string) {
 		const resultado = await this.usuariosRepository.delete({ id: idUsuario });
-		if (resultado.affected === 0)
-			throw new NotFoundException(
-				'Não foi encontrado um usuário com o ID informado',
-			);
+		if (resultado.affected === 0) throw new NotFoundException();
 	}
 
 	async encontrarUsuarios(consultaDto: EncontrarUsuariosParametrosDto): Promise<{
