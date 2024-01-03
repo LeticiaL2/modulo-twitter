@@ -42,9 +42,17 @@ export class UsuariosRepository extends Repository<Usuario> {
 
 		consulta.skip((consultaDto.pagina - 1) * consultaDto.limite);
 		consulta.take(+consultaDto.limite);
-		consulta.orderBy(
-			consultaDto.ordenar ? JSON.parse(consultaDto.ordenar) : undefined,
-		);
+		const orderColumn = consultaDto.ordenar
+			? JSON.parse(consultaDto.ordenar)
+			: undefined;
+		const orderDirection = consultaDto.ordenarPor
+			? consultaDto.ordenarPor
+			: 'ASC';
+
+		consulta.orderBy({
+			[orderColumn]: orderDirection,
+		});
+
 		consulta.select([
 			'usuario.id',
 			'usuario.nome',
