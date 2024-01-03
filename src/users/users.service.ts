@@ -1,25 +1,19 @@
-import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Users } from './entity/users.entity';
+import { User } from './entity/user.entity';
 import { Repository } from 'typeorm';
-import { UpdateUsersDto } from './dto/update-users.dto';
-import { CreateUsersDto } from './dto/create-users.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
     constructor(
-        @InjectRepository(Users)
-        private usersRepository: Repository<Users>,
+        @InjectRepository(User)
+        private usersRepository: Repository<User>,
     ) {}
 
-    //remover
-    get(): Promise<Users[]>{ 
-        return this.usersRepository.find();
-    }
 
-
-    async create(createUsersDto: CreateUsersDto){
+    async create(createUsersDto: CreateUserDto){
         const { email, usuario, senha } = createUsersDto;
 
         // Verificar se email/usuario ja existem
@@ -55,23 +49,9 @@ export class UsersService {
         return successResponse;
     }
 
-    //remover
-    update( updateUsersDto: UpdateUsersDto, userId : number) {
-        return this.usersRepository.update(userId, updateUsersDto);
-    }
-
-    //remover
-    show( id: number ) {
-        return this.usersRepository.findOne({ where: { id } });
-    }
 
     findByEmail(email: string) {
         return this.usersRepository.findOne({ where: { email } });
-    }
-
-    //remover
-    delete( userId: number ) {
-        return this.usersRepository.delete(userId);
     }
 
 }
