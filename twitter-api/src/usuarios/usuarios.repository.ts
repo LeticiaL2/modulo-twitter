@@ -5,8 +5,6 @@ import {
 	InternalServerErrorException,
 } from '@nestjs/common';
 import { Usuario } from './usuario.entity';
-import { CriarUsuarioDto } from './dto/criar-usuario.dto';
-import * as bcrypt from 'bcrypt';
 import { EncontrarUsuariosParametrosDto } from './dto/encontrar-usuarios-parametros.dto';
 import { CredenciaisDto } from 'src/autenticacao/credenciais.dto';
 
@@ -60,16 +58,8 @@ export class UsuariosRepository extends Repository<Usuario> {
 		return { usuarios, total };
 	}
 
-	async criarUsuario(criarUsuarioDto: CriarUsuarioDto): Promise<Usuario> {
-		const { email, usuario, nome, senha } = criarUsuarioDto;
-
-		const novoUsuario = this.create();
-		novoUsuario.email = email;
-		novoUsuario.nome = nome;
-		novoUsuario.ativo = true;
-		novoUsuario.salt = await bcrypt.genSalt();
-		novoUsuario.senha = await this.encriptarSenha(senha, novoUsuario.salt);
-		novoUsuario.usuario = usuario;
+	async criarUsuario(usuario: Usuario): Promise<Usuario> {
+		const novoUsuario = this.create(usuario);
 
 		try {
 			await novoUsuario.save();
@@ -85,10 +75,6 @@ export class UsuariosRepository extends Repository<Usuario> {
 				);
 			}
 		}
-	}
-
-	private async encriptarSenha(senha: string, salt: string): Promise<string> {
-		return bcrypt.hash(senha, salt);
 	}
 
 	async checarCredenciais(credenciaisDto: CredenciaisDto): Promise<Usuario> {

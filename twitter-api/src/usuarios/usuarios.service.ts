@@ -1,4 +1,5 @@
 import {
+	BadRequestException,
 	Injectable,
 	InternalServerErrorException,
 	NotFoundException,
@@ -8,19 +9,39 @@ import { Usuario } from './usuario.entity';
 import { CriarUsuarioDto } from './dto/criar-usuario.dto';
 import { AlterarUsuarioDto } from './dto/alterar-usuario.dto';
 import { EncontrarUsuariosParametrosDto } from './dto/encontrar-usuarios-parametros.dto';
+import * as bcrypt from 'bcrypt';
+import { AlterarSenhaDto } from './dto/alterar-senha.dto';
 
 @Injectable()
 export class UsuariosService {
 	constructor(private usuariosRepository: UsuariosRepository) {}
 
 	async criarUsuario(criarUsuarioDto: CriarUsuarioDto): Promise<Usuario> {
-		return this.usuariosRepository.criarUsuario(criarUsuarioDto);
+		const usuario = new Usuario();
+		usuario.email = criarUsuarioDto.email;
+		usuario.nome = criarUsuarioDto.nome;
+		usuario.ativo = true;
+		usuario.salt = await bcrypt.genSalt();
+		usuario.senha = await this.encriptarSenha(
+			criarUsuarioDto.senha,
+			usuario.salt,
+		);
+		usuario.usuario = criarUsuarioDto.usuario;
+		return this.usuariosRepository.criarUsuario(usuario);
 	}
 
 	async encontrarUsuarioPeloId(idUsuario: string): Promise<Usuario> {
 		const usuario = await this.usuariosRepository.findOne({
 			where: { id: idUsuario },
 			select: ['email', 'nome', 'usuario', 'id'],
+		});
+		if (!usuario) throw new NotFoundException('Usuário não encontrado');
+		return usuario;
+	}
+
+	async encontrarUsuarioCompletoPeloId(idUsuario: string): Promise<Usuario> {
+		const usuario = await this.usuariosRepository.findOne({
+			where: { id: idUsuario },
 		});
 		if (!usuario) throw new NotFoundException('Usuário não encontrado');
 		return usuario;
@@ -49,6 +70,20 @@ export class UsuariosService {
 		}
 	}
 
+	async alterarSenha(alterarSenhaDto: AlterarSenhaDto, idUsuario: string) {
+		const { senha, novaSenha } = alterarSenhaDto;
+
+		const usuario = await this.encontrarUsuarioCompletoPeloId(idUsuario);
+		if (!usuario) throw new NotFoundException('Usuário não encontrado.');
+
+		const senhaValida = await bcrypt.compare(senha, usuario.senha);
+		if (!senhaValida) throw new BadRequestException('As senhas não conferem');
+
+		usuario.senha = await this.encriptarSenha(novaSenha, usuario.salt);
+		const usuarioAlterado = await usuario.save();
+		return usuarioAlterado;
+	}
+
 	async deletarUsuario(idUsuario: string) {
 		const resultado = await this.usuariosRepository.delete({ id: idUsuario });
 		if (resultado.affected === 0)
@@ -72,5 +107,9 @@ export class UsuariosService {
 				: consultaDto.limite;
 		const usuarios = await this.usuariosRepository.encontrarUsuarios(consultaDto);
 		return usuarios;
+	}
+
+	private async encriptarSenha(senha: string, salt: string): Promise<string> {
+		return bcrypt.hash(senha, salt);
 	}
 }

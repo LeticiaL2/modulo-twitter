@@ -1,4 +1,5 @@
 import {
+	BadRequestException,
 	Body,
 	Controller,
 	Delete,
@@ -18,6 +19,7 @@ import { AlterarUsuarioDto } from './dto/alterar-usuario.dto';
 import { EncontrarUsuariosParametrosDto } from './dto/encontrar-usuarios-parametros.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { GetIdUsuario } from './decorator/get-id-usuario.decorator';
+import { AlterarSenhaDto } from './dto/alterar-senha.dto';
 
 @Controller('usuarios')
 export class UsuariosController {
@@ -67,6 +69,42 @@ export class UsuariosController {
 				return {
 					mensagem: 'Usuário não encontrado',
 					status: 404,
+				};
+			} else {
+				return {
+					mensagem: 'Erro interno do servidor',
+					status: 500,
+				};
+			}
+		}
+	}
+
+	@Patch('/alterarsenha')
+	@UseGuards(AuthGuard())
+	async alterarSenha(
+		@Body(ValidationPipe) alterarSenhaDto: AlterarSenhaDto,
+		@GetIdUsuario() id: string,
+	) {
+		try {
+			const usuarioAlterado = await this.usuariosService.alterarSenha(
+				alterarSenhaDto,
+				id,
+			);
+			return {
+				usuarioAlterado,
+				mensagem: 'Senha alterada com sucesso',
+				status: 200,
+			};
+		} catch (error) {
+			if (error instanceof NotFoundException) {
+				return {
+					mensagem: 'Usuário não encontrado',
+					status: 404,
+				};
+			} else if (error instanceof BadRequestException) {
+				return {
+					mensagem: 'As senhas não conferem',
+					status: 400,
 				};
 			} else {
 				return {

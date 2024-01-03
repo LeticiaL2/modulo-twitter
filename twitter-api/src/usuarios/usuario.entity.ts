@@ -33,10 +33,14 @@ export class Usuario extends BaseEntity {
 	@Column({ nullable: false })
 	salt: string;
 
-	@CreateDateColumn()
+	@CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
 	data_criacao: Date;
 
-	@UpdateDateColumn()
+	@UpdateDateColumn({
+		type: 'timestamptz',
+		default: () => 'CURRENT_TIMESTAMP',
+		onUpdate: 'CURRENT_TIMESTAMP',
+	})
 	data_atualizacao: Date;
 
 	@Column({ nullable: true, type: 'date' })
