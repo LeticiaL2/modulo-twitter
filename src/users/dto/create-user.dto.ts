@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty, IsString, IsStrongPassword, Length } from "class-validator";
 
-export class CreateUsersDto {
+export class CreateUserDto {
 
     @IsString({ message: 'Nome em formato inválido' })
     @Length(1, 50, { message: 'Nome deve conter menos de 50 caracteres' }) 

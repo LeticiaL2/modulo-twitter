@@ -1,8 +1,11 @@
 import { Exclude } from "class-transformer";
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Like } from "src/tweets/entity/like.entity";
+import { Tweet } from "src/tweets/entity/tweet.entity";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('Usuario')
-export class Users {
+export class User {
+
     @PrimaryGeneratedColumn()
     @Exclude()
     id: number;
@@ -34,4 +37,10 @@ export class Users {
     @UpdateDateColumn()
     @Exclude()
     data_ativacao: Date;
+
+    @OneToMany(() => Tweet, tweet => tweet.usuario)
+    tweets: Tweet[];
+
+    @OneToMany(() => Like, likes => likes.usuario)
+    likes: Like[];
 }
