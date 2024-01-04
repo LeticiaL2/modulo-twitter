@@ -39,11 +39,12 @@ export class UsersService {
                 codigo: 201,
                 texto: 'Usuário registrado com sucesso!'
             },
-            conteudo: {
-                email: newUser.email,
-                nome: newUser.nome,
-                usuario: newUser.usuario
-            }
+            conteudo: true
+            // conteudo: {
+            //     email: newUser.email,
+            //     nome: newUser.nome,
+            //     usuario: newUser.usuario
+            // }
         };    
 
         return successResponse;
