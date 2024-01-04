@@ -152,10 +152,13 @@ export class TweetsService {
     }
 
     async deleteTweet(id: number, userId: number) {
-        const tweet = await this.tweetsRepository.findOne({ 
-            where: { id },
-            relations: ["usuario"],
-        });
+
+        const tweet = await this.tweetsRepository.createQueryBuilder('tweet')
+        .leftJoinAndSelect('tweet.usuario', 'usuario')
+        .leftJoinAndSelect('tweet.rtwTweet', 'rtwTweet')
+        .leftJoinAndSelect('rtwTweet.tweetPai', 'tweetPai')
+        .where('tweet.id = :id', { id })
+        .getOne();
 
         if (!tweet) {
             throw new NotFoundException('Tweet não encontrado');
@@ -163,6 +166,20 @@ export class TweetsService {
 
         if (tweet.usuario.id !== userId) {
             throw new UnauthorizedException('Você não tem permissão para excluir este tweet');
+        }
+
+        // Se o tweet é um retweet, decrementa o contador de retweets do TweetPai
+        if (tweet.rtwTweet && tweet.rtwTweet.length > 0 && tweet.rtwTweet[0].tweetPai) {
+
+            const tweetPai = await this.tweetsRepository.findOne({ 
+                where: { id: tweet.rtwTweet[0].tweetPai.id },
+                relations: ["retweets", "retweets.retweet"],
+            });
+            
+            if (tweetPai) {
+                tweetPai.retweets = tweetPai.retweets.filter(retweet => retweet.retweet.id !== tweet.id);
+                await this.tweetsRepository.save(tweetPai);
+            }
         }
 
         tweet.excluido = true;
