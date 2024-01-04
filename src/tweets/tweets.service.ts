@@ -203,7 +203,7 @@ export class TweetsService {
     async likeTweet(tweetId: number, userId: number) {
         const tweet = await this.tweetsRepository.findOne({ where: { id: tweetId } });
 
-        if (!tweet) {
+        if (!tweet || tweet.excluido) {
             throw new NotFoundException('Tweet não encontrado');
         }
 
@@ -244,7 +244,7 @@ export class TweetsService {
 
         const tweet = await this.tweetsRepository.findOne({ where: { id: tweetId } });
     
-        if (!tweet) {
+        if (!tweet || tweet.excluido) {
             throw new NotFoundException('Tweet não encontrado');
         }
     
@@ -286,7 +286,7 @@ export class TweetsService {
     async postComment(tweetId: number, createTweetDto: CreateTweetDto, userId: number) {
         const tweetPai = await this.tweetsRepository.findOne({ where: { id: tweetId } });
     
-        if (!tweetPai) {
+        if (!tweetPai || tweetPai.excluido) {
             throw new NotFoundException('Tweet não encontrado');
         }
     
@@ -335,7 +335,7 @@ export class TweetsService {
         //console.log(tweet);
         
     
-        if (!tweet) {
+        if (!tweet || tweet.excluido) {
             throw new NotFoundException('Tweet não encontrado');
         }
     
@@ -407,7 +407,7 @@ export class TweetsService {
         
         const tweetPai = await this.tweetsRepository.findOne({ where: { id: tweetId } });
     
-        if (!tweetPai) {
+        if (!tweetPai || tweetPai.excluido) {
             throw new NotFoundException('Tweet não encontrado');
         }
     
