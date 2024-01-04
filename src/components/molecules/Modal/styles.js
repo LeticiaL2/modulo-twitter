@@ -22,3 +22,31 @@ width: 90%;
 max-width: 600px;
 border-radius: .5rem;
 `
+
+export const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+`
+
+export const CloseContainer = styled.div`
+  cursor: pointer;
+`
+
+export const DraftContainer = styled.div`
+`
+
+export const BodyContainer = styled.div`
+  margin-bottom: 2rem;
+`
+
+export const ContentContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+`
+
+export const FooterContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`

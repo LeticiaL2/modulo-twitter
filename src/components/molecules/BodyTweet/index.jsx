@@ -32,7 +32,7 @@ const BodyTweet = ({ userData, username, onClickRemoveTweet }) => {
         <TweetUserInfo nome={nome} usuario={usuario} dataFormatada={formattedDate}/>
         {username === userLogged ? <div style={{position: 'relative'}} onClick={handleMoreDropdown}>
           <MoreIcon />
-          <DropdownMenu showDropdown={openMoreDropdown} setOpenDropdown={setOpenMoreDropdown}>
+          <DropdownMenu showDropdown={openMoreDropdown} setShowDropdown={setOpenMoreDropdown}>
             <DropdownItem icon={<DeleteIcon />} onClick={handleDeleteTweet}>Delete</DropdownItem>
           </DropdownMenu>
         </div> : null}

@@ -4,14 +4,15 @@ import { getUserLocalStorage } from '../../../contexts/util'
 import Api from '../../../services/api'
 import CloseIcon from '../../atoms/SVGIcons/CloseIcon'
 import ReplyTweet from '../ReplyTweet'
-import { Container, ModalContainer } from './styles'
+import { BodyContainer, CloseContainer, Container, ContentContainer, DraftContainer, FooterContainer, HeaderContainer, ModalContainer } from './styles'
 import { TweetContext } from '../../organisms/Main'
 
 const modalElement = document.getElementById('portal')
 
 function Modal({ showModal, setShowModal, children, userData, isComment }) {
-  const {refreshTweet} = useContext(TweetContext)
+  const { refreshTweet } = useContext(TweetContext)
   const modalRef = useRef()
+
   function closeModal(e) {
     if (modalRef.current === e.target) {
       setShowModal(false)
@@ -43,21 +44,21 @@ function Modal({ showModal, setShowModal, children, userData, isComment }) {
       return createPortal(
         <Container ref={modalRef} onClick={closeModal}>
           <ModalContainer>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
-              <div onClick={() => setShowModal(prev => !prev)}>
+            <HeaderContainer>
+              <CloseContainer onClick={() => setShowModal(prev => !prev)}>
                 <CloseIcon />
-              </div>
-              <div>Draft</div>
-            </div>
-            <div style={{ marginBottom: '2rem' }}>
-              <div style={{ display: 'flex', gap: '1rem', width: '100%' }}>
+              </CloseContainer>
+              <DraftContainer>Draft</DraftContainer>
+            </HeaderContainer>
+            <BodyContainer>
+              <ContentContainer >
                 {children}
-              </div>
+              </ContentContainer>
               <ReplyTweet onReplyTweet={handleCommentTweet} postUser={userData.usuario} />
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            </BodyContainer>
+            <FooterContainer >
               {/* <Button>Reply</Button> */}
-            </div>
+            </FooterContainer>
           </ModalContainer>
         </Container>,
         modalElement
@@ -67,21 +68,21 @@ function Modal({ showModal, setShowModal, children, userData, isComment }) {
     return createPortal
       (<Container ref={modalRef} onClick={closeModal}>
         <ModalContainer>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
-            <div onClick={() => setShowModal(prev => !prev)}>
+          <HeaderContainer >
+            <CloseContainer onClick={() => setShowModal(prev => !prev)}>
               <CloseIcon />
-            </div>
-            <div>Draft</div>
-          </div>
-          <div style={{ marginBottom: '2rem' }}>
-            <div style={{ display: 'flex', gap: '1rem', width: '100%' }}>
+            </CloseContainer>
+            <DraftContainer>Draft</DraftContainer>
+          </HeaderContainer>
+          <BodyContainer >
+            <ContentContainer >
               {children}
-            </div>
+            </ContentContainer>
             <ReplyTweet onReplyTweet={handleReplyTweetWithQuote} postUser={userData.usuario} />
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          </BodyContainer>
+          <FooterContainer >
             {/* <Button>Reply</Button> */}
-          </div>
+          </FooterContainer>
         </ModalContainer>
       </Container>,
         modalElement)

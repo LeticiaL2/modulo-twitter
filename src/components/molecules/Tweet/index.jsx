@@ -28,8 +28,6 @@ function Tweet({ userData }) {
     navigate(`/tweet/${tweetId}`)
   }
 
-console.log(isRemoved)
-
   const handleRetweetWithoutQuote = async () => {
     try {
       const response = await Api.post(`api/v1/tweets/${tweetId}/retweets`, {}, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
@@ -86,7 +84,7 @@ console.log(isRemoved)
             </Modal>
             <Modal userData={tweet} showModal={openRetweetModal} setShowModal={setOpenRetweetModal} isComment={false}>
               <UserPhoto src="https://cdn.pixabay.com/photo/2021/01/04/10/41/icon-5887126_1280.png" />
-
+              <BodyTweet userData={tweet} />
             </Modal>
           </BodyContainer>
         </MainInfoContainer>

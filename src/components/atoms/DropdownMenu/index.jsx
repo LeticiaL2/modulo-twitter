@@ -10,13 +10,12 @@ const DropdownMenu = ({ showDropdown, setShowDropdown, children }) => {
         setShowDropdown(false)
       }
     }
-
     document.addEventListener("click", handler);
 
     return () => {
       document.removeEventListener("click", handler);
     };
-  }, [])
+  }, [setShowDropdown])
 
   if (showDropdown) {
     return (

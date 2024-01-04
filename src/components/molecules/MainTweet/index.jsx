@@ -41,6 +41,7 @@ function MainTweet({ userData }) {
   const handleRetweetWithoutQuote = async () => {
     try {
       const response = await Api.post(`api/v1/tweets/${tweetId}/retweets`, {}, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
+      refreshTweet()
     } catch (error) {
       console.log(error)
     }
@@ -49,6 +50,7 @@ function MainTweet({ userData }) {
   const handleUndoRetweet = async (id) => {
     try {
       const response = await Api.delete(`api/v1/tweets/${id}`, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
+      refreshTweet()
     } catch (error) {
       console.log(error)
     }
@@ -98,7 +100,7 @@ function MainTweet({ userData }) {
         </Modal>
         <Modal userData={userData} showModal={openRetweetModal} setShowModal={setOpenRetweetModal} isComment={false}>
           <UserPhoto src="https://cdn.pixabay.com/photo/2021/01/04/10/41/icon-5887126_1280.png" />
-
+          <BodyTweet userData={userData} />
         </Modal>
       </Footer>
     </TweetContainer>
