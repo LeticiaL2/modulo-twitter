@@ -85,8 +85,11 @@ export class TweetsService {
                     comentarios: tweet.comentarios.length,
                     retweets: tweet.retweets.length,
                     retuitado: tweet.retweets.some(retweet => retweet.retweet.usuario.id === userId),
+                    data: tweet.data_criacao,
                     idRetweet: null, //id do retweet ja esta no id do tweetPai
-                    tweetPai: tweet.rtwTweet[0]?.tweetPai ? {
+                    tweetPai: tweet.rtwTweet[0]?.tweetPai ? (tweet.rtwTweet[0].tweetPai.excluido ? 
+                        { texto: "Esse Tweet está indisponível" } : 
+                        {
                         id: tweet.rtwTweet[0].tweetPai.id,
                         texto: tweet.rtwTweet[0].tweetPai.texto,
                         usuarioId: tweet.rtwTweet[0].tweetPai.usuario.id,
@@ -98,8 +101,7 @@ export class TweetsService {
                         retweets: tweet.rtwTweet[0].tweetPai.retweets.length,
                         retuitado: tweet.rtwTweet[0].tweetPai.retweets.some(retweet => retweet.retweet.usuario.id === userId),
                         data: tweet.rtwTweet[0].tweetPai.data_criacao
-                    } : null,
-                    data: tweet.data_criacao
+                    }) : null,
                 };
             } catch (error) {
                 console.error('Error while setting up return object:', error);
@@ -376,7 +378,7 @@ export class TweetsService {
             }
         };
 
-        console.log(response)
+        //console.log(response)
     
         return response;
     }
