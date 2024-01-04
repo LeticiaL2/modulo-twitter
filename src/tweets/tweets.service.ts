@@ -160,7 +160,7 @@ export class TweetsService {
         .where('tweet.id = :id', { id })
         .getOne();
 
-        if (!tweet) {
+        if (!tweet || tweet.excluido) {
             throw new NotFoundException('Tweet não encontrado');
         }
 
