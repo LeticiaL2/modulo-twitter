@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import style from "./style.module.scss";
 
-/*interface Props{
-  removeEvent?: boolean;
-}*/
-export default function Input() {
+interface Props{
+  text: string;
+}
+
+export default function Input({text}:Props) {
   const [showInputFocus, setInputFocus] = useState(false);
 
   const handleClick = () => {
@@ -15,7 +16,8 @@ export default function Input() {
     setInputFocus(false);
   };
 
-  const inputRef = useRef<HTMLDivElement>(null);
+  // const inputRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const ClickForaDiv = (event: MouseEvent) => {
@@ -23,11 +25,11 @@ export default function Input() {
         inputRef.current &&
         !inputRef.current.contains(event.target as HTMLDivElement)
       ) {
-        //console.log("Clicou fora do input!");
+        console.log("Clicou fora do input!");
         handleClose();
-      } /*else {
+      } else {
          console.log("Clicou dentro do input!");
-      }*/
+      }
     };
 
     document.addEventListener("click", ClickForaDiv);
@@ -39,15 +41,16 @@ export default function Input() {
 
   return (
     <div
-      ref={inputRef}
       className={showInputFocus ? style.DivInputFocus : style.DivInput}
     >
-      <p id="p">Celular, e-mail ou nome de usuário</p>
+      <p id="p">{text}</p>
       <input
         type="text"
-        placeholder="Celular, e-mail ou nome de usuário"
+        ref={inputRef}
+        placeholder={text}
         onClick={handleClick}
       />
+      {/* <p>Esqueceu sua senha?</p> */}
     </div>
   );
 }

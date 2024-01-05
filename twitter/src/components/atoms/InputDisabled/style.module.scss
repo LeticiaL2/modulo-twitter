@@ -1,10 +1,9 @@
-.DivInput {
-  // width: 100%;
+.DivMain {
   height: 56px;
-  border: 1px solid rgb(51, 54, 57);
+  background-color: rgb(32, 35, 39);
+  opacity: 0.5;
   border-radius: 4px;
-  // background-color: aquamarine;
-  color: #e7e9ea;
+  color: rgb(113, 118, 123);
   padding: 8px;
   font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, Helvetica, Arial, sans-serif;
@@ -13,72 +12,19 @@
   justify-content: center;
   margin-top: 12px;
   margin-bottom: 12px;
-
-  p {
-    display: none;
-  }
-
-  input {
-    width: 100%;
-    padding: 0px;
-    border: 0px;
-    font-size: 17px;
-    background-color: transparent;
-    color: #e7e9ea;
-  }
-
-  input:focus {
-    box-shadow: 0 0 0 0;
-    border: 0 none;
-    outline: 0;
-    margin-top: 16px;
-  }
-}
-
-.DivInputFocus {
-  border: 1px solid #1d9bf0;
-  box-shadow: rgb(29, 155, 240) 0px 0px 0px 1px;
-  display: flex;
   flex-direction: column;
-  height: 56px;
-  border-radius: 4px;
-  color: #e7e9ea;
-  padding: 8px;
-  font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, Helvetica, Arial, sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 12px;
-  margin-bottom: 12px;
-  
-  p{
-    display: block;
+
+  > p:first-child {
     margin: 0;
     width: 100%;
-    color: #1d9bf0;
     font-size: 13px;
   }
 
-  input {
+  > p:last-child {
     width: 100%;
-    padding: 0px;
-    border: 0px;
-    font-size: 17px;
-    background-color: transparent;
-    color: #e7e9ea;
-  }
-
-  input:focus {
     box-shadow: 0 0 0 0;
     border: 0 none;
     outline: 0;
-    margin-top: 16px;
+    margin: 0px;
   }
-
-  input::placeholder {
-    visibility: hidden;
-  }
-
-
 }

@@ -49,7 +49,7 @@ export default function PopupEntrar({isShowPopup, handleClose }: Props) {
             <div className={style.Line}></div>
           </div>
 
-          <Input/>
+          <Input text={"Celular, e-mail ou nome de usuário"}/>
           
           <Button name={"Avançar"} backgroundWhite={true} onClick={handleClickPopupSenha} />
           {/*<Button name={"Avançar"} backgroundWhite={true} onClick={() => {handleClickPopupSenha(); handleClose();}} /> */}

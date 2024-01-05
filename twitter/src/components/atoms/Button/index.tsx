@@ -6,6 +6,7 @@ interface Props {
   colorblue?: boolean;
   backgroundWhite?: boolean;
   textWhite?: boolean;
+  widthFull?: boolean;
   link?: () => void;
   onClick?: () => void;
 }
@@ -15,6 +16,7 @@ function MenuButton({
   colorblue,
   backgroundWhite,
   textWhite,
+  widthFull,
   onClick,
 }: Props) {
   return (

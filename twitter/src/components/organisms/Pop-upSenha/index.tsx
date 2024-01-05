@@ -25,9 +25,11 @@ export default function PopupSenha({ showPopup, handleClose }: Props) {
         <div className={style.Div}>
           <h1>Digite sua senha</h1>
           <InputDisabled/>
-          <Input />
+          <Input text={"Senha"} />
+          <div>
           <Button name={"Entrar"} backgroundWhite={true} />
-          <p>
+          </div>
+          <p className={style.DivLink}>
             Não tem uma conta? <a href="">Inscreva-se</a>
           </p>
         </div>

@@ -39,8 +39,9 @@ export default function Login() {
               <div className={style.Line}></div>
             </div>
 
-            <Button name={"Criar conta"} colorblue={true} />
-
+            <div className={style.buttonSize}>
+              <Button name={"Criar conta"} colorblue={true} />
+            </div>
             <div className={style.MainTermos}>
               <p className={style.Termos}>
                 Ao se inscrever, você concorda com os{" "}
@@ -60,7 +61,9 @@ export default function Login() {
               <p>Já tem uma conta?</p>
             </div>
 
+            <div className={style.buttonSize}>
             <Button name={"Entrar"} colorblue={false} onClick={handleClick} />
+            </div>
             <PopupEntrar isShowPopup={showPopup} handleClose={handleClose} />
           </div>
         </div>
