@@ -1,6 +1,9 @@
 import {
 	Body,
 	Controller,
+	Delete,
+	NotFoundException,
+	Param,
 	Post,
 	UseGuards,
 	ValidationPipe,
@@ -10,7 +13,6 @@ import { CriarTweetDto } from './dto/criar-tweet.dto';
 import { RetornoTweetDto } from './dto/retorno-tweet.dto';
 import { GetIdUsuario } from 'src/usuarios/decorator/get-id-usuario.decorator';
 import { AuthGuard } from '@nestjs/passport';
-
 @Controller('tweets')
 export class TweetsController {
 	constructor(private tweetsService: TweetsService) {}
@@ -40,6 +42,45 @@ export class TweetsController {
 				},
 				status: false,
 			};
+		}
+	}
+
+	@Delete(':id')
+	@UseGuards(AuthGuard())
+	async deletarUsuario(
+		@GetIdUsuario() idUsuario: string,
+		@Param('id') id: string,
+	) {
+		try {
+			await this.tweetsService.deletarTweet(id, idUsuario);
+			return {
+				conteudo: null,
+				mensagem: {
+					codigo: 200,
+					texto: 'Tweet removido com sucesso',
+				},
+				status: true,
+			};
+		} catch (error) {
+			if (error instanceof NotFoundException)
+				return {
+					conteudo: null,
+					mensagem: {
+						codigo: 404,
+						texto: 'Tweet não encontrado',
+					},
+					status: false,
+				};
+			else {
+				return {
+					conteudo: null,
+					mensagem: {
+						codigo: 500,
+						texto: 'Erro interno do servidor',
+					},
+					status: false,
+				};
+			}
 		}
 	}
 }
