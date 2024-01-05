@@ -65,9 +65,9 @@ export class UsuariosController {
 	@Get(':id')
 	@UseGuards(AuthGuard())
 	async encontrarUsuarioPeloId(@Param('id') id): Promise<RetornoUsuarioDto> {
-		const usuario = await this.usuariosService.encontrarUsuarioPeloId(id);
-
 		try {
+			const usuario = await this.usuariosService.encontrarUsuarioPeloId(id);
+
 			return {
 				conteudo: usuario,
 				mensagem: {
@@ -79,7 +79,7 @@ export class UsuariosController {
 		} catch (error) {
 			if (error instanceof NotFoundException)
 				return {
-					conteudo: usuario,
+					conteudo: null,
 					mensagem: {
 						codigo: 404,
 						texto: 'Usuario não encontrado',
@@ -197,9 +197,9 @@ export class UsuariosController {
 	@Delete()
 	@UseGuards(AuthGuard())
 	async deletarUsuario(@GetIdUsuario() id: string) {
-		await this.usuariosService.deletarUsuario(id);
-
 		try {
+			await this.usuariosService.deletarUsuario(id);
+
 			return {
 				conteudo: null,
 				mensagem: {
