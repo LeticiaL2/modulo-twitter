@@ -6,6 +6,7 @@ import {
 	NotFoundException,
 	Param,
 	Post,
+	UnauthorizedException,
 	UseGuards,
 	ValidationPipe,
 } from '@nestjs/common';
@@ -106,6 +107,15 @@ export class TweetsController {
 					mensagem: {
 						codigo: 404,
 						texto: 'Tweet não encontrado',
+					},
+					status: false,
+				};
+			else if (error instanceof UnauthorizedException)
+				return {
+					conteudo: null,
+					mensagem: {
+						codigo: 401,
+						texto: 'Você não tem autorização para excluir esse tweet',
 					},
 					status: false,
 				};
