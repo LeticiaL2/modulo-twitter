@@ -17,6 +17,14 @@ export class TweetsService {
 		return this.tweetsRepository.criarTweet(tweet);
 	}
 
+	async encontrarTweetPeloId(idTweet: string): Promise<Tweet> {
+		const tweet = await this.tweetsRepository.findOne({
+			where: { id: idTweet },
+		});
+		if (!tweet) throw new NotFoundException('Tweet não encontrado');
+		return tweet;
+	}
+
 	async deletarTweet(idTweet: string, idUsuario: string) {
 		//todo: comparar ids
 		idUsuario;
