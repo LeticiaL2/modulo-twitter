@@ -6,38 +6,40 @@ import { jwtOptions } from 'src/config/config';
 
 @Injectable()
 export class AuthService {
-    constructor(
-        private readonly usersService: UsersService,
-        private jwtService: JwtService,
-    ) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private jwtService: JwtService,
+  ) {}
 
-    async validateUser(email: string, senha: string){
-        const user = await this.usersService.findByEmail(email);
-        if (user) {
-            if (await bcrypt.compare(senha, user.senha)) {
-                //return user;
-                return {
-                    ...user,
-                    senha: undefined,
-                }
-            }
-        }
-
-        throw new UnauthorizedException('Email ou senha inválidos');
-    }
-
-    async login(user: any) {
-        const payload =  {email: user.email, sub:user.id};
-        const expiresIn = jwtOptions.signOptions.expiresIn;;
-
-        const expiresInSec = expiresIn.endsWith('h') ? parseInt(expiresIn) * 3600 : parseInt(expiresIn);
-        const expire_date = new Date(Date.now() + expiresInSec * 1000);
-
+  async validateUser(email: string, senha: string) {
+    const user = await this.usersService.findByEmail(email);
+    if (user) {
+      if (await bcrypt.compare(senha, user.senha)) {
+        //return user;
         return {
-            token: this.jwtService.sign(payload),
-            expire_date: expire_date,
-            usuario: user.usuario,
-            nome: user.nome,
+          ...user,
+          senha: undefined,
         };
+      }
     }
+
+    throw new UnauthorizedException('Email ou senha inválidos');
+  }
+
+  async login(user: any) {
+    const payload = { email: user.email, sub: user.id };
+    const expiresIn = jwtOptions.signOptions.expiresIn;
+
+    const expiresInSec = expiresIn.endsWith('h')
+      ? parseInt(expiresIn) * 3600
+      : parseInt(expiresIn);
+    const expire_date = new Date(Date.now() + expiresInSec * 1000);
+
+    return {
+      token: this.jwtService.sign(payload),
+      expire_date: expire_date,
+      usuario: user.usuario,
+      nome: user.nome,
+    };
+  }
 }

@@ -1,5 +1,10 @@
-import { ExceptionFilter, Catch, ArgumentsHost, BadRequestException } from '@nestjs/common';
-import { Request, Response } from 'express';
+import {
+  ExceptionFilter,
+  Catch,
+  ArgumentsHost,
+  BadRequestException,
+} from '@nestjs/common';
+import { Response } from 'express';
 
 @Catch(BadRequestException)
 export class BadRequestExceptionFilter implements ExceptionFilter {
@@ -17,15 +22,13 @@ export class BadRequestExceptionFilter implements ExceptionFilter {
     }
 
     // Formatar a resposta de erro
-    response
-      .status(status)
-      .json({
-        status: false,
-        mensagem: {
-          codigo: status,
-          texto: firstErrorMessage,
-        },
-        conteudo: null,
-      });
+    response.status(status).json({
+      status: false,
+      mensagem: {
+        codigo: status,
+        texto: firstErrorMessage,
+      },
+      conteudo: null,
+    });
   }
 }

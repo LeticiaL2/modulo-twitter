@@ -11,6 +11,6 @@ import { Retweet } from './entity/retweet.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Tweet, User, Like, Comment, Retweet])],
   controllers: [TweetsController],
-  providers: [TweetsService]
+  providers: [TweetsService],
 })
 export class TweetsModule {}
