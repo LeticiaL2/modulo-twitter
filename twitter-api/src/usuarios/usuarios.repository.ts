@@ -49,9 +49,11 @@ export class UsuariosRepository extends Repository<Usuario> {
 			? consultaDto.ordenarPor
 			: 'ASC';
 
-		consulta.orderBy({
-			[orderColumn]: orderDirection,
-		});
+			if(orderColumn !== undefined){
+				consulta.orderBy({
+					[orderColumn]: orderDirection,
+				});
+			}
 
 		consulta.select([
 			'usuario.id',
