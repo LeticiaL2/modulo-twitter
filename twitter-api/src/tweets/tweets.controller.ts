@@ -6,6 +6,7 @@ import {
 	NotFoundException,
 	Param,
 	Post,
+	Query,
 	UnauthorizedException,
 	UseGuards,
 	ValidationPipe,
@@ -15,6 +16,7 @@ import { CriarTweetDto } from './dto/criar-tweet.dto';
 import { RetornoTweetDto } from './dto/retorno-tweet.dto';
 import { GetIdUsuario } from 'src/usuarios/decorator/get-id-usuario.decorator';
 import { AuthGuard } from '@nestjs/passport';
+import { EncontrarTweetsParametrosDto } from './dto/encontrar-tweets-parametros.dto';
 @Controller('tweets')
 export class TweetsController {
 	constructor(private tweetsService: TweetsService) {}
@@ -129,6 +131,44 @@ export class TweetsController {
 					status: false,
 				};
 			}
+		}
+	}
+
+	@Get()
+	@UseGuards(AuthGuard())
+	async encontrarTweets(@Query() consulta: EncontrarTweetsParametrosDto) {
+		try {
+			const encontrado = await this.tweetsService.encontrarTweets(consulta);
+
+			if (encontrado.tweets.length === 0) {
+				return {
+					conteudo: encontrado,
+					mensagem: {
+						codigo: 404,
+						texto: 'Nenhum tweet foi encontrado',
+					},
+					status: false,
+				};
+			}
+			return {
+				conteudo: encontrado,
+				mensagem: {
+					codigo: 200,
+					texto: 'Tweets encontrados',
+				},
+				status: true,
+			};
+		} catch (error) {
+
+			console.log("ERRO", error)
+			return {
+				conteudo: null,
+				mensagem: {
+					codigo: 500,
+					texto: 'Erro interno do servidor',
+				},
+				status: false,
+			};
 		}
 	}
 }

@@ -6,6 +6,7 @@ import {
 import { TweetsRepository } from './tweets.repository';
 import { CriarTweetDto } from './dto/criar-tweet.dto';
 import { Tweet } from './tweet.entity';
+import { EncontrarTweetsParametrosDto } from './dto/encontrar-tweets-parametros.dto';
 
 @Injectable()
 export class TweetsService {
@@ -35,5 +36,31 @@ export class TweetsService {
 		if (tweet.usuarioId !== usuarioId) throw new UnauthorizedException();
 		const resultado = await this.tweetsRepository.delete({ id: idTweet });
 		if (resultado.affected === 0) throw new NotFoundException();
+	}
+
+	async encontrarTweets(consultaDto: EncontrarTweetsParametrosDto): Promise<{
+		tweets: Tweet[];
+		total: number;
+		paginas: number;
+		paginaAtual: number;
+	}> {
+		consultaDto.pagina =
+			consultaDto.pagina === undefined || consultaDto.pagina < 1
+				? 1
+				: consultaDto.pagina;
+		consultaDto.limite =
+			consultaDto.limite === undefined || consultaDto.limite > 100
+				? 100
+				: consultaDto.limite;
+		const usuariosEncontrados =
+			await this.tweetsRepository.encontrarTweets(consultaDto);
+
+		const { tweets, total } = usuariosEncontrados;
+
+		const paginas = Math.ceil(total / consultaDto.limite);
+
+		const paginaAtual = Number(consultaDto.pagina);
+
+		return { tweets, total, paginas, paginaAtual };
 	}
 }
