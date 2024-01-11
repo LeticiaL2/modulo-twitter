@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container } from './styles'
-import Span from '../Span'
+import Span from '../../atoms/Span'
 
 const DropdownItem = (props) => {
   return (

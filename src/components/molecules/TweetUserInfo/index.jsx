@@ -1,7 +1,7 @@
 import React from 'react'
 import { colors } from '../../../styles/colors'
-import DotIcon from '../SVGIcons/DotIcon'
-import Span from '../Span'
+import DotIcon from '../../atoms/SVGIcons/DotIcon'
+import Span from '../../atoms/Span'
 import { Container, FlexContainer } from './styles'
 
 const TweetUserInfo = ({ nome, usuario, dataFormatada }) => {

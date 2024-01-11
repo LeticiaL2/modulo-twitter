@@ -1,5 +1,5 @@
 import React from 'react';
-import Tweet from '../Tweet';
+import Tweet from '../../organisms/Tweet';
 
 function TweetsList({ tweets }) {
   return (

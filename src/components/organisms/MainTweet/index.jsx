@@ -1,32 +1,32 @@
 import { format } from 'date-fns';
 import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { TweetDetailContext } from '../../../contexts/tweetDetail';
+import { getUserLocalStorage } from '../../../contexts/util';
+import Api from '../../../services/api';
 import { colors } from '../../../styles/colors';
 import DotIcon from '../../atoms/SVGIcons/DotIcon';
 import MoreIcon from '../../atoms/SVGIcons/MoreIcon';
 import Span from '../../atoms/Span';
 import UserPhoto from '../../atoms/UserPhoto';
-import ListActions from '../ListActions';
+import BodyTweet from '../../molecules/BodyTweet';
+import ListActions from '../../molecules/ListActions';
+import Modal from '../Modal';
 import {
   Content,
   DateContainer,
-  DivDisplay,
+  DivDisplayContainer,
   Footer,
   HeaderContainer,
   RetweetContainer,
   TweetContainer,
   UserInfoContainer
 } from './styles';
-import BodyTweet from '../BodyTweet';
-import { useNavigate } from 'react-router-dom';
-import Modal from '../Modal';
-import Api from '../../../services/api';
-import { getUserLocalStorage } from '../../../contexts/util';
-import { TweetContext } from '../../organisms/Main';
 
 function MainTweet({ userData }) {
   const [openCommentModal, setOpenCommentModal] = useState(false)
   const [openRetweetModal, setOpenRetweetModal] = useState(false)
-  const { refreshTweet } = useContext(TweetContext)
+  const { refreshTweet } = useContext(TweetDetailContext)
   const navigate = useNavigate()
   const { id: tweetId, texto: content, data: date, nome, usuario, isLikedByUser, isRetweetedByUser, isRetweetedWithoutQuoteByUser, retweetPai } = userData;
   const hourFormatted = format(new Date(date), 'KK:mm a')
@@ -62,13 +62,13 @@ function MainTweet({ userData }) {
     <TweetContainer>
       <HeaderContainer>
         <UserPhoto src="https://cdn.pixabay.com/photo/2021/01/04/10/41/icon-5887126_1280.png" />
-        <DivDisplay>
+        <DivDisplayContainer>
           <UserInfoContainer>
             <Span>{nome}</Span>
             <Span $fontColor={colors.light_gray}>@{usuario}</Span>
           </UserInfoContainer>
           <MoreIcon />
-        </DivDisplay>
+        </DivDisplayContainer>
       </HeaderContainer>
       <Content>
         {content}

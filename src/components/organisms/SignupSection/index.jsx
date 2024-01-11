@@ -7,6 +7,16 @@ import { Api } from '../../../services/api';
 
 function SignupSection() {
   const navigate = useNavigate();
+
+  const [touched, setTouched] = useState({
+    name: false,
+    username: false,
+    email: false,
+    password: false,
+    confirmPassword: false
+  })
+  
+
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('')
 
@@ -79,7 +89,7 @@ function SignupSection() {
     }
   }
 
-  const nameisValid = name => {
+  const nameIsValid = name => {
     const nameRegex = /^[A-Za-z\s'-]{1,50}$/
     if (name.trim() === '') {
       setNameError('Name must not be empty.')
@@ -108,38 +118,51 @@ function SignupSection() {
 
   const handleNameInputChange = e => {
     setName(e.target.value)
-    nameisValid(e.target.value)
+    nameIsValid(e.target.value)
+    setTouched({ ...touched, name: true });
   }
 
   const handleUsernameInputChange = e => {
     setUsername(e.target.value)
     usernameIsValid(e.target.value)
+    setTouched({ ...touched, username: true });
   }
 
   const handleEmailInputChange = e => {
     setEmail(e.target.value)
     emailIsValid(e.target.value)
+    setTouched({ ...touched, email: true });
   }
 
   const handlePasswordInputChange = e => {
     setPassword(e.target.value)
     passwordIsValid(e.target.value)
+    setTouched({ ...touched, password: true });
   }
 
   const handleConfirmPasswordInputChange = e => {
     setConfirmPassword(e.target.value)
     confirmPasswordIsValid(e.target.value)
+    setTouched({ ...touched, confirmPassword: true });
   }
 
   const isButtonDisabled = useMemo(() => {
-    return !(emailIsValid(email) && passwordIsValid(password) && usernameIsValid(username) && nameisValid(name) && confirmPasswordIsValid(confirmPassword));
-  }, [email, password, username, name, confirmPassword]);
+    const validations = [
+      touched.email && emailIsValid(email),
+      touched.password && passwordIsValid(password),
+      touched.username && usernameIsValid(username),
+      touched.name && nameIsValid(name),
+      touched.confirmPassword && confirmPasswordIsValid(confirmPassword),
+    ];
+    
+    return !validations.every(Boolean)
+  }, [email, password, username, name, confirmPassword, touched]);
 
 
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    if (!emailIsValid(email) && !passwordIsValid(password) && !usernameIsValid(username) && !nameisValid(name) && !confirmPasswordIsValid(confirmPassword)) {
+    if (!emailIsValid(email) && !passwordIsValid(password) && !usernameIsValid(username) && !nameIsValid(name) && !confirmPasswordIsValid(confirmPassword)) {
       return
     }
 
@@ -154,7 +177,7 @@ function SignupSection() {
       return
     }
 
-    if (!nameisValid(name)) {
+    if (!nameIsValid(name)) {
       return
     }
 

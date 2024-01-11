@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { getUserLocalStorage } from '../../../contexts/util'
 import Api from '../../../services/api'
 import { colors } from '../../../styles/colors'
-import DropdownItem from '../../atoms/DropdownItem'
-import DropdownMenu from '../../atoms/DropdownMenu'
+import DropdownItem from '../DropdownItem'
+import DropdownMenu from '../../organisms/DropdownMenu'
 import AnalyticsIcon from '../../atoms/SVGIcons/AnalyticsIcon'
 import CommentIcon from '../../atoms/SVGIcons/CommentIcon'
 import LikeIcon from '../../atoms/SVGIcons/LikeIcon'
@@ -13,7 +13,7 @@ import ShareIcon from '../../atoms/SVGIcons/ShareIcon'
 import Span from '../../atoms/Span'
 import { ActionContainer, FooterContainer } from './styles'
 
-const ListActions = ({ tweetId, comentarios, isLikedByUser, likes, isRetweetedByUser, isRetweetedWithoutQuoteByUser, retweets, onClickModal, onClickRetweetModal, onClickWithoutQuote, onClickUndoRetweet }) => {
+const ListActions = ({ tweetId, comentarios, isLikedByUser, likes, isRetweetedByUser, isRetweetedWithoutQuoteByUser, retweets, onClickModal, onClickRetweetModal, onClickWithoutQuote, onClickUndoRetweet, onClickLikeListUpdate }) => {
   const [likedBoolean, setLikedBoolean] = useState(isLikedByUser)
   const [likesCount, setLikesCount] = useState(likes)
 
@@ -47,11 +47,14 @@ const ListActions = ({ tweetId, comentarios, isLikedByUser, likes, isRetweetedBy
     if (response.data.mensagem.codigo === 201) {
       setLikedBoolean(prev => !prev)
       setLikesCount(prev => prev + 1)
-    } else {
+    } else if (response.data.mensagem.codigo === 200) {
       setLikedBoolean(prev => !prev)
       setLikesCount(prev => prev - 1)
-
+    } else {
+      console.log(response.data.mensagem)
     }
+    onClickLikeListUpdate(likedBoolean, likesCount)
+
   }
 
   const handleComment = async (e) => {

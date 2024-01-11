@@ -1,16 +1,16 @@
 import React, { useContext, useRef } from 'react'
 import { createPortal } from 'react-dom'
+import { TweetsListContext } from '../../../contexts/tweetsTimeline'
 import { getUserLocalStorage } from '../../../contexts/util'
 import Api from '../../../services/api'
 import CloseIcon from '../../atoms/SVGIcons/CloseIcon'
-import ReplyTweet from '../ReplyTweet'
+import ReplyTweet from '../../molecules/ReplyTweet'
 import { BodyContainer, CloseContainer, Container, ContentContainer, DraftContainer, FooterContainer, HeaderContainer, ModalContainer } from './styles'
-import { TweetContext } from '../../organisms/Main'
 
 const modalElement = document.getElementById('portal')
 
-function Modal({ showModal, setShowModal, children, userData, isComment }) {
-  const { refreshTweet } = useContext(TweetContext)
+function Modal({ showModal, setShowModal, children, userData, isComment, isRetweet }) {
+  const { refreshTweets, updateTweets } = useContext(TweetsListContext)
   const modalRef = useRef()
 
   function closeModal(e) {
@@ -23,6 +23,11 @@ function Modal({ showModal, setShowModal, children, userData, isComment }) {
     try {
       const response = await Api.post(`api/v1/tweets/${userData.id}/comentarios`, replyData, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
       setShowModal(false)
+      const updatedTweet = {
+        ...userData,
+        comentarios: userData.comentarios + 1
+      }
+      updateTweets(updatedTweet, isRetweet)
     } catch (error) {
       console.log(error)
     }
@@ -31,7 +36,7 @@ function Modal({ showModal, setShowModal, children, userData, isComment }) {
   async function handleReplyTweetWithQuote(replyData) {
     try {
       const response = await Api.post(`api/v1/tweets/${userData.id}/retweets`, replyData, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
-      refreshTweet()
+      refreshTweets()
       setShowModal(false)
     } catch (error) {
       console.log(error)

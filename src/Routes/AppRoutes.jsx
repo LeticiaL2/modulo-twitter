@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import HomePage from "../pages/Home/Home";
-import LoginPage from "../pages/Login/Login";
-import Signup from "../pages/Signup/Signup"
+import HomePage from '../components/pages/Home/Home'
+import LoginPage from '../components/pages/Login/Login'
+import Signup from '../components/pages/Signup/Signup'
+import TweetPage from '../components/pages/Tweet/Tweet'
 import { AuthProvider, AuthContext } from "../contexts/auth";
 import React, { useContext } from 'react'
-import TweetPage from "../pages/Tweet/Tweet";
 
 const AppRoutes = () => {
   function Private({ children }) {

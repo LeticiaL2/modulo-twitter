@@ -2,14 +2,13 @@ import { formatDistanceToNow } from 'date-fns'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { colors } from '../../../styles/colors'
-import Span from '../Span'
-import TweetUserInfo from '../TweetUserInfo'
-import UserPhoto from '../UserPhoto'
+import Span from '../../atoms/Span'
+import TweetUserInfo from '../../molecules/TweetUserInfo'
+import UserPhoto from '../../atoms/UserPhoto'
 import { Container, RetweetContainer } from './styles'
 
 const TweetUserContent = ({ content, retweetPai }) => {
   const [showMore, setShowMore] = useState(false)
-  // const [isRemoved, setIsRemoved] = useState(retweetPai?.isRemoved ? true : false)
   const navigate = useNavigate()
 
   const text = content === null ? '' : content.length > 150 ?

@@ -1,12 +1,12 @@
 import { formatDistanceToNow } from 'date-fns'
 import React, { useState } from 'react'
 import MoreIcon from '../../atoms/SVGIcons/MoreIcon'
-import TweetUserContent from '../../atoms/TweetUserContent'
-import TweetUserInfo from '../../atoms/TweetUserInfo'
+import TweetUserContent from '../../molecules/TweetUserContent'
+import TweetUserInfo from '../TweetUserInfo'
 import { Container, HeaderContainer } from './styles'
 import { getUserLocalStorage } from '../../../contexts/util'
-import DropdownMenu from '../../atoms/DropdownMenu'
-import DropdownItem from '../../atoms/DropdownItem'
+import DropdownMenu from '../../organisms/DropdownMenu'
+import DropdownItem from '../DropdownItem'
 import DeleteIcon from '../../atoms/SVGIcons/DeleteIcon'
 
 const BodyTweet = ({ userData, username, onClickRemoveTweet }) => {

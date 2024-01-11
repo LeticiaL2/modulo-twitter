@@ -15,7 +15,7 @@ export const HeaderContainer = styled.header`
   gap: 0.75rem;
 `
 
-export const DivDisplay = styled.div`
+export const DivDisplayContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;

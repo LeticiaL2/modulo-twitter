@@ -39,7 +39,6 @@ const Retweet = ({ userData }) => {
         {text}
         {text.length === 150 && !showMore && <Span $fontColor={colors.blue} onClick={handleShow}>Show more</Span>}
         {text.length > 150 && showMore && <Span $fontColor={colors.blue} onClick={handleShow}>Show Less</Span>}
-        {/* {retweetPai && <BodyTweet userData={retweetPai} />} */}
       </ContentContainer>
     </>
 
