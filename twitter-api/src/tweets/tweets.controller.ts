@@ -49,43 +49,6 @@ export class TweetsController {
 		}
 	}
 
-	@Get(':id')
-	@UseGuards(AuthGuard())
-	async encontrarTweetPeloId(@Param('id') id): Promise<RetornoTweetDto> {
-		try {
-			const tweet = await this.tweetsService.encontrarTweetPeloId(id);
-
-			return {
-				conteudo: tweet,
-				mensagem: {
-					codigo: 200,
-					texto: 'Tweet encontrado',
-				},
-				status: true,
-			};
-		} catch (error) {
-			if (error instanceof NotFoundException)
-				return {
-					conteudo: null,
-					mensagem: {
-						codigo: 404,
-						texto: 'Tweet não encontrado',
-					},
-					status: false,
-				};
-			else {
-				return {
-					conteudo: null,
-					mensagem: {
-						codigo: 500,
-						texto: 'Erro interno do servidor',
-					},
-					status: false,
-				};
-			}
-		}
-	}
-
 	@Delete(':id')
 	@UseGuards(AuthGuard())
 	async deletarUsuario(
@@ -159,8 +122,6 @@ export class TweetsController {
 				status: true,
 			};
 		} catch (error) {
-
-			console.log("ERRO", error)
 			return {
 				conteudo: null,
 				mensagem: {

@@ -7,7 +7,6 @@ import { TweetsRepository } from './tweets.repository';
 import { CriarTweetDto } from './dto/criar-tweet.dto';
 import { Tweet } from './tweet.entity';
 import { EncontrarTweetsParametrosDto } from './dto/encontrar-tweets-parametros.dto';
-
 @Injectable()
 export class TweetsService {
 	constructor(private tweetsRepository: TweetsRepository) {}
@@ -52,10 +51,10 @@ export class TweetsService {
 			consultaDto.limite === undefined || consultaDto.limite > 100
 				? 100
 				: consultaDto.limite;
-		const usuariosEncontrados =
+		const tweetsEncontrados =
 			await this.tweetsRepository.encontrarTweets(consultaDto);
 
-		const { tweets, total } = usuariosEncontrados;
+		const { tweets, total } = tweetsEncontrados;
 
 		const paginas = Math.ceil(total / consultaDto.limite);
 

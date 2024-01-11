@@ -27,11 +27,11 @@ export class TweetsRepository extends Repository<Tweet> {
 		const consulta = this.createQueryBuilder('tweet');
 
 		if (id) {
-			consulta.where('tweet.id ILIKE :id', { id: `%${id}%` });
+			consulta.where('tweet.id = :id', { id });
 		}
 
 		if (usuarioId) {
-			consulta.andWhere('tweet.usuarioId ILIKE :usuarioId', { usuarioId: `%${usuarioId}` });
+			consulta.andWhere('tweet.usuarioId = :usuarioId', { usuarioId });
 		}
 
 		consulta.skip((consultaDto.pagina - 1) * consultaDto.limite);
@@ -43,12 +43,11 @@ export class TweetsRepository extends Repository<Tweet> {
 			? consultaDto.ordenarPor
 			: 'ASC';
 
-		if(orderColumn !== undefined){
+		if (orderColumn !== undefined) {
 			consulta.orderBy({
 				[orderColumn]: orderDirection,
 			});
 		}
-
 
 		consulta.select([
 			'tweet.id',
@@ -62,5 +61,4 @@ export class TweetsRepository extends Repository<Tweet> {
 
 		return { tweets, total };
 	}
-
 }
