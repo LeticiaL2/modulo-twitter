@@ -37,7 +37,7 @@ export class UsuariosRepository extends Repository<Usuario> {
 		}
 
 		if (id) {
-			consulta.andWhere('usuario.id ILIKE :id', { id: `%${id}` });
+			consulta.where('usuario.id = :id', { id });
 		}
 
 		consulta.skip((consultaDto.pagina - 1) * consultaDto.limite);
@@ -49,11 +49,11 @@ export class UsuariosRepository extends Repository<Usuario> {
 			? consultaDto.ordenarPor
 			: 'ASC';
 
-			if(orderColumn !== undefined){
-				consulta.orderBy({
-					[orderColumn]: orderDirection,
-				});
-			}
+		if (orderColumn !== undefined) {
+			consulta.orderBy({
+				[orderColumn]: orderDirection,
+			});
+		}
 
 		consulta.select([
 			'usuario.id',

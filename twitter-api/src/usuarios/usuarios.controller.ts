@@ -6,7 +6,6 @@ import {
 	Delete,
 	Get,
 	NotFoundException,
-	Param,
 	Patch,
 	Post,
 	Query,
@@ -59,43 +58,6 @@ export class UsuariosController {
 					},
 					status: false,
 				};
-		}
-	}
-
-	@Get(':id')
-	@UseGuards(AuthGuard())
-	async encontrarUsuarioPeloId(@Param('id') id): Promise<RetornoUsuarioDto> {
-		try {
-			const usuario = await this.usuariosService.encontrarUsuarioPeloId(id);
-
-			return {
-				conteudo: usuario,
-				mensagem: {
-					codigo: 200,
-					texto: 'Usuario encontrado',
-				},
-				status: true,
-			};
-		} catch (error) {
-			if (error instanceof NotFoundException)
-				return {
-					conteudo: null,
-					mensagem: {
-						codigo: 404,
-						texto: 'Usuario não encontrado',
-					},
-					status: false,
-				};
-			else {
-				return {
-					conteudo: null,
-					mensagem: {
-						codigo: 500,
-						texto: 'Erro interno do servidor',
-					},
-					status: false,
-				};
-			}
 		}
 	}
 
