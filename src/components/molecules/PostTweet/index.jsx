@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Button from '../../atoms/Button'
 import Input from '../../atoms/Input'
 import Span from '../../atoms/Span'
 import UserPhoto from '../../atoms/UserPhoto'
 import { ActionsContainer, Container, FormTweetContainer, InputTweetContainer } from './styles'
+import { TweetsListContext } from '../../../contexts/tweetsTimeline'
 
 
-function PostTweet({ onAddTweet }) {
+function PostTweet() {
+  const { handleAddTweet } = useContext(TweetsListContext)
   const [enteredTweet, setEnteredTweet] = useState('')
   const [isButtonDisabled, setIsButtonDisabled] = useState(true)
   const maxLetters = 280
@@ -24,7 +26,7 @@ function PostTweet({ onAddTweet }) {
     const tweetData = {
       texto: enteredTweet,
     }
-    onAddTweet(tweetData)
+    handleAddTweet(tweetData)
     setEnteredTweet('')
     setIsButtonDisabled(true)
   };

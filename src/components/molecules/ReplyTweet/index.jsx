@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Button from '../../atoms/Button'
 import Input from '../../atoms/Input'
 import Span from '../../atoms/Span'
 import UserPhoto from '../../atoms/UserPhoto'
 import { ActionsContainer, Container, FormContainer, FormTweetContainer, InputTweetContainer, ReplyToContainer } from './styles'
+import { TweetDetailContext } from '../../../contexts/tweetDetail'
 
 
-function ReplyTweet({ onReplyTweet, postUser }) {
+function ReplyTweet({ postUser }) {
+  const { handleAddComment } = useContext(TweetDetailContext)
   const [enteredReply, setEnteredReply] = useState('')
   const [isButtonDisabled, setIsButtonDisabled] = useState(true)
   const maxLetters = 280
@@ -23,7 +25,7 @@ function ReplyTweet({ onReplyTweet, postUser }) {
     const replyData = {
       texto: enteredReply,
     }
-    onReplyTweet(replyData)
+    handleAddComment(replyData)
     setEnteredReply('')
     setIsButtonDisabled(true)
   };

@@ -9,8 +9,8 @@ import { BodyContainer, CloseContainer, Container, ContentContainer, DraftContai
 
 const modalElement = document.getElementById('portal')
 
-function Modal({ showModal, setShowModal, children, userData, isComment, isRetweet }) {
-  const { refreshTweets, updateTweets } = useContext(TweetsListContext)
+function Modal({ showModal, setShowModal, children, userData, isComment, isRetweet, refreshList }) {
+  // const { refreshTweets, updateTweets } = useContext(TweetsListContext)
   const modalRef = useRef()
 
   function closeModal(e) {
@@ -27,7 +27,7 @@ function Modal({ showModal, setShowModal, children, userData, isComment, isRetwe
         ...userData,
         comentarios: userData.comentarios + 1
       }
-      updateTweets(updatedTweet, isRetweet)
+      // updateTweets(updatedTweet, isRetweet)
     } catch (error) {
       console.log(error)
     }
@@ -36,7 +36,7 @@ function Modal({ showModal, setShowModal, children, userData, isComment, isRetwe
   async function handleReplyTweetWithQuote(replyData) {
     try {
       const response = await Api.post(`api/v1/tweets/${userData.id}/retweets`, replyData, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
-      refreshTweets()
+      refreshList()
       setShowModal(false)
     } catch (error) {
       console.log(error)
@@ -59,10 +59,9 @@ function Modal({ showModal, setShowModal, children, userData, isComment, isRetwe
               <ContentContainer >
                 {children}
               </ContentContainer>
-              <ReplyTweet onReplyTweet={handleCommentTweet} postUser={userData.usuario} />
+              <ReplyTweet onReplyTweet={handleCommentTweet} postUser={userData.usuario} refreshList={refreshList}/>
             </BodyContainer>
             <FooterContainer >
-              {/* <Button>Reply</Button> */}
             </FooterContainer>
           </ModalContainer>
         </Container>,
@@ -83,10 +82,9 @@ function Modal({ showModal, setShowModal, children, userData, isComment, isRetwe
             <ContentContainer >
               {children}
             </ContentContainer>
-            <ReplyTweet onReplyTweet={handleReplyTweetWithQuote} postUser={userData.usuario} />
+            <ReplyTweet onReplyTweet={handleReplyTweetWithQuote} postUser={userData.usuario} refreshList={refreshList}/>
           </BodyContainer>
           <FooterContainer >
-            {/* <Button>Reply</Button> */}
           </FooterContainer>
         </ModalContainer>
       </Container>,

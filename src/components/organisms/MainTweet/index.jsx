@@ -26,7 +26,7 @@ import {
 function MainTweet({ userData }) {
   const [openCommentModal, setOpenCommentModal] = useState(false)
   const [openRetweetModal, setOpenRetweetModal] = useState(false)
-  const { refreshTweet } = useContext(TweetDetailContext)
+  // const { refreshTweet } = useContext(TweetDetailContext)
   const navigate = useNavigate()
   const { id: tweetId, texto: content, data: date, nome, usuario, isLikedByUser, isRetweetedByUser, isRetweetedWithoutQuoteByUser, retweetPai } = userData;
   const hourFormatted = format(new Date(date), 'KK:mm a')
@@ -41,7 +41,7 @@ function MainTweet({ userData }) {
   const handleRetweetWithoutQuote = async () => {
     try {
       const response = await Api.post(`api/v1/tweets/${tweetId}/retweets`, {}, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
-      refreshTweet()
+      // refreshTweet()
     } catch (error) {
       console.log(error)
     }
@@ -50,7 +50,7 @@ function MainTweet({ userData }) {
   const handleUndoRetweet = async (id) => {
     try {
       const response = await Api.delete(`api/v1/tweets/${id}`, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
-      refreshTweet()
+      // refreshTweet()
     } catch (error) {
       console.log(error)
     }

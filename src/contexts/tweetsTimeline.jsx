@@ -7,7 +7,7 @@ export const TweetsListContext = createContext();
 const TweetTimelineProvider = ({ children }) => {
   const [tweets, setTweets] = useState([]);
 
-  async function getTweets() {
+  const getTweets = async () => {
     try {
       const response = await Api.get('api/v1/tweets', { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
       if (response.status !== 200) {
@@ -16,6 +16,20 @@ const TweetTimelineProvider = ({ children }) => {
       setTweets(response.data.conteudo)
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  const handleAddTweet = async (tweet) => {
+    try {
+      const response = await Api.post('api/v1/tweets', tweet, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
+
+      if (response.status !== 201) {
+        throw new Error(response.data.message || 'Something went wrong')
+      }
+      console.log(response.data.conteudo)
+      getTweets()
+    } catch (e) {
+      console.log(e)
     }
   }
 
@@ -48,7 +62,7 @@ const TweetTimelineProvider = ({ children }) => {
   }
 
   return (
-    <TweetsListContext.Provider value={{ tweets, refreshTweets: getTweets, updateTweets }}>
+    <TweetsListContext.Provider value={{ tweets, refreshList: getTweets, handleAddTweet, updateTweets }}>
       {children}
     </TweetsListContext.Provider>
   );

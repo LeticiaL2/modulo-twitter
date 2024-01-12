@@ -12,7 +12,7 @@ const TweetDetailProvider = ({ children }) => {
   const [postUser, setPostUser] = useState(null)
   const [commentsList, setCommentsList] = useState([])
 
-  async function getTweet() {
+  const getTweet = async () => {
     try {
       const response = await Api.get(`/api/v1/tweets/${id}`, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
       if (response.status !== 200) {
@@ -23,6 +23,20 @@ const TweetDetailProvider = ({ children }) => {
       setCommentsList(response.data.conteudo.comentariosArray)
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  const handleAddComment = async (reply) => {
+    try {
+      const response = await Api.post(`api/v1/tweets/${id}/comentarios`, reply, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
+
+      if (response.status !== 201) {
+        throw new Error(response.data.message || 'Something went wrong')
+      }
+
+      getTweet()
+    } catch (e) {
+      console.log(e)
     }
   }
 
@@ -54,7 +68,7 @@ const TweetDetailProvider = ({ children }) => {
   }
 
   return (
-    <TweetDetailContext.Provider value={{ tweet, refreshTweet: getTweet, postUser, commentsList, updateTweets }} >
+    <TweetDetailContext.Provider value={{ tweet, refreshList: getTweet, handleAddComment, postUser, commentsList, updateTweets }} >
       {children}
     </TweetDetailContext.Provider>
   )
