@@ -3,9 +3,10 @@ import style from "./style.module.scss";
 
 interface Props{
   text: string;
+  onInputChange: (value:string) => void;
 }
 
-export default function Input({text}:Props) {
+export default function Input({text, onInputChange }:Props) {
   const [showInputFocus, setInputFocus] = useState(false);
 
   const handleClick = () => {
@@ -14,6 +15,15 @@ export default function Input({text}:Props) {
 
   const handleClose = () => {
     setInputFocus(false);
+
+  };
+  const [inputValue, setInputValue] = useState('');
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    setInputValue(newValue);
+    // Chama a função de retorno de chamada fornecida pelo componente pai
+    onInputChange(newValue);
   };
 
   // const inputRef = useRef<HTMLDivElement>(null);
@@ -49,6 +59,7 @@ export default function Input({text}:Props) {
         ref={inputRef}
         placeholder={text}
         onClick={handleClick}
+        onChange={handleChange}
       />
       {/* <p>Esqueceu sua senha?</p> */}
     </div>

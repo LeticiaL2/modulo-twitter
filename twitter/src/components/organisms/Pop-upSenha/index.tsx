@@ -35,7 +35,7 @@ export default function PopupSenha({ showPopup, handleClose, value }: Props) {
   const { mutate, isSuccess, isError } = useLogin();
   const [inputValue, setInputValue] = React.useState("");
 
-  const handleInputChangeInApp = (value: string) => {
+  const handleInputChange = (value: string) => {
     setInputValue(value);
   };
 
@@ -80,7 +80,7 @@ export default function PopupSenha({ showPopup, handleClose, value }: Props) {
         <div className={style.Div}>
           <h1>Digite sua senha</h1>
           <InputDisabled email={value} />
-          <Input text={"Senha"} onInputChange={handleInputChangeInApp} />
+          <Input text={"Senha"} onInputChange={handleInputChange} />
           <div>
             <Button
               name={"Entrar"}
