@@ -1,0 +1,22 @@
+.Main {
+  color: black;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  right: 0;
+  left: 0;
+  height: fit-content;
+  justify-content: center;
+}
+
+.Text {
+  width: 150px;
+  padding: 12px;
+  border-radius: 5px;
+  background-color: rgb(29, 155, 240);
+  color: white !important;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  margin: 0 !important;
+}

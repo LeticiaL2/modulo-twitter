@@ -34,7 +34,7 @@
 }
 
 .MainButtonBackgroundWhite {
-  color: #0f1419;
+  color: #0f1419 !important;
   background-color: rgb(239, 243, 244);
   cursor: pointer;
   height: 38px;
@@ -48,10 +48,11 @@
 }
 .MainButtonBackgroundWhite:hover {
   background-color: #d7dbdc;
+  text-decoration: none !important;
 }
 
 .MainButtontextWhite {
-  color: #eff3f4;
+  color: #eff3f4 !important;
   background-color: transparent;
   border: 1px solid rgb(83, 100, 113);
   cursor: pointer;

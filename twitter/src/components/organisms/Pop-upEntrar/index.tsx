@@ -2,28 +2,33 @@ import style from "./style.module.scss";
 import LoginButton from "../../atoms/LoginButton";
 import Button from "../../atoms/Button";
 import Input from "../../atoms/Input";
-import { useState } from "react";
+import React, { useState } from "react";
 import PopupSenha from "../Pop-upSenha";
 
-
 interface Props {
-  isShowPopup: boolean,
-  handleClose: () => void
+  isShowPopup: boolean;
+  handleClose: () => void;
 }
 
-export default function PopupEntrar({isShowPopup, handleClose }: Props) {
+export default function PopupEntrar({ isShowPopup, handleClose }: Props) {
   const arraybutton = [
     { name: "Entrar com Google", img: "./images/logo_apple.svg" },
     { name: "Entrar com Apple", img: "./images/logo_apple.svg" },
   ];
 
   const [showPopupSenha, setShowPopupSenha] = useState(false);
+  const [inputValue, setInputValue] = React.useState("");
 
   const handleClickPopupSenha = () => {
-    setShowPopupSenha(true); // Abre o popup ao clicar no botão
+    setShowPopupSenha(true); // Abre o PopupSenha ao clicar no botão
   };
+
   const handleClosePopupSenha = () => {
     setShowPopupSenha(false); // Fecha o popup ao clicar no botão
+  };
+
+  const handleInputChangeInApp = (value: string) => {
+    setInputValue(value);
   };
 
   return (
@@ -49,11 +54,21 @@ export default function PopupEntrar({isShowPopup, handleClose }: Props) {
             <div className={style.Line}></div>
           </div>
 
-          <Input text={"Celular, e-mail ou nome de usuário"}/>
-          
-          <Button name={"Avançar"} backgroundWhite={true} onClick={handleClickPopupSenha} />
-          {/*<Button name={"Avançar"} backgroundWhite={true} onClick={() => {handleClickPopupSenha(); handleClose();}} /> */}
-          <PopupSenha showPopup={showPopupSenha} handleClose={handleClosePopupSenha}/> 
+          <Input
+            text={"Celular, e-mail ou nome de usuário"}
+            onInputChange={handleInputChangeInApp}
+          />
+
+          <Button
+            name={"Avançar"}
+            backgroundWhite={true}
+            onClick={handleClickPopupSenha}
+          />
+          <PopupSenha
+            showPopup={showPopupSenha}
+            handleClose={handleClosePopupSenha}
+            value={inputValue}
+          />
 
           <Button name={"Esqueceu sua senha?"} textWhite={true} />
 

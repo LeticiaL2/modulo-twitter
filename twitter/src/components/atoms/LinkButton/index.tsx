@@ -1,3 +1,4 @@
+import { Link, NavLink } from "react-router-dom";
 import style from "./style.module.scss";
 
 interface Props {
@@ -7,20 +8,24 @@ interface Props {
   backgroundWhite?: boolean;
   textWhite?: boolean;
   widthFull?: boolean;
-  link?: string;
+  link: string;
   onClick?: () => void;
 }
 
-function MenuButton({
+function LinkButton({
   name,
   colorblue,
   backgroundWhite,
   textWhite,
+  widthFull,
   onClick,
+  link,
 }: Props) {
+
   return (
-    <div
-      onClick={onClick}
+    <button onClick= {onClick}>
+    <Link
+      to={link}
       className={
         colorblue
           ? style.MainButtonBlue
@@ -34,8 +39,9 @@ function MenuButton({
       <div className={style.Button}>
         <span className={style.Text}>{name}</span>
       </div>
-    </div>
+    </Link>
+    </button>
   );
 }
 
-export default MenuButton;
+export default LinkButton;
