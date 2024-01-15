@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import style from "./style.module.scss";
 
-interface Props{
+interface Props {
   text: string;
-  onInputChange: (value:string) => void;
+  onInputChange: (value: string) => void;
+  type: string;
 }
 
-export default function Input({text, onInputChange }:Props) {
+export default function Input({ text, type, onInputChange }: Props) {
   const [showInputFocus, setInputFocus] = useState(false);
 
   const handleClick = () => {
@@ -15,18 +16,16 @@ export default function Input({text, onInputChange }:Props) {
 
   const handleClose = () => {
     setInputFocus(false);
-
   };
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     setInputValue(newValue);
-    // Chama a função de retorno de chamada fornecida pelo componente pai
+    // Chama a função de retorno fornecida pelo componente pai
     onInputChange(newValue);
   };
 
-  // const inputRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -38,7 +37,7 @@ export default function Input({text, onInputChange }:Props) {
         console.log("Clicou fora do input!");
         handleClose();
       } else {
-         console.log("Clicou dentro do input!");
+        console.log("Clicou dentro do input!");
       }
     };
 
@@ -50,17 +49,18 @@ export default function Input({text, onInputChange }:Props) {
   }, []);
 
   return (
-    <div
-      className={showInputFocus ? style.DivInputFocus : style.DivInput}
-    >
-      <p id="p">{text}</p>
-      <input
-        type="text"
-        ref={inputRef}
-        placeholder={text}
-        onClick={handleClick}
-        onChange={handleChange}
-      />
+    <div className={style.DivMain}>
+      <div className={showInputFocus ? style.DivInputFocus : style.DivInput}>
+        <p id="pText">{text}</p>
+        <input
+          type={type}
+          ref={inputRef}
+          placeholder={text}
+          onClick={handleClick}
+          onChange={handleChange}
+        />
+      </div>
+      {/* "text" */}
       {/* <p>Esqueceu sua senha?</p> */}
     </div>
   );

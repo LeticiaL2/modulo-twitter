@@ -1,8 +1,7 @@
-import { QueryClient, useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import axios from "axios";
 import { loginData } from "../interfaces/loginData";
-import PopUpError from "../components/atoms/PopUpError";
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const baseURL = "http://localhost:3000";
 
@@ -11,13 +10,18 @@ const postData = async (data: loginData) => {
 };
 
 export default function useLogin() {
-  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  function handleLoginSuccess() {
+    return navigate("home");
+  }
 
   const queryClient = useQueryClient();
   const mutate = useMutation({
     mutationFn: postData,
     onSuccess: () => {
       queryClient.invalidateQueries(["twitter-data"]);
+      handleLoginSuccess();
     },
     onError: () => {},
   });

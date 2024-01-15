@@ -19,19 +19,18 @@ function MenuButton({
   onClick,
 }: Props) {
   return (
-    <div
-      onClick={onClick}
-      className={
-        colorblue
-          ? style.MainButtonBlue
-          : backgroundWhite
-          ? style.MainButtonBackgroundWhite
-          : textWhite
-          ? style.MainButtontextWhite
-          : style.MainButtonTransparent
-      }
-    >
-      <div className={style.Button}>
+    <div onClick={onClick} className={style.Main}>
+      <div
+        className={
+          colorblue
+            ? style.MainButtonBlue
+            : backgroundWhite
+            ? style.MainButtonBackgroundWhite
+            : textWhite
+            ? style.MainButtontextWhite
+            : style.MainButtonTransparent
+        }
+      >
         <span className={style.Text}>{name}</span>
       </div>
     </div>

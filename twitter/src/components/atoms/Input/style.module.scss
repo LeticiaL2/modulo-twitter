@@ -1,54 +1,46 @@
-.DivInput {
-  height: 56px;
-  border: 1px solid rgb(51, 54, 57);
-  border-radius: 4px;
+.DivMain {
   color: #e7e9ea;
-  padding: 8px;
   font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, Helvetica, Arial, sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   margin-top: 12px;
   margin-bottom: 12px;
 
+  div:first-child {
+    height: 56px;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+
+    input {
+      width: 100%;
+      padding: 0px;
+      border: 0px;
+      font-size: 17px;
+      background-color: transparent;
+      color: #e7e9ea;
+    }
+    input:focus {
+      box-shadow: 0 0 0 0;
+      border: 0 none;
+      outline: 0;
+    }
+  }
+}
+
+.DivInput {
+  border: 1px solid rgb(51, 54, 57);
+
   p {
     display: none;
-  }
-
-  input {
-    width: 100%;
-    padding: 0px;
-    border: 0px;
-    font-size: 17px;
-    background-color: transparent;
-    color: #e7e9ea;
-  }
-
-  input:focus {
-    box-shadow: 0 0 0 0;
-    border: 0 none;
-    outline: 0;
-    // margin-top: 16px;
   }
 }
 
 .DivInputFocus {
   border: 1px solid #1d9bf0;
   box-shadow: rgb(29, 155, 240) 0px 0px 0px 1px;
-  display: flex;
   flex-direction: column;
-  height: 56px;
-  border-radius: 4px;
-  color: #e7e9ea;
-  padding: 8px;
-  font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, Helvetica, Arial, sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 12px;
-  margin-bottom: 12px;
 
   p {
     display: block;
@@ -58,19 +50,7 @@
     font-size: 13px;
   }
 
-  input {
-    width: 100%;
-    padding: 0px;
-    border: 0px;
-    font-size: 17px;
-    background-color: transparent;
-    color: #e7e9ea;
-  }
-
   input:focus {
-    box-shadow: 0 0 0 0;
-    border: 0 none;
-    outline: 0;
     margin-top: 16px;
   }
 
