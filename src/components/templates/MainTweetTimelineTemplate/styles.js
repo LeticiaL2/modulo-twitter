@@ -1,10 +1,11 @@
-import styled from "styled-components"
-import { colors } from "../../../styles/colors"
+import styled from "styled-components";
+import { colors } from "../../../styles/colors";
 
-export const Container = styled.div`
+export const MainContainer = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
   max-width: 600px;
   margin: 0 auto;
 

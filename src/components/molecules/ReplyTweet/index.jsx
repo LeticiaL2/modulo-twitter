@@ -8,7 +8,7 @@ import { TweetDetailContext } from '../../../contexts/tweetDetail'
 
 
 function ReplyTweet({ postUser }) {
-  const { handleAddComment } = useContext(TweetDetailContext)
+  // const { handleAddComment } = useContext(TweetDetailContext)
   const [enteredReply, setEnteredReply] = useState('')
   const [isButtonDisabled, setIsButtonDisabled] = useState(true)
   const maxLetters = 280
@@ -25,7 +25,7 @@ function ReplyTweet({ postUser }) {
     const replyData = {
       texto: enteredReply,
     }
-    handleAddComment(replyData)
+    // handleAddComment(replyData)
     setEnteredReply('')
     setIsButtonDisabled(true)
   };

@@ -3,19 +3,15 @@ import { TweetsListContext } from '../../../contexts/tweetsTimeline';
 import PostTweet from '../../molecules/PostTweet';
 import TweetsList from '../../molecules/TweetsList';
 import MainTweetTimelineTemplate from '../../templates/MainTweetTimelineTemplate';
-import { Container } from './styles';
 
 function HomePage() {
-  const { tweets, refreshList } = useContext(TweetsListContext)
+  const { tweets, refreshList, updateTweets } = useContext(TweetsListContext)
 
   return (
-      <Container>
-        {/* <Main /> */}
         <MainTweetTimelineTemplate>
           <PostTweet />
-          <TweetsList tweets={tweets} refreshList={refreshList}/>
+          <TweetsList tweets={tweets} refreshList={refreshList} updateTweets={updateTweets}/>
         </MainTweetTimelineTemplate>
-      </Container>
   )
 }
 

@@ -1,13 +1,15 @@
 import React from 'react'
 import Header from '../../organisms/Header'
+import { MainContainer } from './styles'
 
 function MainTweetTimelineTemplate({ children }) {
   return (
     <>
+    {/* Sidebar */}
+      <MainContainer>
       <Header />
-      <section style={{width: '100%', display: 'flex', flexDirection:'column', alignItems: 'center'}}>
         {children}
-      </section>
+      </MainContainer>
     </>
   )
 }

@@ -1,12 +1,12 @@
 import React from 'react';
-import { Container } from './styles';
 import LoginSection from '../../organisms/LoginSection';
+import AuthTemplate from '../../templates/AuthTemplate';
 
 function LoginPage() {
   return (
-    <Container>
+    <AuthTemplate>
       <LoginSection />
-    </Container>
+    </AuthTemplate>
   );
 }
 

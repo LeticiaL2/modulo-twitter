@@ -14,7 +14,7 @@ import {
   TweetContainer
 } from './styles';
 
-function Tweet({ userData, refreshList }) {
+function Tweet({ userData, refreshList, updateTweets }) {
   const [openCommentModal, setOpenCommentModal] = useState(false)
   const [openRetweetModal, setOpenRetweetModal] = useState(false)
   const navigate = useNavigate()
@@ -61,7 +61,7 @@ function Tweet({ userData, refreshList }) {
       isLikedByUser: !isLikedByUser,
       likes: isLikedByUser ? likes - 1 : likes + 1
     }
-    // updateTweets(updatedTweet, isRetweet)
+    updateTweets(updatedTweet)
   }
 
   return (
@@ -88,11 +88,11 @@ function Tweet({ userData, refreshList }) {
               retweets={retweets}
               isRetweetedByUser={isRetweetedByUser}
               tweetId={tweetId} />
-            <Modal userData={tweet} showModal={openCommentModal} setShowModal={setOpenCommentModal} isComment={true} isRetweet={isRetweet} refreshList={refreshList}>
+            <Modal userData={tweet} showModal={openCommentModal} setShowModal={setOpenCommentModal} isComment={true} refreshList={refreshList} updateTweets={updateTweets}>
               <UserPhoto src="https://cdn.pixabay.com/photo/2021/01/04/10/41/icon-5887126_1280.png" />
               <BodyTweet userData={tweet} />
             </Modal>
-            <Modal userData={tweet} showModal={openRetweetModal} setShowModal={setOpenRetweetModal} isComment={false} isRetweet={isRetweet} refreshList={refreshList}>
+            <Modal userData={tweet} showModal={openRetweetModal} setShowModal={setOpenRetweetModal} isComment={false} refreshList={refreshList} updateTweets={updateTweets}>
               <UserPhoto src="https://cdn.pixabay.com/photo/2021/01/04/10/41/icon-5887126_1280.png" />
               <BodyTweet userData={tweet} />
             </Modal>

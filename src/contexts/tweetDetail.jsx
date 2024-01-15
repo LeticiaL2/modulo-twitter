@@ -44,17 +44,9 @@ const TweetDetailProvider = ({ children }) => {
     getTweet()
   }, [id])
 
-  const updateTweets = (updatedTweet, isRetweet) => {
-    const updatedList = isRetweet ? commentsList.map(
+  const updateTweets = (updatedTweet) => {
+    const updatedList = commentsList.map(
       tweet => {
-        if (tweet.retweetPai && tweet.retweetPai.id === updatedTweet.id) {
-          return { ...tweet, retweetPai: updatedTweet }
-        }
-        if (tweet.id === updatedTweet.id) {
-          return { ...tweet, isLikedByUser: updatedTweet.isLikedByUser, likes: updatedTweet.likes, comentarios: updatedTweet.comentarios }
-        }
-        return tweet
-      }) : commentsList.map(tweet => {
         if (tweet.retweetPai?.id === updatedTweet.id) {
           return { ...tweet, retweetPai: updatedTweet }
         }

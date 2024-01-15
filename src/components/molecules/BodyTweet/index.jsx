@@ -5,7 +5,7 @@ import TweetUserContent from '../../molecules/TweetUserContent'
 import TweetUserInfo from '../TweetUserInfo'
 import { Container, HeaderContainer } from './styles'
 import { getUserLocalStorage } from '../../../contexts/util'
-import DropdownMenu from '../../organisms/DropdownMenu'
+import DropdownMenu from '../../templates/DropdownMenuTemplate'
 import DropdownItem from '../DropdownItem'
 import DeleteIcon from '../../atoms/SVGIcons/DeleteIcon'
 

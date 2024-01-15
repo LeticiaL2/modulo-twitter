@@ -38,17 +38,9 @@ const TweetTimelineProvider = ({ children }) => {
   }, [])
 
 
-  const updateTweets = (updatedTweet, isRetweet) => {
-   const updatedList = isRetweet ? tweets.map(
+  const updateTweets = (updatedTweet) => {
+   const updatedList = tweets.map(
     tweet => {
-      if (tweet.retweetPai && tweet.retweetPai.id === updatedTweet.id) {
-        return { ...tweet, retweetPai: updatedTweet }
-      }
-      if (tweet.id === updatedTweet.id) {
-        return { ...tweet, isLikedByUser: updatedTweet.isLikedByUser, likes: updatedTweet.likes, comentarios: updatedTweet.comentarios }
-      }
-      return tweet
-    }) : tweets.map(tweet => {
       if (tweet.retweetPai?.id === updatedTweet.id) {
         return { ...tweet, retweetPai: updatedTweet }
       }
@@ -56,7 +48,7 @@ const TweetTimelineProvider = ({ children }) => {
         return { ...tweet, isLikedByUser: updatedTweet.isLikedByUser, likes: updatedTweet.likes, comentarios: updatedTweet.comentarios }
       }
       return tweet
-    })
+    }) 
 
     setTweets(updatedList)
   }

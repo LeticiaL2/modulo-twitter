@@ -1,12 +1,12 @@
 import React from 'react';
 import SignupSection from '../../organisms/SignupSection';
-import { Container } from './styles';
+import AuthTemplate from '../../templates/AuthTemplate';
 
 function Signup() {
   return (
-    <Container>
+    <AuthTemplate>
       <SignupSection />
-    </Container>
+    </AuthTemplate>
   );
 }
 

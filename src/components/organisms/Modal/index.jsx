@@ -9,7 +9,7 @@ import { BodyContainer, CloseContainer, Container, ContentContainer, DraftContai
 
 const modalElement = document.getElementById('portal')
 
-function Modal({ showModal, setShowModal, children, userData, isComment, isRetweet, refreshList }) {
+function Modal({ showModal, setShowModal, children, userData, isComment, refreshList, updateTweets }) {
   // const { refreshTweets, updateTweets } = useContext(TweetsListContext)
   const modalRef = useRef()
 
@@ -27,7 +27,7 @@ function Modal({ showModal, setShowModal, children, userData, isComment, isRetwe
         ...userData,
         comentarios: userData.comentarios + 1
       }
-      // updateTweets(updatedTweet, isRetweet)
+      updateTweets(updatedTweet)
     } catch (error) {
       console.log(error)
     }
