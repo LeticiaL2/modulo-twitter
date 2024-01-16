@@ -17,7 +17,7 @@ export class TweetsService {
 	): Promise<Tweet> {
 		const tweet = new Tweet();
 		tweet.texto = criarTweetDto.texto;
-		tweet.usuarioId = idUsuario;
+		tweet.IdUsuario = idUsuario;
 		return this.tweetsRepository.criarTweet(tweet);
 	}
 
@@ -29,10 +29,10 @@ export class TweetsService {
 		return tweet;
 	}
 
-	async deletarTweet(idTweet: string, usuarioId: string) {
+	async deletarTweet(idTweet: string, IdUsuario: string) {
 		const tweet = await this.encontrarTweetPeloId(idTweet);
 
-		if (tweet.usuarioId !== usuarioId) throw new UnauthorizedException();
+		if (tweet.IdUsuario !== IdUsuario) throw new UnauthorizedException();
 		const resultado = await this.tweetsRepository.delete({ id: idTweet });
 		if (resultado.affected === 0) throw new NotFoundException();
 	}
