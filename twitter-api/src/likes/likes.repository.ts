@@ -18,4 +18,8 @@ export class LikesRepository extends Repository<Like> {
 			throw new InternalServerErrorException();
 		}
 	}
+
+	async retornarLikesTotais(idTweet: string): Promise<number> {
+		return this.count({ where: { idTweet: { id: idTweet } } });
+	}
 }

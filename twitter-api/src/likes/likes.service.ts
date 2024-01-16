@@ -1,8 +1,10 @@
 import {
 	ConflictException,
+	Inject,
 	Injectable,
 	NotFoundException,
 	UnauthorizedException,
+	forwardRef,
 } from '@nestjs/common';
 import { LikesRepository } from './likes.repository';
 import { Like } from './like.entity';
@@ -14,7 +16,7 @@ export class LikesService {
 	constructor(
 		private likesRepository: LikesRepository,
 		private usuariosService: UsuariosService,
-		private tweetsService: TweetsService,
+		@Inject(forwardRef(() => TweetsService)) private tweetsService: TweetsService,
 	) {}
 
 	async curtirTweet(idTweet: string, idUsuario: string): Promise<boolean> {
@@ -47,5 +49,9 @@ export class LikesService {
 			relations: ['idTweet', 'idUsuario'],
 		});
 		return like;
+	}
+
+	async retornarLikesTotais(idTweet: string) {
+		return this.likesRepository.retornarLikesTotais(idTweet);
 	}
 }

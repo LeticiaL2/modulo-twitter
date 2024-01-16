@@ -11,7 +11,7 @@ export class TweetsRepository extends Repository<Tweet> {
 
 	async criarTweet(tweet: Tweet): Promise<Tweet> {
 		const novoTweet = this.create(tweet);
-
+		novoTweet.likes = 0;
 		try {
 			await novoTweet.save();
 			return novoTweet;
