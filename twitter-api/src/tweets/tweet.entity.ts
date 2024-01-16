@@ -29,4 +29,6 @@ export class Tweet extends BaseEntity {
 	@ManyToOne(() => Usuario, (usuario) => usuario.tweets)
 	@JoinColumn({ name: 'usuarioId' })
 	usuario: Usuario;
+
+	likes: number;
 }
