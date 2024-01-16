@@ -15,7 +15,7 @@ import {
 } from '@nestjs/common';
 import { TweetsService } from './tweets.service';
 import { CriarTweetDto } from './dto/criar-tweet.dto';
-import { GetusuarioId } from 'src/usuarios/decorator/get-id-usuario.decorator';
+import { GetIdUsuario } from 'src/usuarios/decorator/get-id-usuario.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { EncontrarTweetsParametrosDto } from './dto/encontrar-tweets-parametros.dto';
 import { Response } from 'express';
@@ -27,11 +27,11 @@ export class TweetsController {
 	@UseGuards(AuthGuard())
 	async criarTweet(
 		@Body(ValidationPipe) criarTweetDto: CriarTweetDto,
-		@GetusuarioId() usuarioId: string,
+		@GetIdUsuario() idUsuario: string,
 		@Res() res: Response,
 	): Promise<Response> {
 		try {
-			const tweet = await this.tweetsService.criarTweet(criarTweetDto, usuarioId);
+			const tweet = await this.tweetsService.criarTweet(criarTweetDto, idUsuario);
 
 			return res.status(HttpStatus.CREATED).json({
 				conteudo: tweet,
@@ -56,12 +56,12 @@ export class TweetsController {
 	@Delete(':id')
 	@UseGuards(AuthGuard())
 	async deletarUsuario(
-		@GetusuarioId() usuarioId: string,
+		@GetIdUsuario() idUsuario: string,
 		@Param('id') id: string,
 		@Res() res: Response,
 	) {
 		try {
-			await this.tweetsService.deletarTweet(id, usuarioId);
+			await this.tweetsService.deletarTweet(id, idUsuario);
 			return res.status(HttpStatus.OK).json({
 				conteudo: null,
 				mensagem: {

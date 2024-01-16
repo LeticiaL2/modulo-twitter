@@ -30,18 +30,18 @@ export class UsuariosService {
 		return this.usuariosRepository.criarUsuario(usuario);
 	}
 
-	async encontrarUsuarioPeloId(usuarioId: string): Promise<Usuario> {
+	async encontrarUsuarioPeloId(idUsuario: string): Promise<Usuario> {
 		const usuario = await this.usuariosRepository.findOne({
-			where: { id: usuarioId },
+			where: { id: idUsuario },
 			select: ['email', 'nome', 'usuario', 'id'],
 		});
 		if (!usuario) throw new NotFoundException('Usuário não encontrado');
 		return usuario;
 	}
 
-	async encontrarUsuarioCompletoPeloId(usuarioId: string): Promise<Usuario> {
+	async encontrarUsuarioCompletoPeloId(idUsuario: string): Promise<Usuario> {
 		const usuario = await this.usuariosRepository.findOne({
-			where: { id: usuarioId },
+			where: { id: idUsuario },
 		});
 		if (!usuario) throw new NotFoundException('Usuário não encontrado');
 		return usuario;
@@ -70,10 +70,10 @@ export class UsuariosService {
 		}
 	}
 
-	async alterarSenha(alterarSenhaDto: AlterarSenhaDto, usuarioId: string) {
+	async alterarSenha(alterarSenhaDto: AlterarSenhaDto, idUsuario: string) {
 		const { senha, novaSenha } = alterarSenhaDto;
 
-		const usuario = await this.encontrarUsuarioCompletoPeloId(usuarioId);
+		const usuario = await this.encontrarUsuarioCompletoPeloId(idUsuario);
 		if (!usuario) throw new NotFoundException('Usuário não encontrado.');
 
 		const senhaValida = await bcrypt.compare(senha, usuario.senha);
@@ -84,8 +84,8 @@ export class UsuariosService {
 		return usuarioAlterado;
 	}
 
-	async deletarUsuario(usuarioId: string) {
-		const resultado = await this.usuariosRepository.delete({ id: usuarioId });
+	async deletarUsuario(idUsuario: string) {
+		const resultado = await this.usuariosRepository.delete({ id: idUsuario });
 		if (resultado.affected === 0) throw new NotFoundException();
 	}
 

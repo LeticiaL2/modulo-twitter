@@ -13,27 +13,27 @@ export class TweetsService {
 
 	async criarTweet(
 		criarTweetDto: CriarTweetDto,
-		usuarioId: string,
+		idUsuario: string,
 	): Promise<Tweet> {
 		const tweet = new Tweet();
 		tweet.texto = criarTweetDto.texto;
-		tweet.usuarioId = usuarioId;
+		tweet.usuarioId = idUsuario;
 		return this.tweetsRepository.criarTweet(tweet);
 	}
 
-	async encontrarTweetPeloId(tweetId: string): Promise<Tweet> {
+	async encontrarTweetPeloId(idTweet: string): Promise<Tweet> {
 		const tweet = await this.tweetsRepository.findOne({
-			where: { id: tweetId },
+			where: { id: idTweet },
 		});
 		if (!tweet) throw new NotFoundException('Tweet não encontrado');
 		return tweet;
 	}
 
-	async deletarTweet(tweetId: string, usuarioId: string) {
-		const tweet = await this.encontrarTweetPeloId(tweetId);
+	async deletarTweet(idTweet: string, usuarioId: string) {
+		const tweet = await this.encontrarTweetPeloId(idTweet);
 
 		if (tweet.usuarioId !== usuarioId) throw new UnauthorizedException();
-		const resultado = await this.tweetsRepository.delete({ id: tweetId });
+		const resultado = await this.tweetsRepository.delete({ id: idTweet });
 		if (resultado.affected === 0) throw new NotFoundException();
 	}
 
