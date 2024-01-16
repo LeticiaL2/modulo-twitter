@@ -7,7 +7,7 @@ export const TweetsListContext = createContext();
 const TweetTimelineProvider = ({ children }) => {
   const [tweets, setTweets] = useState([]);
 
-  const getTweets = async () => {
+  const fetchTweets = async () => {
     try {
       const response = await Api.get('api/v1/tweets', { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
       if (response.status !== 200) {
@@ -27,14 +27,14 @@ const TweetTimelineProvider = ({ children }) => {
         throw new Error(response.data.message || 'Something went wrong')
       }
       console.log(response.data.conteudo)
-      getTweets()
+      fetchTweets()
     } catch (e) {
       console.log(e)
     }
   }
 
   useEffect(() => {
-    getTweets()
+    fetchTweets()
   }, [])
 
 
@@ -53,8 +53,22 @@ const TweetTimelineProvider = ({ children }) => {
     setTweets(updatedList)
   }
 
+  const handleAddComment = async (reply, id) => {
+    try {
+      const response = await Api.post(`api/v1/tweets/${id}/comentarios`, reply, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
+
+      if (response.status !== 201) {
+        throw new Error(response.data.message || 'Something went wrong')
+      }
+
+      fetchTweets()
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   return (
-    <TweetsListContext.Provider value={{ tweets, refreshList: getTweets, handleAddTweet, updateTweets }}>
+    <TweetsListContext.Provider value={{ tweets, refreshList: fetchTweets, handleAddTweet, updateTweets, handleAddComment }}>
       {children}
     </TweetsListContext.Provider>
   );

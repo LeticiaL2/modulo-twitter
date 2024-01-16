@@ -5,51 +5,36 @@ import Api from '../../../services/api';
 import RetweetIcon from '../../atoms/SVGIcons/RetweetIcon';
 import UserPhoto from '../../atoms/UserPhoto';
 import BodyTweet from '../../molecules/BodyTweet';
-import ListActions from '../../molecules/ListActions';
-import Modal from '../../organisms/Modal';
+import ListActions from '../../organisms/ListActions';
+// import Modal from '../../organisms/Modal';
+import Modal from '../../templates/ModalTemplate';
 import {
   AditionalInfoContainer,
   BodyContainer,
   MainInfoContainer,
   TweetContainer
 } from './styles';
+import ReplyTweet from '../../molecules/ReplyTweet';
 
-function Tweet({ userData, refreshList, updateTweets }) {
+function Tweet({ userData, refreshList, updateTweets, handleAddComment }) {
   const [openCommentModal, setOpenCommentModal] = useState(false)
   const [openRetweetModal, setOpenRetweetModal] = useState(false)
   const navigate = useNavigate()
 
   const tweet = userData.retweetPai && userData.texto === null ? userData.retweetPai : userData
-  const { id: tweetId, isLikedByUser, isRetweetedByUser, isRetweetedWithoutQuoteByUser, comentarios, likes, retweets } = tweet
-  const isRetweet = userData.retweetPai && userData.texto === null ? true : false
+  const { id: tweetId, usuario, isLikedByUser, isRetweetedByUser, isRetweetedWithoutQuoteByUser, comentarios, likes, retweets } = tweet
 
   const handleTweetClick = () => {
     if (openCommentModal || openRetweetModal) return
     navigate(`/tweet/${tweetId}`)
   }
 
-  const handleRetweetWithoutQuote = async () => {
-    try {
-      const response = await Api.post(`api/v1/tweets/${tweetId}/retweets`, {}, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
-      refreshList()
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  const handleUndoRetweet = async (id) => {
-    try {
-      const response = await Api.delete(`api/v1/tweets/${id}`, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
-      refreshList()
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   const handleRemoveTweet = async () => {
     try {
       const response = await Api.delete(`api/v1/tweets/${userData.id}`, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
-      refreshList()
+      if (refreshList && response.data.mensagem.codigo === 200) {
+        refreshList()
+      }
     } catch (error) {
       console.log(error)
     }
@@ -78,8 +63,7 @@ function Tweet({ userData, refreshList, updateTweets }) {
             <ListActions
               onClickModal={() => setOpenCommentModal(true)}
               onClickRetweetModal={() => setOpenRetweetModal(true)}
-              onClickWithoutQuote={handleRetweetWithoutQuote}
-              onClickUndoRetweet={handleUndoRetweet}
+              onSuccessAction={() => refreshList()}
               onClickLikeListUpdate={handleLikeListUpdate}
               comentarios={comentarios}
               likes={likes}
@@ -88,13 +72,15 @@ function Tweet({ userData, refreshList, updateTweets }) {
               retweets={retweets}
               isRetweetedByUser={isRetweetedByUser}
               tweetId={tweetId} />
-            <Modal userData={tweet} showModal={openCommentModal} setShowModal={setOpenCommentModal} isComment={true} refreshList={refreshList} updateTweets={updateTweets}>
+            <Modal showModal={openCommentModal} setShowModal={setOpenCommentModal}>
               <UserPhoto src="https://cdn.pixabay.com/photo/2021/01/04/10/41/icon-5887126_1280.png" />
               <BodyTweet userData={tweet} />
+              <ReplyTweet handleAddComment={handleAddComment} postUser={usuario} tweetId={tweetId} refreshList={refreshList} />
             </Modal>
-            <Modal userData={tweet} showModal={openRetweetModal} setShowModal={setOpenRetweetModal} isComment={false} refreshList={refreshList} updateTweets={updateTweets}>
+            <Modal showModal={openRetweetModal} setShowModal={setOpenRetweetModal}>
               <UserPhoto src="https://cdn.pixabay.com/photo/2021/01/04/10/41/icon-5887126_1280.png" />
               <BodyTweet userData={tweet} />
+              <ReplyTweet handleAddComment={handleAddComment} postUser={usuario} tweetId={tweetId} refreshList={refreshList} />
             </Modal>
           </BodyContainer>
         </MainInfoContainer>

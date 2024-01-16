@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Api from "../services/api";
 import { getUserLocalStorage } from "./util";
@@ -12,7 +12,7 @@ const TweetDetailProvider = ({ children }) => {
   const [postUser, setPostUser] = useState(null)
   const [commentsList, setCommentsList] = useState([])
 
-  const getTweet = async () => {
+  const fetchTweet = useCallback(async () => {
     try {
       const response = await Api.get(`/api/v1/tweets/${id}`, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
       if (response.status !== 200) {
@@ -24,9 +24,9 @@ const TweetDetailProvider = ({ children }) => {
     } catch (error) {
       console.log(error)
     }
-  }
+  }, [id])
 
-  const handleAddComment = async (reply) => {
+  const handleAddComment = async (reply, id) => {
     try {
       const response = await Api.post(`api/v1/tweets/${id}/comentarios`, reply, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
 
@@ -34,15 +34,15 @@ const TweetDetailProvider = ({ children }) => {
         throw new Error(response.data.message || 'Something went wrong')
       }
 
-      getTweet()
+      fetchTweet()
     } catch (e) {
       console.log(e)
     }
   }
 
   useEffect(() => {
-    getTweet()
-  }, [id])
+    fetchTweet()
+  }, [id, fetchTweet])
 
   const updateTweets = (updatedTweet) => {
     const updatedList = commentsList.map(
@@ -60,7 +60,7 @@ const TweetDetailProvider = ({ children }) => {
   }
 
   return (
-    <TweetDetailContext.Provider value={{ tweet, refreshList: getTweet, handleAddComment, postUser, commentsList, updateTweets }} >
+    <TweetDetailContext.Provider value={{ tweet, refreshList: fetchTweet, handleAddComment, postUser, commentsList, updateTweets }} >
       {children}
     </TweetDetailContext.Provider>
   )

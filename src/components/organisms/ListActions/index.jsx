@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { getUserLocalStorage } from '../../../contexts/util'
 import Api from '../../../services/api'
 import { colors } from '../../../styles/colors'
-import DropdownItem from '../DropdownItem'
+import DropdownItem from '../../molecules/DropdownItem'
 import DropdownMenu from '../../templates/DropdownMenuTemplate'
 import AnalyticsIcon from '../../atoms/SVGIcons/AnalyticsIcon'
 import CommentIcon from '../../atoms/SVGIcons/CommentIcon'
@@ -13,7 +13,7 @@ import ShareIcon from '../../atoms/SVGIcons/ShareIcon'
 import Span from '../../atoms/Span'
 import { ActionContainer, FooterContainer } from './styles'
 
-const ListActions = ({ tweetId, comentarios, isLikedByUser, likes, isRetweetedByUser, isRetweetedWithoutQuoteByUser, retweets, onClickModal, onClickRetweetModal, onClickWithoutQuote, onClickUndoRetweet, onClickLikeListUpdate }) => {
+const ListActions = ({ tweetId, comentarios, isLikedByUser, likes, isRetweetedByUser, isRetweetedWithoutQuoteByUser, retweets, onClickModal, onClickRetweetModal, onClickLikeListUpdate, onSuccessAction }) => {
   const [likedBoolean, setLikedBoolean] = useState(isLikedByUser)
   const [likesCount, setLikesCount] = useState(likes)
 
@@ -21,8 +21,6 @@ const ListActions = ({ tweetId, comentarios, isLikedByUser, likes, isRetweetedBy
   const [retweetedWithoutQuoteBoolean, setRetweetedWithoutQuoteBoolean] = useState(isRetweetedWithoutQuoteByUser.length > 0 ? true : false)
   const [retweetsCount, setRetweetsCount] = useState(retweets)
 
-  // const [isCommented, setIsCommented] = useState(false)
-  // const [commentsCount, setCommentsCount] = useState(comentarios)
   const [openRetweetDropdown, setOpenRetweetDropdown] = useState(false)
 
   useEffect(() => {
@@ -34,27 +32,27 @@ const ListActions = ({ tweetId, comentarios, isLikedByUser, likes, isRetweetedBy
   }, [isLikedByUser, isRetweetedByUser, isRetweetedWithoutQuoteByUser, likes, retweets])
 
   const handleLike = async (e) => {
-    e.stopPropagation()
-    const response = await Api.post(`api/v1/tweets/${tweetId}/likes`,
-      {},
-      {
-        headers:
+    try {
+      e.stopPropagation()
+      const response = await Api.post(`api/v1/tweets/${tweetId}/likes`,
+        {},
         {
-          Authorization: `Bearer ${getUserLocalStorage().token}`
-        }
-      })
-
-    if (response.data.mensagem.codigo === 201) {
-      setLikedBoolean(prev => !prev)
-      setLikesCount(prev => prev + 1)
-    } else if (response.data.mensagem.codigo === 200) {
-      setLikedBoolean(prev => !prev)
-      setLikesCount(prev => prev - 1)
-    } else {
-      console.log(response.data.mensagem)
+          headers:
+          {
+            Authorization: `Bearer ${getUserLocalStorage().token}`
+          }
+        })
+      if (response.data.mensagem.codigo === 201) {
+        setLikedBoolean(prev => !prev)
+        setLikesCount(prev => prev + 1)
+      } else if (response.data.mensagem.codigo === 200) {
+        setLikedBoolean(prev => !prev)
+        setLikesCount(prev => prev - 1)
+      }
+      onClickLikeListUpdate(likedBoolean, likesCount)
+    } catch (error) {
+      console.log(error)
     }
-    onClickLikeListUpdate(likedBoolean, likesCount)
-
   }
 
   const handleComment = async (e) => {
@@ -68,21 +66,34 @@ const ListActions = ({ tweetId, comentarios, isLikedByUser, likes, isRetweetedBy
     onClickRetweetModal()
   }
 
-  const handleRetweetWithoutQuote = async (e) => {
-    onClickWithoutQuote()
+  const handleRetweetWithoutQuote = async () => {
+    try {
+      const response = await Api.post(`api/v1/tweets/${tweetId}/retweets`, {}, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
+      if (onSuccessAction && response.data.mensagem.codigo === 201) {
+        onSuccessAction()
+      }
+    } catch (error) {
+      console.log(error)
+    }
     setOpenRetweetDropdown(false)
+  }
+
+  const handleUndoRetweet = async (e) => {
+    try {
+      e.stopPropagation()
+      const response = await Api.delete(`api/v1/tweets/${isRetweetedWithoutQuoteByUser[0].tweet.id}`, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
+      if (onSuccessAction && response.data.mensagem.codigo === 200) {
+        onSuccessAction()
+      }
+    } catch (error) {
+      console.log(error)
+    }
+    setOpenRetweetDropdown(!openRetweetDropdown)
   }
 
   const handleRetweetDropdown = async (e) => {
     e.stopPropagation()
     setOpenRetweetDropdown(!openRetweetDropdown)
-  }
-
-  const handleUndoRetweet = async (e) => {
-    e.stopPropagation()
-    onClickUndoRetweet(isRetweetedWithoutQuoteByUser[0].tweet.id)
-    setOpenRetweetDropdown(!openRetweetDropdown)
-    
   }
 
   const handleAnalytics = (e) => {
