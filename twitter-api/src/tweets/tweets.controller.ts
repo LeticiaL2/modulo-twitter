@@ -1,5 +1,6 @@
 import {
 	Body,
+	ConflictException,
 	Controller,
 	Delete,
 	Get,
@@ -19,9 +20,13 @@ import { GetIdUsuario } from 'src/usuarios/decorator/get-id-usuario.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { EncontrarTweetsParametrosDto } from './dto/encontrar-tweets-parametros.dto';
 import { Response } from 'express';
+import { LikesService } from 'src/likes/likes.service';
 @Controller('tweets')
 export class TweetsController {
-	constructor(private tweetsService: TweetsService) {}
+	constructor(
+		private tweetsService: TweetsService,
+		private likesService: LikesService,
+	) {}
 
 	@Post()
 	@UseGuards(AuthGuard())
@@ -138,6 +143,106 @@ export class TweetsController {
 				},
 				status: false,
 			});
+		}
+	}
+
+	@Post(':id/likes')
+	@UseGuards(AuthGuard())
+	async curtirTweet(
+		@Param('id') idTweet: string,
+		@GetIdUsuario() idUsuario: string,
+		@Res() res: Response,
+	) {
+		try {
+			const curtiu = await this.likesService.curtirTweet(idTweet, idUsuario);
+
+			return res.status(HttpStatus.OK).json({
+				conteudo: curtiu,
+				mensagem: {
+					codigo: 200,
+					texto: 'Tweet curtido com sucesso',
+				},
+				status: true,
+			});
+		} catch (error) {
+			if (error instanceof NotFoundException) {
+				return res.status(HttpStatus.NOT_FOUND).json({
+					conteudo: false,
+					mensagem: {
+						codigo: 404,
+						texto: 'Tweet ou Usuário não encontrado',
+					},
+					status: false,
+				});
+			} else if (error instanceof ConflictException) {
+				return res.status(HttpStatus.CONFLICT).json({
+					conteudo: false,
+					mensagem: {
+						codigo: 409,
+						texto: 'Esse tweet já foi curtido',
+					},
+					status: false,
+				});
+			} else {
+				return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+					conteudo: false,
+					mensagem: {
+						codigo: 500,
+						texto: 'Erro interno do servidor',
+					},
+					status: false,
+				});
+			}
+		}
+	}
+
+	@Delete(':id/likes')
+	@UseGuards(AuthGuard())
+	async descurtirTweet(
+		@Param('id') idTweet: string,
+		@GetIdUsuario() idUsuario: string,
+		@Res() res: Response,
+	) {
+		try {
+			const curtiu = await this.likesService.descurtirTweet(idTweet, idUsuario);
+
+			return res.status(HttpStatus.OK).json({
+				conteudo: curtiu,
+				mensagem: {
+					codigo: 200,
+					texto: 'Tweet descurtido com sucesso',
+				},
+				status: true,
+			});
+		} catch (error) {
+			if (error instanceof NotFoundException) {
+				return res.status(HttpStatus.NOT_FOUND).json({
+					conteudo: false,
+					mensagem: {
+						codigo: 404,
+						texto: 'Like não encontrado',
+					},
+					status: false,
+				});
+			} else if (error instanceof UnauthorizedException) {
+				return res.status(HttpStatus.UNAUTHORIZED).json({
+					conteudo: false,
+					mensagem: {
+						codigo: 403,
+						texto: 'Não autorizado',
+					},
+					status: false,
+				});
+			} else {
+				return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+					conteudo: false,
+					mensagem: {
+						codigo: 500,
+						texto: 'Erro interno do servidor',
+					},
+					status: false,
+				});
+			}
 		}
 	}
 }

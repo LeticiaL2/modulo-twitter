@@ -5,6 +5,10 @@ import { Tweet } from './tweet.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TweetsRepository } from './tweets.repository';
 import { PassportModule } from '@nestjs/passport';
+import { LikesService } from 'src/likes/likes.service';
+import { LikesRepository } from 'src/likes/likes.repository';
+import { UsuariosService } from 'src/usuarios/usuarios.service';
+import { UsuariosRepository } from 'src/usuarios/usuarios.repository';
 
 @Module({
 	imports: [
@@ -12,6 +16,13 @@ import { PassportModule } from '@nestjs/passport';
 		PassportModule.register({ defaultStrategy: 'jwt' }),
 	],
 	controllers: [TweetsController],
-	providers: [TweetsService, TweetsRepository],
+	providers: [
+		TweetsService,
+		TweetsRepository,
+		LikesService,
+		LikesRepository,
+		UsuariosService,
+		UsuariosRepository,
+	],
 })
 export class TweetsModule {}

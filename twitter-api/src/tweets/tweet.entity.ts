@@ -18,7 +18,7 @@ export class Tweet extends BaseEntity {
 	texto: string;
 
 	@Column({ nullable: false, type: 'uuid' })
-	IdUsuario: string;
+	idUsuario: string;
 
 	@CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
 	data_criacao: Date;
@@ -27,6 +27,8 @@ export class Tweet extends BaseEntity {
 	excluido: boolean;
 
 	@ManyToOne(() => Usuario, (usuario) => usuario.tweets)
-	@JoinColumn({ name: 'IdUsuario' })
+	@JoinColumn({ name: 'idUsuario' })
 	usuario: Usuario;
+
+	likes: number;
 }

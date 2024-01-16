@@ -2,5 +2,5 @@ import { ParametrosConsultaBaseDto } from 'src/shared/parametros-consulta-base.d
 
 export class EncontrarTweetsParametrosDto extends ParametrosConsultaBaseDto {
 	id: string;
-	IdUsuario: string;
+	idUsuario: string;
 }

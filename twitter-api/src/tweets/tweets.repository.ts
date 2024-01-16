@@ -23,15 +23,15 @@ export class TweetsRepository extends Repository<Tweet> {
 	async encontrarTweets(
 		consultaDto: EncontrarTweetsParametrosDto,
 	): Promise<{ tweets: Tweet[]; total: number }> {
-		const { id, IdUsuario } = consultaDto;
+		const { id, idUsuario } = consultaDto;
 		const consulta = this.createQueryBuilder('tweet');
 
 		if (id) {
 			consulta.where('tweet.id = :id', { id });
 		}
 
-		if (IdUsuario) {
-			consulta.andWhere('tweet.IdUsuario = :IdUsuario', { IdUsuario });
+		if (idUsuario) {
+			consulta.andWhere('tweet.idUsuario = :idUsuario', { idUsuario });
 		}
 
 		consulta.skip((consultaDto.pagina - 1) * consultaDto.limite);
@@ -52,7 +52,7 @@ export class TweetsRepository extends Repository<Tweet> {
 		consulta.select([
 			'tweet.id',
 			'tweet.texto',
-			'tweet.IdUsuario',
+			'tweet.idUsuario',
 			'tweet.data_criacao',
 			'tweet.excluido',
 		]);
