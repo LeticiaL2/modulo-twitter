@@ -16,7 +16,7 @@ import {
 } from '@nestjs/common';
 import { TweetsService } from './tweets.service';
 import { CriarTweetDto } from './dto/criar-tweet.dto';
-import { GetIdUsuario } from 'src/usuarios/decorator/get-id-usuario.decorator';
+import { GetusuarioId } from 'src/usuarios/decorator/get-id-usuario.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { EncontrarTweetsParametrosDto } from './dto/encontrar-tweets-parametros.dto';
 import { Response } from 'express';
@@ -32,11 +32,11 @@ export class TweetsController {
 	@UseGuards(AuthGuard())
 	async criarTweet(
 		@Body(ValidationPipe) criarTweetDto: CriarTweetDto,
-		@GetIdUsuario() idUsuario: string,
+		@GetusuarioId() usuarioId: string,
 		@Res() res: Response,
 	): Promise<Response> {
 		try {
-			const tweet = await this.tweetsService.criarTweet(criarTweetDto, idUsuario);
+			const tweet = await this.tweetsService.criarTweet(criarTweetDto, usuarioId);
 
 			return res.status(HttpStatus.CREATED).json({
 				conteudo: tweet,
@@ -61,12 +61,12 @@ export class TweetsController {
 	@Delete(':id')
 	@UseGuards(AuthGuard())
 	async deletarUsuario(
-		@GetIdUsuario() idUsuario: string,
+		@GetusuarioId() usuarioId: string,
 		@Param('id') id: string,
 		@Res() res: Response,
 	) {
 		try {
-			await this.tweetsService.deletarTweet(id, idUsuario);
+			await this.tweetsService.deletarTweet(id, usuarioId);
 			return res.status(HttpStatus.OK).json({
 				conteudo: null,
 				mensagem: {
@@ -149,12 +149,12 @@ export class TweetsController {
 	@Post(':id/likes')
 	@UseGuards(AuthGuard())
 	async curtirTweet(
-		@Param('id') idTweet: string,
-		@GetIdUsuario() idUsuario: string,
+		@Param('id') tweetId: string,
+		@GetusuarioId() usuarioId: string,
 		@Res() res: Response,
 	) {
 		try {
-			const curtiu = await this.likesService.curtirTweet(idTweet, idUsuario);
+			const curtiu = await this.likesService.curtirTweet(tweetId, usuarioId);
 
 			return res.status(HttpStatus.OK).json({
 				conteudo: curtiu,
@@ -200,7 +200,7 @@ export class TweetsController {
 	@UseGuards(AuthGuard())
 	async descurtirTweet(
 		@Param('id') tweetId: string,
-		@GetIdUsuario() usuarioId: string,
+		@GetusuarioId() usuarioId: string,
 		@Res() res: Response,
 	) {
 		try {

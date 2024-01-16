@@ -19,7 +19,7 @@ import { CriarUsuarioDto } from './dto/criar-usuario.dto';
 import { AlterarUsuarioDto } from './dto/alterar-usuario.dto';
 import { EncontrarUsuariosParametrosDto } from './dto/encontrar-usuarios-parametros.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { GetIdUsuario } from './decorator/get-id-usuario.decorator';
+import { GetusuarioId } from './decorator/get-id-usuario.decorator';
 import { AlterarSenhaDto } from './dto/alterar-senha.dto';
 import { Response } from 'express';
 
@@ -69,7 +69,7 @@ export class UsuariosController {
 	@UseGuards(AuthGuard())
 	async alterarUsuario(
 		@Body(ValidationPipe) alterarUsuarioDto: AlterarUsuarioDto,
-		@GetIdUsuario() id: string,
+		@GetusuarioId() id: string,
 		@Res() res: Response,
 	) {
 		try {
@@ -112,7 +112,7 @@ export class UsuariosController {
 	@UseGuards(AuthGuard())
 	async alterarSenha(
 		@Body(ValidationPipe) alterarSenhaDto: AlterarSenhaDto,
-		@GetIdUsuario() id: string,
+		@GetusuarioId() id: string,
 		@Res() res: Response,
 	) {
 		try {
@@ -163,7 +163,7 @@ export class UsuariosController {
 
 	@Delete()
 	@UseGuards(AuthGuard())
-	async deletarUsuario(@GetIdUsuario() id: string, @Res() res: Response) {
+	async deletarUsuario(@GetusuarioId() id: string, @Res() res: Response) {
 		try {
 			await this.usuariosService.deletarUsuario(id);
 

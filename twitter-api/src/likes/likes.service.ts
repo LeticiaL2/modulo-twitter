@@ -17,22 +17,22 @@ export class LikesService {
 		private tweetsService: TweetsService,
 	) {}
 
-	async curtirTweet(idTweet: string, idUsuario: string): Promise<boolean> {
+	async curtirTweet(tweetId: string, usuarioId: string): Promise<boolean> {
 		const like = new Like();
 
-		const existente = await this.encontrarLikePeloIdTweet(idTweet, idUsuario);
+		const existente = await this.encontrarLikePelotweetId(tweetId, usuarioId);
 
 		if (existente) {
 			throw new ConflictException();
 		}
 
-		like.usuarioId = await this.usuariosService.encontrarUsuarioPeloId(idUsuario);
-		like.tweetId = await this.tweetsService.encontrarTweetPeloId(idTweet);
+		like.usuarioId = await this.usuariosService.encontrarUsuarioPeloId(usuarioId);
+		like.tweetId = await this.tweetsService.encontrarTweetPeloId(tweetId);
 		return this.likesRepository.curtirTweet(like);
 	}
 
 	async descurtirTweet(tweetId: string, usuarioId: string) {
-		const like = await this.encontrarLikePeloIdTweet(tweetId, usuarioId);
+		const like = await this.encontrarLikePelotweetId(tweetId, usuarioId);
 
 		if (!like) throw new NotFoundException();
 
@@ -41,7 +41,7 @@ export class LikesService {
 		if (resultado.affected === 0) throw new NotFoundException();
 	}
 
-	async encontrarLikePeloIdTweet(tweetId: string, usuarioId: string) {
+	async encontrarLikePelotweetId(tweetId: string, usuarioId: string) {
 		const like = await this.likesRepository.findOne({
 			where: { tweetId: { id: tweetId }, usuarioId: { id: usuarioId } },
 			relations: ['tweetId', 'usuarioId'],
