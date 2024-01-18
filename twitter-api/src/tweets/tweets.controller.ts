@@ -292,4 +292,54 @@ export class TweetsController {
 			}
 		}
 	}
+
+	@Delete(':id/comentarios')
+	@UseGuards(AuthGuard())
+	async deletarComentario(
+		@Param('id') idTweet: string,
+		@GetIdUsuario() idUsuario: string,
+		@Res() res: Response,
+	) {
+		try {
+			await this.comentariosService.deletarComentario(idTweet, idUsuario);
+
+			return res.status(HttpStatus.OK).json({
+				conteudo: true,
+				mensagem: {
+					codigo: 200,
+					texto: 'Comentário deletado com sucesso',
+				},
+				status: true,
+			});
+		} catch (error) {
+			if (error instanceof NotFoundException) {
+				return res.status(HttpStatus.NOT_FOUND).json({
+					conteudo: false,
+					mensagem: {
+						codigo: 404,
+						texto: 'Comentário não encontrado',
+					},
+					status: false,
+				});
+			} else if (error instanceof UnauthorizedException) {
+				return res.status(HttpStatus.UNAUTHORIZED).json({
+					conteudo: false,
+					mensagem: {
+						codigo: 403,
+						texto: 'Não autorizado',
+					},
+					status: false,
+				});
+			} else {
+				return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+					conteudo: false,
+					mensagem: {
+						codigo: 500,
+						texto: 'Erro interno do servidor',
+					},
+					status: false,
+				});
+			}
+		}
+	}
 }

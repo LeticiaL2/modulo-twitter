@@ -5,6 +5,8 @@ import { TweetsService } from 'src/tweets/tweets.service';
 import { UsuariosService } from 'src/usuarios/usuarios.service';
 import { TweetsRepository } from 'src/tweets/tweets.repository';
 import { UsuariosRepository } from 'src/usuarios/usuarios.repository';
+import { ComentariosService } from 'src/comentarios/comentarios.service';
+import { ComentariosRepository } from 'src/comentarios/comentarios.repository';
 
 @Module({
 	providers: [
@@ -14,6 +16,8 @@ import { UsuariosRepository } from 'src/usuarios/usuarios.repository';
 		TweetsRepository,
 		UsuariosService,
 		UsuariosRepository,
+		ComentariosService,
+		ComentariosRepository,
 	],
 })
 export class LikesModule {}

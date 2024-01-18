@@ -15,8 +15,8 @@ import { ComentariosService } from 'src/comentarios/comentarios.service';
 export class TweetsService {
 	constructor(
 		private tweetsRepository: TweetsRepository,
-		@Inject(forwardRef(() => LikesService)) private likesService: LikesService,
 		private comentariosService: ComentariosService,
+		@Inject(forwardRef(() => LikesService)) private likesService: LikesService,
 	) {}
 
 	async criarTweet(
@@ -69,7 +69,7 @@ export class TweetsService {
 		await Promise.all(
 			tweets.map(async (tweet) => {
 				const tweetComLike = await this.adicionarLikesNoTweet(tweet);
-				return await this.adicionarLikesNoTweet(tweetComLike);
+				return await this.adicionarComentariosNoTweet(tweetComLike);
 			}),
 		);
 

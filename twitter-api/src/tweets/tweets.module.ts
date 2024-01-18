@@ -9,6 +9,8 @@ import { LikesService } from 'src/likes/likes.service';
 import { LikesRepository } from 'src/likes/likes.repository';
 import { UsuariosService } from 'src/usuarios/usuarios.service';
 import { UsuariosRepository } from 'src/usuarios/usuarios.repository';
+import { ComentariosService } from 'src/comentarios/comentarios.service';
+import { ComentariosRepository } from 'src/comentarios/comentarios.repository';
 
 @Module({
 	imports: [
@@ -23,6 +25,8 @@ import { UsuariosRepository } from 'src/usuarios/usuarios.repository';
 		LikesRepository,
 		UsuariosService,
 		UsuariosRepository,
+		ComentariosService,
+		ComentariosRepository,
 	],
 })
 export class TweetsModule {}
