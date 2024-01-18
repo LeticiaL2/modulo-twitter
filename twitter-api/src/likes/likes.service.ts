@@ -1,35 +1,32 @@
 import {
 	ConflictException,
-	Inject,
 	Injectable,
 	NotFoundException,
 	UnauthorizedException,
-	forwardRef,
 } from '@nestjs/common';
 import { LikesRepository } from './likes.repository';
 import { Like } from './like.entity';
 import { UsuariosService } from 'src/usuarios/usuarios.service';
-import { TweetsService } from 'src/tweets/tweets.service';
+import { Tweet } from 'src/tweets/tweet.entity';
 
 @Injectable()
 export class LikesService {
 	constructor(
 		private likesRepository: LikesRepository,
 		private usuariosService: UsuariosService,
-		@Inject(forwardRef(() => TweetsService)) private tweetsService: TweetsService,
 	) {}
 
-	async curtirTweet(idTweet: string, idUsuario: string): Promise<boolean> {
+	async curtirTweet(tweet: Tweet, idUsuario: string): Promise<boolean> {
 		const like = new Like();
 
-		const existente = await this.encontrarLikePeloIdTweet(idTweet, idUsuario);
+		const existente = await this.encontrarLikePeloIdTweet(tweet.id, idUsuario);
 
 		if (existente) {
 			throw new ConflictException();
 		}
 
 		like.idUsuario = await this.usuariosService.encontrarUsuarioPeloId(idUsuario);
-		like.idTweet = await this.tweetsService.encontrarTweetPeloId(idTweet);
+		like.idTweet = tweet;
 		return this.likesRepository.curtirTweet(like);
 	}
 

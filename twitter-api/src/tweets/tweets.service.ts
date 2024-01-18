@@ -43,8 +43,8 @@ export class TweetsService {
 		const tweet = await this.encontrarTweetPeloId(idTweet);
 
 		if (tweet.idUsuario !== idUsuario) throw new UnauthorizedException();
-		const resultado = await this.tweetsRepository.delete({ id: idTweet });
-		if (resultado.affected === 0) throw new NotFoundException();
+
+		await this.tweetsRepository.update({ id: tweet.id }, { excluido: true });
 	}
 
 	async encontrarTweets(consultaDto: EncontrarTweetsParametrosDto): Promise<{

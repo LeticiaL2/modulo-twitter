@@ -1,4 +1,5 @@
 import {
+	BadRequestException,
 	Body,
 	ConflictException,
 	Controller,
@@ -62,7 +63,7 @@ export class TweetsController {
 
 	@Delete(':id')
 	@UseGuards(AuthGuard())
-	async deletarUsuario(
+	async deletarTweet(
 		@GetIdUsuario() idUsuario: string,
 		@Param('id') id: string,
 		@Res() res: Response,
@@ -156,7 +157,10 @@ export class TweetsController {
 		@Res() res: Response,
 	) {
 		try {
-			const curtiu = await this.likesService.curtirTweet(idTweet, idUsuario);
+			const tweet = await this.tweetsService.encontrarTweetPeloId(idTweet);
+			if (tweet.excluido) throw new BadRequestException();
+
+			const curtiu = await this.likesService.curtirTweet(tweet, idUsuario);
 
 			return res.status(HttpStatus.OK).json({
 				conteudo: curtiu,
@@ -182,6 +186,15 @@ export class TweetsController {
 					mensagem: {
 						codigo: 409,
 						texto: 'Esse tweet já foi curtido',
+					},
+					status: false,
+				});
+			} else if (error instanceof BadRequestException) {
+				return res.status(HttpStatus.NOT_FOUND).json({
+					conteudo: false,
+					mensagem: {
+						codigo: 400,
+						texto: 'Não é possível curtir um tweet que já foi excluído.',
 					},
 					status: false,
 				});
@@ -258,6 +271,9 @@ export class TweetsController {
 	) {
 		try {
 			const tweetPai = await this.tweetsService.encontrarTweetPeloId(idTweet);
+
+			if (tweetPai.excluido) throw new BadRequestException();
+
 			const tweet = await this.tweetsService.criarTweet(criarTweetDto, idUsuario);
 
 			const comentario = await this.comentariosService.comentar(tweetPai, tweet);
@@ -277,6 +293,15 @@ export class TweetsController {
 					mensagem: {
 						codigo: 404,
 						texto: 'Tweet não encontrado',
+					},
+					status: false,
+				});
+			} else if (error instanceof BadRequestException) {
+				return res.status(HttpStatus.NOT_FOUND).json({
+					conteudo: false,
+					mensagem: {
+						codigo: 400,
+						texto: 'Não é possível comentar em um tweet que já foi excluído.',
 					},
 					status: false,
 				});
