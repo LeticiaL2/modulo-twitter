@@ -5,6 +5,7 @@ import { UsuariosModule } from './usuarios/usuarios.module';
 import { AutenticacaoModule } from './autenticacao/autenticacao.module';
 import { TweetsModule } from './tweets/tweets.module';
 import { LikesModule } from './likes/likes.module';
+import { ComentariosModule } from './comentarios/comentarios.module';
 @Module({
 	imports: [
 		TypeOrmModule.forRoot(typeOrmConfig),
@@ -12,6 +13,7 @@ import { LikesModule } from './likes/likes.module';
 		AutenticacaoModule,
 		TweetsModule,
 		LikesModule,
+		ComentariosModule,
 	],
 	controllers: [],
 	providers: [],

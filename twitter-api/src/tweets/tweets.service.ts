@@ -10,11 +10,13 @@ import { CriarTweetDto } from './dto/criar-tweet.dto';
 import { Tweet } from './tweet.entity';
 import { EncontrarTweetsParametrosDto } from './dto/encontrar-tweets-parametros.dto';
 import { LikesService } from 'src/likes/likes.service';
+import { ComentariosService } from 'src/comentarios/comentarios.service';
 @Injectable()
 export class TweetsService {
 	constructor(
 		private tweetsRepository: TweetsRepository,
 		@Inject(forwardRef(() => LikesService)) private likesService: LikesService,
+		private comentariosService: ComentariosService,
 	) {}
 
 	async criarTweet(
@@ -66,11 +68,10 @@ export class TweetsService {
 
 		await Promise.all(
 			tweets.map(async (tweet) => {
-				return await this.adicionarLikesNoTweet(tweet);
+				const tweetComLike = await this.adicionarLikesNoTweet(tweet);
+				return await this.adicionarLikesNoTweet(tweetComLike);
 			}),
 		);
-
-		console.log('TWEETS', tweets);
 
 		const paginas = Math.ceil(total / consultaDto.limite);
 
@@ -81,6 +82,13 @@ export class TweetsService {
 
 	async adicionarLikesNoTweet(tweet: Tweet) {
 		tweet.likes = await this.likesService.retornarLikesTotais(tweet.id);
+		return tweet;
+	}
+
+	async adicionarComentariosNoTweet(tweet: Tweet) {
+		tweet.comentarios = await this.comentariosService.retornarComentariosTotais(
+			tweet.id,
+		);
 		return tweet;
 	}
 }

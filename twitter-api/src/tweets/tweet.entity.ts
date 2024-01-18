@@ -31,4 +31,6 @@ export class Tweet extends BaseEntity {
 	usuario: Usuario;
 
 	likes: number;
+
+	comentarios: number;
 }
