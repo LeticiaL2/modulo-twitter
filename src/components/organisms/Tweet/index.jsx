@@ -16,8 +16,7 @@ import {
 } from './styles';
 import ReplyTweet from '../../molecules/ReplyTweet';
 
-function Tweet({ userData, refreshList, updateTweets, handleAddComment }) {
-  const [openCommentModal, setOpenCommentModal] = useState(false)
+function Tweet({ userData, refreshList, updateTweets, handleAddComment, openCommentModalId, setOpenCommentModalId }) {
   const [openRetweetModal, setOpenRetweetModal] = useState(false)
   const navigate = useNavigate()
 
@@ -25,9 +24,10 @@ function Tweet({ userData, refreshList, updateTweets, handleAddComment }) {
   const { id: tweetId, usuario, isLikedByUser, isRetweetedByUser, isRetweetedWithoutQuoteByUser, comentarios, likes, retweets } = tweet
 
   const handleTweetClick = () => {
-    if (openCommentModal || openRetweetModal) return
+    if (openCommentModalId || openRetweetModal) return
     navigate(`/tweet/${tweetId}`)
   }
+  console.log(openCommentModalId)
 
   const handleRemoveTweet = async () => {
     try {
@@ -61,7 +61,7 @@ function Tweet({ userData, refreshList, updateTweets, handleAddComment }) {
           <BodyContainer>
             <BodyTweet userData={tweet} username={userData.usuario} onClickRemoveTweet={handleRemoveTweet} />
             <ListActions
-              onClickModal={() => setOpenCommentModal(true)}
+              onClickModal={() => setOpenCommentModalId(tweetId)}
               onClickRetweetModal={() => setOpenRetweetModal(true)}
               onSuccessAction={() => refreshList()}
               onClickLikeListUpdate={handleLikeListUpdate}
@@ -72,9 +72,11 @@ function Tweet({ userData, refreshList, updateTweets, handleAddComment }) {
               retweets={retweets}
               isRetweetedByUser={isRetweetedByUser}
               tweetId={tweetId} />
-            <Modal showModal={openCommentModal} setShowModal={setOpenCommentModal}>
-              <UserPhoto src="https://cdn.pixabay.com/photo/2021/01/04/10/41/icon-5887126_1280.png" />
-              <BodyTweet userData={tweet} />
+            <Modal showModal={openCommentModalId === tweetId} setShowModal={setOpenCommentModalId}>
+              <div style={{display: 'flex', gap: '1rem'}}>
+                <UserPhoto src="https://cdn.pixabay.com/photo/2021/01/04/10/41/icon-5887126_1280.png" />
+                <BodyTweet userData={tweet} />
+              </div>
               <ReplyTweet handleAddComment={handleAddComment} postUser={usuario} tweetId={tweetId} refreshList={refreshList} />
             </Modal>
             <Modal showModal={openRetweetModal} setShowModal={setOpenRetweetModal}>

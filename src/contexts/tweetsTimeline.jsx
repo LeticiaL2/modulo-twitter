@@ -6,7 +6,8 @@ export const TweetsListContext = createContext();
 
 const TweetTimelineProvider = ({ children }) => {
   const [tweets, setTweets] = useState([]);
-
+  const [openCommentModalId, setOpenCommentModalId] = useState(null)
+  
   const fetchTweets = async () => {
     try {
       const response = await Api.get('api/v1/tweets', { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
@@ -60,15 +61,30 @@ const TweetTimelineProvider = ({ children }) => {
       if (response.status !== 201) {
         throw new Error(response.data.message || 'Something went wrong')
       }
-
+      setOpenCommentModalId(null)
       fetchTweets()
     } catch (e) {
       console.log(e)
     }
   }
 
+  const handleAddRetweetWithQuote = async (retweet, id) => {
+    try {
+      const response = await Api.post(`api/v1/tweets/${id}/retweets`, retweet, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
+
+      if (response.status !== 201) {
+        throw new Error(response.data.message || 'Something went wrong')
+      }
+      fetchTweets()
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+
+
   return (
-    <TweetsListContext.Provider value={{ tweets, refreshList: fetchTweets, handleAddTweet, updateTweets, handleAddComment }}>
+    <TweetsListContext.Provider value={{ tweets, refreshList: fetchTweets, handleAddTweet, updateTweets, handleAddComment, openCommentModalId, setOpenCommentModalId }}>
       {children}
     </TweetsListContext.Provider>
   );

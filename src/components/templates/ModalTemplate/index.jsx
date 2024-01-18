@@ -17,7 +17,7 @@ function Modal({ showModal, setShowModal, children }) {
   if (showModal) {
     return createPortal
       (<Container ref={modalRef} onClick={closeModal}>
-        <ModalContainer>
+        <ModalContainer >
           <HeaderContainer >
             <CloseContainer onClick={() => setShowModal(prev => !prev)}>
               <CloseIcon />

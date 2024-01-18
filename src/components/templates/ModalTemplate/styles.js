@@ -18,7 +18,7 @@ export const ModalContainer = styled.div`
   transform: translate(-50%, -50%);
   padding: 0.5rem 1rem;
   background-color: ${colors.black};
-  width: 90%;
+  width: 100%;
   max-width: 600px;
   border-radius: 0.5rem;
 `
@@ -39,6 +39,7 @@ export const BodyContainer = styled.div`
 
 export const ContentContainer = styled.div`
   display: flex;
+  flex-direction: column;
   gap: 1rem;
   width: 100%;
 `
