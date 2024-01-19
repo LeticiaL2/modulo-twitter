@@ -22,8 +22,7 @@ import {
 } from './styles';
 import ReplyTweet from '../../molecules/ReplyTweet';
 
-function MainTweet({ userData, refreshList, updateTweets, handleAddComment }) {
-  const [openCommentModal, setOpenCommentModal] = useState(false)
+function MainTweet({ userData, refreshList, updateTweets, handleAddComment, openCommentModalId, setOpenCommentModalId }) {
   const [openRetweetModal, setOpenRetweetModal] = useState(false)
   const navigate = useNavigate()
   const { id: tweetId, texto: content, data: date, nome, usuario, isLikedByUser, isRetweetedByUser, isRetweetedWithoutQuoteByUser, retweetPai } = userData;
@@ -70,7 +69,7 @@ function MainTweet({ userData, refreshList, updateTweets, handleAddComment }) {
           {hourFormatted} <DotIcon /> {dateFormatted}
         </DateContainer>
         <ListActions
-          onClickModal={() => setOpenCommentModal(true)}
+          onClickModal={() => setOpenCommentModalId(tweetId)}
           onClickRetweetModal={() => setOpenRetweetModal(true)}
           onClickLikeListUpdate={handleLikeListUpdate}
           onSuccessAction={() => refreshList()}
@@ -81,7 +80,7 @@ function MainTweet({ userData, refreshList, updateTweets, handleAddComment }) {
           retweets={userData.retweets}
           isRetweetedByUser={isRetweetedByUser}
           tweetId={tweetId} />
-        <Modal showModal={openCommentModal} setShowModal={setOpenCommentModal}>
+        <Modal showModal={openCommentModalId === tweetId} setShowModal={setOpenCommentModalId}>
           <UserPhoto src="https://cdn.pixabay.com/photo/2021/01/04/10/41/icon-5887126_1280.png" />
           <BodyTweet userData={userData} />
           <ReplyTweet handleAddComment={handleAddComment} postUser={usuario} tweetId={tweetId} refreshList={refreshList} />

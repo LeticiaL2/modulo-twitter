@@ -27,7 +27,6 @@ function Tweet({ userData, refreshList, updateTweets, handleAddComment, openComm
     if (openCommentModalId || openRetweetModal) return
     navigate(`/tweet/${tweetId}`)
   }
-  console.log(openCommentModalId)
 
   const handleRemoveTweet = async () => {
     try {

@@ -11,6 +11,7 @@ const TweetDetailProvider = ({ children }) => {
   const [tweet, setTweet] = useState(null)
   const [postUser, setPostUser] = useState(null)
   const [commentsList, setCommentsList] = useState([])
+  const [openCommentModalId, setOpenCommentModalId] = useState(null)
 
   const fetchTweet = useCallback(async () => {
     try {
@@ -33,7 +34,7 @@ const TweetDetailProvider = ({ children }) => {
       if (response.status !== 201) {
         throw new Error(response.data.message || 'Something went wrong')
       }
-
+      setOpenCommentModalId(null)
       fetchTweet()
     } catch (e) {
       console.log(e)
@@ -59,8 +60,22 @@ const TweetDetailProvider = ({ children }) => {
     setCommentsList(updatedList)
   }
 
+  const handleAddRetweetWithQuote = async (retweet, id) => {
+    try {
+      const response = await Api.post(`api/v1/tweets/${id}/retweets`, retweet, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
+
+      if (response.status !== 201) {
+        throw new Error(response.data.message || 'Something went wrong')
+      }
+      fetchTweet()
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+
   return (
-    <TweetDetailContext.Provider value={{ tweet, refreshList: fetchTweet, handleAddComment, postUser, commentsList, updateTweets }} >
+    <TweetDetailContext.Provider value={{ tweet, refreshList: fetchTweet, handleAddComment, postUser, commentsList, updateTweets, openCommentModalId, setOpenCommentModalId }} >
       {children}
     </TweetDetailContext.Provider>
   )
