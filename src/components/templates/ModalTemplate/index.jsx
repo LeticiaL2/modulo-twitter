@@ -5,12 +5,12 @@ import { BodyContainer, CloseContainer, Container, ContentContainer, FooterConta
 
 const modalElement = document.getElementById('portal')
 
-function Modal({ showModal, setShowModal, children }) {
+function Modal({ showModal, onClose, children }) {
   const modalRef = useRef()
 
   function closeModal(e) {
     if (modalRef.current === e.target) {
-      setShowModal(false)
+      onClose(false)
     }
   }
 
@@ -19,7 +19,7 @@ function Modal({ showModal, setShowModal, children }) {
       (<Container ref={modalRef} onClick={closeModal}>
         <ModalContainer >
           <HeaderContainer >
-            <CloseContainer onClick={() => setShowModal(prev => !prev)}>
+            <CloseContainer onClick={() => onClose()}>
               <CloseIcon />
             </CloseContainer>
           </HeaderContainer>

@@ -5,7 +5,15 @@ function TweetsList({ tweets, refreshList, updateTweets, handleAddComment, openC
   return (
     <>
       {tweets.map((tweet) => (
-        <Tweet key={tweet.id} userData={tweet} refreshList={refreshList} updateTweets={updateTweets} handleAddComment={handleAddComment} openCommentModalId={openCommentModalId} setOpenCommentModalId={setOpenCommentModalId} />
+        <Tweet
+          key={tweet.id}
+          userData={tweet}
+          refreshList={refreshList}
+          updateTweets={updateTweets}
+          handleAddComment={handleAddComment}
+          isOpenCommentModal={openCommentModalId === tweet.id}
+          onOpenCommentModal={() => setOpenCommentModalId(tweet.id)}
+          onCloseCommentModal={() => setOpenCommentModalId(null)} />
       ))}
     </>
   );

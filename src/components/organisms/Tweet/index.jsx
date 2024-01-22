@@ -16,15 +16,16 @@ import {
 } from './styles';
 import ReplyTweet from '../../molecules/ReplyTweet';
 
-function Tweet({ userData, refreshList, updateTweets, handleAddComment, openCommentModalId, setOpenCommentModalId }) {
+function Tweet({ userData, refreshList, updateTweets, handleAddComment, isOpenCommentModal, onOpenCommentModal, onCloseCommentModal }) {
   const [openRetweetModal, setOpenRetweetModal] = useState(false)
+
   const navigate = useNavigate()
 
   const tweet = userData.retweetPai && userData.texto === null ? userData.retweetPai : userData
   const { id: tweetId, usuario, isLikedByUser, isRetweetedByUser, isRetweetedWithoutQuoteByUser, comentarios, likes, retweets } = tweet
 
   const handleTweetClick = () => {
-    if (openCommentModalId || openRetweetModal) return
+    if (isOpenCommentModal || openRetweetModal) return
     navigate(`/tweet/${tweetId}`)
   }
 
@@ -60,7 +61,7 @@ function Tweet({ userData, refreshList, updateTweets, handleAddComment, openComm
           <BodyContainer>
             <BodyTweet userData={tweet} username={userData.usuario} onClickRemoveTweet={handleRemoveTweet} />
             <ListActions
-              onClickModal={() => setOpenCommentModalId(tweetId)}
+              onClickModal={() => onOpenCommentModal()}
               onClickRetweetModal={() => setOpenRetweetModal(true)}
               onSuccessAction={() => refreshList()}
               onClickLikeListUpdate={handleLikeListUpdate}
@@ -71,7 +72,7 @@ function Tweet({ userData, refreshList, updateTweets, handleAddComment, openComm
               retweets={retweets}
               isRetweetedByUser={isRetweetedByUser}
               tweetId={tweetId} />
-            <Modal showModal={openCommentModalId === tweetId} setShowModal={setOpenCommentModalId}>
+            <Modal showModal={isOpenCommentModal} onClose={onCloseCommentModal}>
               <div style={{display: 'flex', gap: '1rem'}}>
                 <UserPhoto src="https://cdn.pixabay.com/photo/2021/01/04/10/41/icon-5887126_1280.png" />
                 <BodyTweet userData={tweet} />
