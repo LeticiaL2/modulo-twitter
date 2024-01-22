@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-//import { registerUser } from '../../services/user';
+import { registerUser } from '../../services/user';
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
 
@@ -20,8 +20,8 @@ const SignUp = () => {
 
     const handleSubmit = async e => {
         e.preventDefault();
-        //const response = await registerUser(user);
-        //console.log(response.mensagem.texto);
+        const response = await registerUser(user);
+        console.log(response);
         setUser({
             nome: '',
             usuario: '',
