@@ -11,6 +11,8 @@ import { UsuariosService } from 'src/usuarios/usuarios.service';
 import { UsuariosRepository } from 'src/usuarios/usuarios.repository';
 import { ComentariosService } from 'src/comentarios/comentarios.service';
 import { ComentariosRepository } from 'src/comentarios/comentarios.repository';
+import { RetweetsService } from 'src/retweets/retweets.service';
+import { RetweetsRepository } from 'src/retweets/retweets.repository';
 
 @Module({
 	imports: [
@@ -27,6 +29,8 @@ import { ComentariosRepository } from 'src/comentarios/comentarios.repository';
 		UsuariosRepository,
 		ComentariosService,
 		ComentariosRepository,
+		RetweetsService,
+		RetweetsRepository,
 	],
 })
 export class TweetsModule {}

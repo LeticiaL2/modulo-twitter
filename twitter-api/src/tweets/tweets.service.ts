@@ -11,11 +11,13 @@ import { Tweet } from './tweet.entity';
 import { EncontrarTweetsParametrosDto } from './dto/encontrar-tweets-parametros.dto';
 import { LikesService } from 'src/likes/likes.service';
 import { ComentariosService } from 'src/comentarios/comentarios.service';
+import { RetweetsService } from 'src/retweets/retweets.service';
 @Injectable()
 export class TweetsService {
 	constructor(
 		private tweetsRepository: TweetsRepository,
 		private comentariosService: ComentariosService,
+		private retweetsService: RetweetsService,
 		@Inject(forwardRef(() => LikesService)) private likesService: LikesService,
 	) {}
 
@@ -69,7 +71,9 @@ export class TweetsService {
 		await Promise.all(
 			tweets.map(async (tweet) => {
 				const tweetComLike = await this.adicionarLikesNoTweet(tweet);
-				return await this.adicionarComentariosNoTweet(tweetComLike);
+				const tweetComLikeERetweet =
+					await this.adicionarRetweetsNoTweet(tweetComLike);
+				return await this.adicionarComentariosNoTweet(tweetComLikeERetweet);
 			}),
 		);
 
@@ -89,6 +93,11 @@ export class TweetsService {
 		tweet.comentarios = await this.comentariosService.retornarComentariosTotais(
 			tweet.id,
 		);
+		return tweet;
+	}
+
+	async adicionarRetweetsNoTweet(tweet: Tweet) {
+		tweet.retweets = await this.retweetsService.retornarRetweetsTotais(tweet.id);
 		return tweet;
 	}
 }
