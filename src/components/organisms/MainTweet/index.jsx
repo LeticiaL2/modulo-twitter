@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { colors } from '../../../styles/colors';
 import DotIcon from '../../atoms/SVGIcons/DotIcon';
@@ -7,9 +7,10 @@ import MoreIcon from '../../atoms/SVGIcons/MoreIcon';
 import Span from '../../atoms/Span';
 import UserPhoto from '../../atoms/UserPhoto';
 import BodyTweet from '../../molecules/BodyTweet';
+import PostRetweet from '../../molecules/PostRetweet';
+import ReplyTweet from '../../molecules/ReplyTweet';
 import ListActions from '../../organisms/ListActions';
-// import Modal from '../Modal';
-import Modal from '../../templates/ModalTemplate'
+import Modal from '../../templates/ModalTemplate';
 import {
   Content,
   DateContainer,
@@ -20,10 +21,20 @@ import {
   TweetContainer,
   UserInfoContainer
 } from './styles';
-import ReplyTweet from '../../molecules/ReplyTweet';
 
-function MainTweet({ userData, refreshList, updateTweets, handleAddComment, openCommentModalId, setOpenCommentModalId }) {
-  const [openRetweetModal, setOpenRetweetModal] = useState(false)
+function MainTweet({
+  userData,
+  refreshList,
+  updateTweets,
+  handleAddComment,
+  handleAddRetweetWithQuote,
+  isOpenCommentModal,
+  onOpenCommentModal,
+  onCloseCommentModal,
+  isOpenRetweetModal,
+  onOpenRetweetModal,
+  onCloseRetweetModal,
+}) {
   const navigate = useNavigate()
   const { id: tweetId, texto: content, data: date, nome, usuario, isLikedByUser, isRetweetedByUser, isRetweetedWithoutQuoteByUser, retweetPai } = userData;
   const hourFormatted = format(new Date(date), 'KK:mm a')
@@ -69,8 +80,8 @@ function MainTweet({ userData, refreshList, updateTweets, handleAddComment, open
           {hourFormatted} <DotIcon /> {dateFormatted}
         </DateContainer>
         <ListActions
-          onClickModal={() => setOpenCommentModalId(tweetId)}
-          onClickRetweetModal={() => setOpenRetweetModal(true)}
+          onClickModal={() => onOpenCommentModal()}
+          onClickRetweetModal={() => onOpenRetweetModal()}
           onClickLikeListUpdate={handleLikeListUpdate}
           onSuccessAction={() => refreshList()}
           comentarios={userData.comentarios}
@@ -80,15 +91,19 @@ function MainTweet({ userData, refreshList, updateTweets, handleAddComment, open
           retweets={userData.retweets}
           isRetweetedByUser={isRetweetedByUser}
           tweetId={tweetId} />
-        <Modal showModal={openCommentModalId === tweetId} setShowModal={setOpenCommentModalId}>
-          <UserPhoto src="https://cdn.pixabay.com/photo/2021/01/04/10/41/icon-5887126_1280.png" />
-          <BodyTweet userData={userData} />
-          <ReplyTweet handleAddComment={handleAddComment} postUser={usuario} tweetId={tweetId} refreshList={refreshList} />
+        <Modal showModal={isOpenCommentModal} onClose={onCloseCommentModal}>
+          <div style={{ display: 'flex', gap: '1rem'}}>
+            <UserPhoto src="https://cdn.pixabay.com/photo/2021/01/04/10/41/icon-5887126_1280.png" />
+            <BodyTweet userData={userData} />
+          </div>
+          <ReplyTweet handleAddComment={handleAddComment} postUser={usuario} tweetId={tweetId}/>
         </Modal>
-        <Modal showModal={openRetweetModal} setShowModal={setOpenRetweetModal}>
-          <UserPhoto src="https://cdn.pixabay.com/photo/2021/01/04/10/41/icon-5887126_1280.png" />
-          <BodyTweet userData={userData} />
-          <ReplyTweet handleAddComment={handleAddComment} postUser={usuario} tweetId={tweetId} refreshList={refreshList} />
+        <Modal showModal={isOpenRetweetModal} onClose={onCloseRetweetModal}>
+          <div style={{ display: 'flex', gap: '1rem'}}>
+            <UserPhoto src="https://cdn.pixabay.com/photo/2021/01/04/10/41/icon-5887126_1280.png" />
+            <BodyTweet userData={userData} />
+          </div>
+          <PostRetweet onPostRetweet={handleAddRetweetWithQuote} tweetId={tweetId}/>
         </Modal>
       </Footer>
     </TweetContainer>

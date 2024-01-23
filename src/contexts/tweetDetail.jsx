@@ -12,6 +12,7 @@ const TweetDetailProvider = ({ children }) => {
   const [postUser, setPostUser] = useState(null)
   const [commentsList, setCommentsList] = useState([])
   const [openCommentModalId, setOpenCommentModalId] = useState(null)
+  const [openRetweetModalId, setOpenRetweetModalId] = useState(null)
 
   const fetchTweet = useCallback(async () => {
     try {
@@ -67,6 +68,7 @@ const TweetDetailProvider = ({ children }) => {
       if (response.status !== 201) {
         throw new Error(response.data.message || 'Something went wrong')
       }
+      setOpenRetweetModalId(null)
       fetchTweet()
     } catch (e) {
       console.log(e)
@@ -75,7 +77,19 @@ const TweetDetailProvider = ({ children }) => {
 
 
   return (
-    <TweetDetailContext.Provider value={{ tweet, refreshList: fetchTweet, handleAddComment, postUser, commentsList, updateTweets, openCommentModalId, setOpenCommentModalId }} >
+    <TweetDetailContext.Provider value={{
+      tweet,
+      refreshList: fetchTweet,
+      handleAddComment,
+      handleAddRetweetWithQuote,
+      postUser,
+      commentsList,
+      updateTweets,
+      openCommentModalId,
+      setOpenCommentModalId,
+      openRetweetModalId,
+      setOpenRetweetModalId
+    }} >
       {children}
     </TweetDetailContext.Provider>
   )

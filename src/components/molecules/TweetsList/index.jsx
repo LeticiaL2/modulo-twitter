@@ -1,7 +1,17 @@
 import React from 'react';
 import Tweet from '../../organisms/Tweet';
 
-function TweetsList({ tweets, refreshList, updateTweets, handleAddComment, openCommentModalId, setOpenCommentModalId }) {
+function TweetsList({
+  tweets,
+  refreshList,
+  updateTweets,
+  handleAddComment,
+  handleAddRetweetWithQuote,
+  openCommentModalId,
+  setOpenCommentModalId,
+  openRetweetModalId,
+  setOpenRetweetModalId }) {
+
   return (
     <>
       {tweets.map((tweet) => (
@@ -11,9 +21,13 @@ function TweetsList({ tweets, refreshList, updateTweets, handleAddComment, openC
           refreshList={refreshList}
           updateTweets={updateTweets}
           handleAddComment={handleAddComment}
+          handleAddRetweetWithQuote={handleAddRetweetWithQuote}
           isOpenCommentModal={openCommentModalId === tweet.id}
           onOpenCommentModal={() => setOpenCommentModalId(tweet.id)}
-          onCloseCommentModal={() => setOpenCommentModalId(null)} />
+          onCloseCommentModal={() => setOpenCommentModalId(null)}
+          isOpenRetweetModal={openRetweetModalId === tweet.id}
+          onOpenRetweetModal={() => setOpenRetweetModalId(tweet.id)}
+          onCloseRetweetModal={() => setOpenRetweetModalId(null)} />
       ))}
     </>
   );

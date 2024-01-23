@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUserLocalStorage } from '../../../contexts/util';
 import Api from '../../../services/api';
@@ -7,6 +7,7 @@ import UserPhoto from '../../atoms/UserPhoto';
 import BodyTweet from '../../molecules/BodyTweet';
 import ListActions from '../../organisms/ListActions';
 // import Modal from '../../organisms/Modal';
+import ReplyTweet from '../../molecules/ReplyTweet';
 import Modal from '../../templates/ModalTemplate';
 import {
   AditionalInfoContainer,
@@ -14,10 +15,21 @@ import {
   MainInfoContainer,
   TweetContainer
 } from './styles';
-import ReplyTweet from '../../molecules/ReplyTweet';
+import PostRetweet from '../../molecules/PostRetweet';
 
-function Tweet({ userData, refreshList, updateTweets, handleAddComment, isOpenCommentModal, onOpenCommentModal, onCloseCommentModal }) {
-  const [openRetweetModal, setOpenRetweetModal] = useState(false)
+function Tweet({
+  userData,
+  refreshList,
+  updateTweets,
+  handleAddComment,
+  handleAddRetweetWithQuote,
+  isOpenCommentModal,
+  onOpenCommentModal,
+  onCloseCommentModal,
+  isOpenRetweetModal,
+  onOpenRetweetModal,
+  onCloseRetweetModal
+}) {
 
   const navigate = useNavigate()
 
@@ -25,7 +37,7 @@ function Tweet({ userData, refreshList, updateTweets, handleAddComment, isOpenCo
   const { id: tweetId, usuario, isLikedByUser, isRetweetedByUser, isRetweetedWithoutQuoteByUser, comentarios, likes, retweets } = tweet
 
   const handleTweetClick = () => {
-    if (isOpenCommentModal || openRetweetModal) return
+    if (isOpenCommentModal || isOpenRetweetModal) return
     navigate(`/tweet/${tweetId}`)
   }
 
@@ -62,7 +74,7 @@ function Tweet({ userData, refreshList, updateTweets, handleAddComment, isOpenCo
             <BodyTweet userData={tweet} username={userData.usuario} onClickRemoveTweet={handleRemoveTweet} />
             <ListActions
               onClickModal={() => onOpenCommentModal()}
-              onClickRetweetModal={() => setOpenRetweetModal(true)}
+              onClickRetweetModal={() => onOpenRetweetModal()}
               onSuccessAction={() => refreshList()}
               onClickLikeListUpdate={handleLikeListUpdate}
               comentarios={comentarios}
@@ -73,16 +85,18 @@ function Tweet({ userData, refreshList, updateTweets, handleAddComment, isOpenCo
               isRetweetedByUser={isRetweetedByUser}
               tweetId={tweetId} />
             <Modal showModal={isOpenCommentModal} onClose={onCloseCommentModal}>
-              <div style={{display: 'flex', gap: '1rem'}}>
+              <div style={{ display: 'flex', gap: '1rem' }}>
                 <UserPhoto src="https://cdn.pixabay.com/photo/2021/01/04/10/41/icon-5887126_1280.png" />
                 <BodyTweet userData={tweet} />
               </div>
-              <ReplyTweet handleAddComment={handleAddComment} postUser={usuario} tweetId={tweetId} refreshList={refreshList} />
+              <ReplyTweet handleAddComment={handleAddComment} postUser={usuario} tweetId={tweetId}/>
             </Modal>
-            <Modal showModal={openRetweetModal} setShowModal={setOpenRetweetModal}>
-              <UserPhoto src="https://cdn.pixabay.com/photo/2021/01/04/10/41/icon-5887126_1280.png" />
-              <BodyTweet userData={tweet} />
-              <ReplyTweet handleAddComment={handleAddComment} postUser={usuario} tweetId={tweetId} refreshList={refreshList} />
+            <Modal showModal={isOpenRetweetModal} onClose={onCloseRetweetModal}>
+              <div style={{ display: 'flex', gap: '1rem' }}>
+                <UserPhoto src="https://cdn.pixabay.com/photo/2021/01/04/10/41/icon-5887126_1280.png" />
+                <BodyTweet userData={tweet} />
+              </div>
+              <PostRetweet onPostRetweet={handleAddRetweetWithQuote} tweetId={tweetId}/>
             </Modal>
           </BodyContainer>
         </MainInfoContainer>
