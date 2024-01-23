@@ -1,8 +1,8 @@
 import { useFormik } from "formik";
 import { signUpSchema } from "../../schemas/SignUpSchema";
 import { registerUser } from "../../services/user";
-
-
+import Input from "../atoms/Input";
+import Button from "../atoms/Button";
 
 const SignUp = ({ handleClose }) => {
 
@@ -32,7 +32,7 @@ const SignUp = ({ handleClose }) => {
     return (
         <form onSubmit={handleSubmit} autoComplete="off">
             <h1>Sign Up to Tweeter</h1>
-            <input 
+            <Input 
                 id="nome" 
                 type="text" 
                 placeholder="Nome"
@@ -42,7 +42,7 @@ const SignUp = ({ handleClose }) => {
                 className={errors.nome && touched.nome ? "input-error" : ""}
             />
             {errors.nome && touched.nome && <p className="error">{errors.nome}</p>}
-            <input
+            <Input
                 id="usuario" 
                 type="text" 
                 placeholder="Usuário" 
@@ -52,7 +52,7 @@ const SignUp = ({ handleClose }) => {
                 className={errors.usuario && touched.usuario ? "input-error" : ""}
             />
             {errors.usuario && touched.usuario && <p className="error">{errors.usuario}</p>}
-            <input
+            <Input
                 id="email" 
                 type="email"
                 placeholder="Email"
@@ -62,7 +62,7 @@ const SignUp = ({ handleClose }) => {
                 className={errors.email && touched.email ? "input-error" : ""}
             />
             {errors.email && touched.email && <p className="error">{errors.email}</p>}
-            <input
+            <Input
                 id="senha" 
                 type="password" 
                 placeholder="Senha"
@@ -72,7 +72,7 @@ const SignUp = ({ handleClose }) => {
                 className={errors.senha && touched.senha ? "input-error" : ""}
             />
             {errors.senha && touched.senha && <p className="error">{errors.senha}</p>}
-            <button disabled={isSubmitting} type="submit">Sign Up</button>
+            <Button disabled={isSubmitting} type="submit">Sign Up</Button>
         </form>
     )
 }
