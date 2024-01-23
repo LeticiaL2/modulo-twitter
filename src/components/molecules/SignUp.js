@@ -1,13 +1,13 @@
 import { useFormik } from "formik";
 import { signUpSchema } from "../../schemas/SignUpSchema";
-import { registerUser } from "../../services/user";
+import { signUpUser } from "../../services/userService";
 import Input from "../atoms/Input";
 import Button from "../atoms/Button";
 
 const SignUp = ({ handleClose }) => {
 
     const onSubmit = async (values, actions) => {
-        const response = await registerUser(values);
+        const response = await signUpUser(values);
         if (response.status === false) {
             console.log({ email: response.mensagem.texto });
         } else {
