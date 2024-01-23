@@ -1,4 +1,4 @@
-import { React, useContext } from "react";
+import { React } from "react";
 import {
   Container,
   ContainerModal,
@@ -9,16 +9,16 @@ import {
 import Retweet from "../retweet/retweet";
 import { IoClose } from "react-icons/io5";
 
-import InputReply from "../input-reply/input-reply";
-import perfil from "../../../assets/perfil.png";
 import axios from "axios";
 import TweetInput from "../tweet-input-box/tweet-input-box";
-import { Button } from "../../atoms/button-icon/styles";
-import { TweetContext } from "../../../pages/home-page/home-page";
 
-const Modal = ({ showModal, setShowModal, userData, isComment }) => {
-  const { refreshTweet } = useContext(TweetContext);
-
+const Modal = ({
+  showModal,
+  setShowModal,
+  userData,
+  isComment,
+  refreshTweets,
+}) => {
   async function replyWithQuote(texto) {
     try {
       const token = JSON.parse(localStorage.getItem("accessToken"));
@@ -33,7 +33,7 @@ const Modal = ({ showModal, setShowModal, userData, isComment }) => {
       );
       setShowModal(false);
       console.log("Resposta da requisição:", response.data);
-      refreshTweet();
+      refreshTweets();
     } catch (error) {
       console.error("Erro ao realizar a requisição:", error);
       console.log("Erro detalhado:", error.response);
@@ -54,13 +54,12 @@ const Modal = ({ showModal, setShowModal, userData, isComment }) => {
       );
       setShowModal(false);
       console.log("Resposta da requisição:", response.data);
+      refreshTweets();
     } catch (error) {
       console.error("Erro ao realizar a requisição:", error);
       console.log("Erro detalhado:", error.response);
     }
   }
-
-  console.log("modal tweet", userData);
 
   return (
     <>

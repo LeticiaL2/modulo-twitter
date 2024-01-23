@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import UserPhoto from "../../atoms/user-photo/user-photo";
 import { FaRetweet } from "react-icons/fa";
-import ButtonIcon from "../../atoms/button-icon/button-icon";
 import axios from "axios";
 import Actions from "../../molecules/actions/actions";
 import Modal from "../../molecules/modal/modal";
@@ -9,7 +8,6 @@ import Modal from "../../molecules/modal/modal";
 import Retweet from "../../molecules/retweet/retweet";
 import { useNavigate } from "react-router-dom";
 import {
-  LinkContainerTweet,
   ContainerTweetCard,
   TopTweetCard,
   ContentContainer,
@@ -21,14 +19,51 @@ import {
   Reposted,
 } from "./styles";
 
-function TweetCard({ userData }) {
+function TweetCard({ userData, refreshTweets, updatedTweets }) {
   const navigate = useNavigate();
 
   const tweet =
-    userData.retweetPai && userData.texto === null
-      ? userData.retweetPai
-      : userData;
-  const { id, usuario, nome, texto, data, liked, retweeted } = userData;
+    userData.tweetPai && userData.texto === null ? userData.tweetPai : userData;
+
+  const tweetPaidoPai =
+    userData.tweetPai && userData.tweetPai ? userData.tweetPai : null;
+
+  let tweetToRender = tweetPaidoPai;
+
+  console.log("tweetTeste", tweetToRender);
+
+  if (tweetToRender && tweetToRender.texto === null && tweetToRender.tweetPai) {
+    let tweetPaiDoTweetPai = tweetToRender.tweetPai;
+    console.log("tweetPaidoTweetPai", tweetPaiDoTweetPai);
+
+    while (
+      tweetPaiDoTweetPai &&
+      tweetPaiDoTweetPai.texto === null &&
+      tweetPaiDoTweetPai.tweetPai &&
+      tweetPaiDoTweetPai.tweetPai
+    ) {
+      tweetPaiDoTweetPai = tweetPaiDoTweetPai.tweetPai;
+    }
+
+    if (tweetPaiDoTweetPai && tweetPaiDoTweetPai.texto !== null) {
+      tweetToRender = tweetPaiDoTweetPai;
+    }
+  }
+
+  console.log("tweet a ser renderizado:", tweetToRender);
+
+  const {
+    id,
+    liked,
+    retweeted,
+    comentarios,
+    likes,
+    retweets,
+    nome,
+    usuario,
+    texto,
+    data,
+  } = tweet;
   const [expanded, setExpanded] = useState(false);
   const charLimit = 140;
 
@@ -39,89 +74,49 @@ function TweetCard({ userData }) {
     setExpanded(!expanded);
   };
 
-  /* const handleButtonLike = async () => {
+  const handleLikeUpdate = () => {
+    refreshTweets();
+  };
+
+  const handleButtonRetweet = async () => {
+    const token = JSON.parse(localStorage.getItem("accessToken"));
+    const response = await axios.post(
+      `http://localhost:8000/tweets/${id}/retweet`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    refreshTweets();
+
+    console.log("Ação realizada com sucesso:", response.data);
+  };
+
+  const handleUndoRetweet = async () => {
     try {
       const token = JSON.parse(localStorage.getItem("accessToken"));
-      const response = await axios.post(
-        `http://localhost:8000/tweets/${props.id}/likes`,
-        {},
+      const response = await axios.delete(
+        `http://localhost:8000/tweets/${userData.id}/delete`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      console.log("Ação realizada com sucesso:", response.data);
 
-      setLiked(!liked);
-      setLikesCount(liked ? likesCount - 1 : likesCount + 1);
-      props.fetchTweets();
+      refreshTweets();
+      console.log("Ação realizada com sucesso:", response.data);
     } catch (error) {
-      console.error("Erro ao realizar a ação:", error);
+      console.error("Erro ao tentar desfazer retweet:", error);
     }
   };
 
-  const handleButtonRetweet = async () => {
-    try {
-      const token = JSON.parse(localStorage.getItem("accessToken"));
-      const isAlreadyRetweeted = props.retweeted;
-
-      if (isAlreadyRetweeted) {
-        // Se já retweetou, então desfaz o retweet
-        if (tweetId) {
-          const response = await axios.delete(
-            `http://localhost:8000/tweets/${tweetId}/retweet`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-
-          console.log("Ação realizada com sucesso:", response.data);
-
-          setRetweeted(false);
-          setRetweetCount(retweetCount - 1);
-          setTweetId(null);
-
-          props.fetchTweets();
-        } else {
-          console.log("Erro: tweetId é nulo.");
-        }
-      } else {
-        // Se não retweetou, faz o retweet
-        const newTexto = props.newTexto || props.texto;
-
-        const response = await axios.post(
-          `http://localhost:8000/tweets/${props.id}/retweet`,
-          { texto: newTexto },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        console.log("Ação realizada com sucesso:", response.data);
-
-        setRetweeted(true);
-        setRetweetCount(retweetCount + 1);
-
-        if (response.data.conteudo && response.data.conteudo.tweetId) {
-          setTweetId(response.data.conteudo.tweetId);
-        }
-
-        props.fetchTweets();
-      }
-    } catch (error) {
-      console.error("Erro ao realizar a ação:", error);
-    }
-  }; */
-
-  const displaytexto =
+  /* const displaytexto =
     texto && texto.length > charLimit
       ? `${texto.slice(0, charLimit)}...`
-      : texto;
+      : texto;*/
 
   function formatTimeAgo(data) {
     const now = new Date();
@@ -152,13 +147,14 @@ function TweetCard({ userData }) {
   const timeAgo = formatTimeAgo(new Date(data));
   const isRetweet = !!userData.tweetPai;
   console.log("userdata:", userData);
+  console.log("tweet", tweet);
 
   return (
     <ContainerTweetCard>
       {isRetweet && !userData.texto && (
         <Reposted>
           {" "}
-          <FaRetweet /> {usuario} reposted
+          <FaRetweet /> {userData.usuario} reposted
         </Reposted>
       )}
       <>
@@ -181,8 +177,8 @@ function TweetCard({ userData }) {
               </ShowMore>
             )}
           </ContentTweet>
-          {texto && userData.tweetPai && (
-            <Retweet texto={userData.texto} tweetPai={userData.tweetPai[0]} />
+          {texto && tweet.tweetPai && (
+            <Retweet texto={tweet.texto} tweetPai={tweetToRender} />
           )}
         </ContentContainer>
         <FooterTweetCard>
@@ -190,29 +186,33 @@ function TweetCard({ userData }) {
             onClickModal={() => setOpenCommentModal(true)}
             onClickRetweetModal={() => setOpenRetweetModal(true)}
             onClickCommentModal={() => setOpenCommentModal(true)}
-            tweetId={userData.id}
-            comentarios={userData.comentarios}
-            likes={userData.likes}
-            liked={userData.liked}
-            retweets={userData.retweets}
-            retweeted={userData.retweeted}
-            tweetPaiUsuario={userData.usuario}
-            texto={userData.texto}
-            tweetPai={userData.tweetPai && userData.tweetPai[0]}
+            onClickUndoRetweet={handleUndoRetweet}
+            onClickRetweet={handleButtonRetweet}
+            onClickUpdateLike={handleLikeUpdate}
+            tweetId={id}
+            comentarios={comentarios}
+            likes={likes}
+            liked={liked}
+            retweets={retweets}
+            retweeted={retweeted}
+            texto={texto}
+            tweetPai={tweet.tweetPai && tweet.tweetPai[0]}
             tweet={userData}
           ></Actions>
 
           <Modal
             showModal={openRetweetModal}
             setShowModal={setOpenRetweetModal}
-            userData={userData}
+            userData={tweet}
+            refreshTweets={refreshTweets}
           />
 
           <Modal
             showModal={openCommentModal}
             setShowModal={setOpenCommentModal}
-            userData={userData}
+            userData={tweet}
             isComment={true}
+            refreshTweets={refreshTweets}
           />
         </FooterTweetCard>
       </>

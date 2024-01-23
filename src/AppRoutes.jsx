@@ -12,6 +12,8 @@ import DetailsPage from "./pages/details-page/details-page";
 import SignupPage from "./pages/signup-page/signup-page";
 
 import { AuthProvider, AuthContext } from "./contexts/auth";
+import TimeLineProvider from "./contexts/tweetsHomePageContext";
+import TweetsDetailsProvider from "./contexts/tweetsDetailsContext";
 
 const AppRoutes = () => {
   const Private = ({ children }) => {
@@ -40,7 +42,9 @@ const AppRoutes = () => {
             path="/"
             element={
               <Private>
-                <HomePage />
+                <TimeLineProvider>
+                  <HomePage />
+                </TimeLineProvider>
               </Private>
             }
           />
@@ -50,7 +54,9 @@ const AppRoutes = () => {
             path="tweets/:id/detalhes"
             element={
               <Private>
-                <DetailsPage />
+                <TweetsDetailsProvider>
+                  <DetailsPage />
+                </TweetsDetailsProvider>
               </Private>
             }
           />

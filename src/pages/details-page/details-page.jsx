@@ -1,70 +1,32 @@
-import React, { useState, useEffect, useContext, useMemo } from "react";
+import React, { useContext } from "react";
 import "./styles";
-import TweetDetails from "../../components/molecules/tweet-details/tweet-details";
+import TweetDetails from "../../components/organism/tweet-details/tweet-details";
 import { BoxCenter, Container } from "./styles";
 import TweetInput from "../../components/molecules/tweet-input-box/tweet-input-box";
-import perfil from "../../assets/perfil.png";
-import { get, post } from "../../api/api";
-import axios from "axios";
-import { AuthContext } from "../../contexts/auth";
-import { useParams } from "react-router-dom";
-import ListComments from "../../components/molecules/list-comentarios/list-comentarios";
+//import { AuthContext } from "../../contexts/auth";
 import HeaderHome from "../../components/molecules/header-home/header-home";
 import ListTweets from "../../components/organism/list-tweets/list-tweets";
-import { TweetContext } from "../home-page/home-page";
+import { TweetsDetailsContext } from "../../contexts/tweetsDetailsContext";
 
 function DetailsPage() {
-  const { user } = useContext(AuthContext);
-  const { id } = useParams();
-  const [commentsList, setCommentsList] = useState([]);
-
-  const getTweets = async () => {
-    console.log("id aqui", id);
-    try {
-      const response = await get(`tweets/${id}/detalhes`);
-
-      console.log("Dados da API:", response);
-      console.log("comentarios", response.conteudo.comentariosArray);
-      setCommentsList(response.conteudo.comentariosArray);
-    } catch (error) {
-      console.error("Erro ao buscar dados da API:", error);
-    }
-  };
-
-  useEffect(() => {
-    getTweets();
-  }, [id]);
-
-  const addTweet = async (tweetObject) => {
-    try {
-      const response = await post(`tweets/${id}/comentarios`, tweetObject);
-      console.log("Resposta da API após o POST:", response);
-      setCommentsList((prevList) => [...prevList, response.conteudo]);
-
-      getTweets();
-    } catch (error) {
-      console.error("Erro ao realizar o POST na API:", error);
-    }
-  };
-
-  const contextValue = useMemo(() => ({ refreshTweet: getTweets }), []);
+  //const { user } = useContext(AuthContext);
+  const { commentsList, addTweet, refreshTweets } =
+    useContext(TweetsDetailsContext);
 
   return (
-    <TweetContext.Provider value={contextValue}>
-      <Container>
-        <BoxCenter>
-          <HeaderHome buttonText="Voltar" />
-          <TweetDetails></TweetDetails>
-          <TweetInput
-            $border="none"
-            buttonText="Reply"
-            placeholder="Post your reply!"
-            onTweet={addTweet}
-          />
-          <ListTweets tweets={commentsList} />
-        </BoxCenter>
-      </Container>
-    </TweetContext.Provider>
+    <Container>
+      <BoxCenter>
+        <HeaderHome buttonText="Voltar" />
+        <TweetDetails refreshTweets={refreshTweets}></TweetDetails>
+        <TweetInput
+          $border="none"
+          buttonText="Reply"
+          placeholder="Post your reply!"
+          onTweet={addTweet}
+        />
+        <ListTweets tweets={commentsList} refreshTweets={refreshTweets} />
+      </BoxCenter>
+    </Container>
   );
 }
 

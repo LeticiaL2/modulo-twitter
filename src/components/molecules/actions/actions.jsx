@@ -4,11 +4,13 @@ import axios from "axios";
 import Dropdown from "../../atoms/dropdown/dropdown";
 import { Container, ButtonActionContainer } from "./styles";
 import OptionDropdown from "../../atoms/option-dropdown/option-dropdown";
-import { TweetContext } from "../../../pages/home-page/home-page";
 
 const Actions = ({
   onClickCommentModal,
   onClickRetweetModal,
+  onClickRetweet,
+  onClickUndoRetweet,
+  onClickUpdateLike,
   tweetId,
   comentarios,
   liked,
@@ -25,15 +27,11 @@ const Actions = ({
   const [retweetedBoolean, setRetweetedBoolean] = useState(retweeted);
   const [retweetsCount, setRetweetsCount] = useState(retweets);
 
-  const [tweetPaiId, setTweetPaiId] = useState();
-
   const [openDropdown, setOpenDropdown] = useState(false);
-  const [showModal, setShowModal] = useState(false);
 
   const isRetweeted = retweetedBoolean;
-  const retweetId = tweetId;
 
-  const { refreshTweet } = useContext(TweetContext);
+  //const { refreshTweet } = useContext(TweetsListContext);
 
   useEffect(() => {
     setLikedBoolean(liked);
@@ -41,8 +39,6 @@ const Actions = ({
     setRetweetedBoolean(retweeted);
     setRetweetsCount(retweets);
   }, [liked, retweeted, likes, retweets]);
-
-  console.log(retweetedBoolean);
 
   const handleComment = async () => {
     setOpenDropdown(false);
@@ -79,50 +75,17 @@ const Actions = ({
       setLikedBoolean((prev) => !prev);
       setLikesCount((prev) => prev - 1);
     }
+    onClickUpdateLike(liked, likes);
+    // refreshTweet();
   };
 
   const handleButtonRetweet = async () => {
-    const token = JSON.parse(localStorage.getItem("accessToken"));
-    const response = await axios.post(
-      `http://localhost:8000/tweets/${tweetId}/retweet`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    refreshTweet();
-
-    console.log("Ação realizada com sucesso:", response.data);
-
-    if (response.data.status) {
-      setRetweetedBoolean((prev) => !prev);
-      setRetweetsCount((prev) => prev + 1);
-      setTweetPaiId(response.data.conteudo.tweetId);
-    }
+    onClickRetweet();
   };
 
-  /* const handleDeleteRetweet = async () => {
-    const token = JSON.parse(localStorage.getItem("accessToken"));
-    if (isRetweeted && retweetId) {
-      const response = await axios.delete(
-        `http://localhost:8000/tweets/${tweetPaiId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log("Retweet desfeito com sucesso:", response.data);
-      console.log("id tweet", retweetId);
-
-      setRetweetedBoolean((prev) => !prev);
-      setRetweetsCount((prev) => prev - 1);
-    }
-  }; */
-
-  console.log("actions data", tweet);
+  const handleUndoRetweet = async () => {
+    onClickUndoRetweet();
+  };
 
   return (
     <Container>
@@ -142,12 +105,14 @@ const Actions = ({
           setShowDropdown={setOpenDropdown}
           tweetPai={tweet}
         >
-          {!retweeted ? (
+          {!isRetweeted ? (
             <OptionDropdown iconType={"Retweet"} onClick={handleButtonRetweet}>
               Retweet
             </OptionDropdown>
           ) : (
-            <OptionDropdown iconType={"Retweet"}>Undo Repost</OptionDropdown>
+            <OptionDropdown iconType={"Retweet"} onClick={handleUndoRetweet}>
+              Undo Repost
+            </OptionDropdown>
           )}
           <OptionDropdown onClick={handleRetweetWithQuote} iconType={"Quote"}>
             Quote

@@ -2,7 +2,7 @@ import React from "react";
 import TweetCard from "../../organism/tweet-card/tweet-card";
 import { Container } from "./styles";
 
-const ListTweets = ({ tweets }) => {
+const ListTweets = ({ tweets, refreshTweets, updateTweets }) => {
   if (!tweets) {
     return null;
   }
@@ -11,7 +11,11 @@ const ListTweets = ({ tweets }) => {
     <>
       {tweets.map((tweet) => (
         <Container key={tweet.id}>
-          <TweetCard userData={tweet} />
+          <TweetCard
+            userData={tweet}
+            refreshTweets={refreshTweets}
+            updateTweets={updateTweets}
+          />
         </Container>
       ))}
     </>
