@@ -1,71 +1,82 @@
-import React, { useState } from 'react';
-import { registerUser } from '../../services/user';
-import Input from '../atoms/Input';
-import Button from '../atoms/Button';
+import { useFormik } from "formik";
+import { signUpSchema } from "../../schemas/SignUpSchema";
+import { registerUser } from "../../services/user";
+
+const onSubmit = async (values, actions) => {
+    const response = await registerUser(values);
+    if (response.status === false) {
+        console.log({ email: response.mensagem.texto });
+    } else {
+        console.log('Registration successful!');
+        //TODO maybe redirect to the feed page with the new user logged in
+    }
+    actions.resetForm();
+};
+
 
 const SignUp = () => {
-    const [user, setUser] = useState({
-        nome: '',
-        usuario: '',
-        email: '',
-        senha: ''
-    });
 
-    const handleChange = e => {
-        setUser({
-            ...user,
-            [e.target.name]: e.target.value
-        });
-    };
-
-    const handleSubmit = async e => {
-        e.preventDefault();
-        const response = await registerUser(user);
-        console.log(response);
-        setUser({
+    const {values, errors, touched, isSubmitting, handleBlur, handleChange, handleSubmit} = useFormik({ 
+        initialValues: {
             nome: '',
             usuario: '',
             email: '',
             senha: ''
-        });
-    };
+        },
+        validationSchema: signUpSchema,
+        onSubmit
+    });
+
+
+
+
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} autoComplete="off">
             <h1>Sign Up to Tweeter</h1>
-            <div>
-                <Input 
-                    type="text" 
-                    name="nome" 
-                    placeholder="Nome" 
-                    onChange={handleChange}
-                    value={user.nome}
-                />
-                <Input 
-                    type="text" 
-                    name="usuario" 
-                    placeholder="Usuário" 
-                    onChange={handleChange}
-                    value={user.usuario}
-                />
-                <Input 
-                    type="email" 
-                    name="email" 
-                    placeholder="Email" 
-                    onChange={handleChange}
-                    value={user.email}
-                />
-                <Input 
-                    type="password" 
-                    name="senha" 
-                    placeholder="Senha" 
-                    onChange={handleChange}
-                    value={user.senha}
-                />
-            </div>
-            <Button type="submit">Submit</Button>
+            <input 
+                id="nome" 
+                type="text" 
+                placeholder="Nome"
+                value={values.nome}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className={errors.nome && touched.nome ? "input-error" : ""}
+            />
+            {errors.nome && touched.nome && <p className="error">{errors.nome}</p>}
+            <input
+                id="usuario" 
+                type="text" 
+                placeholder="Usuário" 
+                value={values.usuario}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className={errors.usuario && touched.usuario ? "input-error" : ""}
+            />
+            {errors.usuario && touched.usuario && <p className="error">{errors.usuario}</p>}
+            <input
+                id="email" 
+                type="email"
+                placeholder="Email"
+                value={values.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className={errors.email && touched.email ? "input-error" : ""}
+            />
+            {errors.email && touched.email && <p className="error">{errors.email}</p>}
+            <input
+                id="senha" 
+                type="password" 
+                placeholder="Senha"
+                value={values.senha}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className={errors.senha && touched.senha ? "input-error" : ""}
+            />
+            {errors.senha && touched.senha && <p className="error">{errors.senha}</p>}
+            <button disabled={isSubmitting} type="submit">Sign Up</button>
         </form>
-    );
-};
+    )
+}
 
 export default SignUp;
