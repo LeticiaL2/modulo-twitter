@@ -57,7 +57,7 @@ export class TweetsService {
     }
   }
 
-  async getTweetByTweetPaiId(
+  /* async getTweetByTweetPaiId(
     tweetPaiId: number,
   ): Promise<TweetResponseDto | null> {
     try {
@@ -73,8 +73,29 @@ export class TweetsService {
             },
           },
           likes: true,
-          comentarios: true,
-          retweets: true,
+          comentarios: {
+            include: {
+              usuario: true,
+            },
+          },
+
+          retweets: {
+            include: {
+              usuario: true,
+              tweetPai: {
+                include: {
+                  usuario: true,
+                  likes: true,
+                  comentarios: {
+                    include: {
+                      usuario: true,
+                    },
+                  },
+                  retweets: true,
+                },
+              },
+            },
+          },
         },
       });
 
@@ -92,88 +113,206 @@ export class TweetsService {
             comentarios: tweetRetweetPai.comentarios.length,
             retweets: tweetRetweetPai.retweets.length,
             data: tweetRetweetPai.data_criacao,
+            tweetPai:
+              tweetRetweetPai.retweets && tweetRetweetPai.retweets.length > 0
+                ? {
+                    id: tweetRetweetPai.retweets[0].tweetPai.id,
+                    texto: tweetRetweetPai.retweets[0].tweetPai.texto,
+                    usuarioId: tweetRetweetPai.retweets[0].tweetPai.usuarioId,
+                    usuario: tweetRetweetPai.retweets[0].tweetPai.usuario,
+                    nome: tweetRetweetPai.retweets[0].tweetPai.usuario.nome,
+                    likes: tweetRetweetPai.retweets[0].tweetPai.likes.length,
+                    liked: tweetRetweetPai.retweets[0].tweetPai.liked,
+                    retweeted: tweetRetweetPai.retweets[0].tweetPai.retweeted,
+                    isDeleted: tweetRetweetPai.retweets[0].tweetPai.isDeleted,
+                    comentarios:
+                      tweetRetweetPai.retweets[0].tweetPai.comentarios.length,
+                    retweets:
+                      tweetRetweetPai.retweets[0].tweetPai.retweets.length,
+                    data: tweetRetweetPai.retweets[0].tweetPai.data_criacao,
+                  }
+                : null,
           }
         : null;
     } catch (error) {
       console.error('Erro ao obter tweet pelo ID:', error);
       throw new Error('Erro ao obter tweet pelo ID.');
     }
-  }
+  } */
 
-  async getAllTweets(usuarioId: number): Promise<TweetResponseDto[]> {
-    try {
-      const tweets = await this.prisma.tweet.findMany({
-        where: {
-          comentarioPai: { none: {} },
-          isDeleted: false,
+  async getAllTweets(usuarioId: number): Promise<any[]> {
+    const tweets = await this.prisma.tweet.findMany({
+      where: {
+        comentarioPai: { none: {} },
+        isDeleted: false,
+      },
+      include: {
+        usuario: true,
+        likes: {
+          include: {
+            usuario: true,
+          },
         },
-        include: {
-          usuario: true,
-          likes: true,
-          comentarios: true,
-          retweets: true,
-          retweetPai: true,
+        comentarios: true,
+        retweetPai: {
+          include: {
+            usuario: true,
+            tweet: {
+              include: {
+                usuario: true,
+                likes: true,
+                comentarios: true,
+                retweets: {
+                  include: {
+                    tweetPai: true,
+                  },
+                },
+                retweetPai: {
+                  include: {
+                    tweet: {
+                      include: {
+                        usuario: true,
+                        likes: true,
+                        comentarios: true,
+                        retweets: {
+                          include: {
+                            tweetPai: true,
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            tweetPai: {
+              include: {
+                usuario: true,
+                likes: true,
+                comentarios: true,
+                retweets: true,
+                retweetPai: {
+                  include: {
+                    tweetPai: {
+                      include: {
+                        usuario: true,
+                        retweets: true,
+                        likes: true,
+                        comentarios: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
-        orderBy: {
-          data_criacao: 'desc',
+        retweets: {
+          include: {
+            usuario: true,
+            tweet: true,
+            tweetPai: {
+              include: {
+                usuario: true,
+                likes: true,
+                comentarios: true,
+                retweets: {
+                  include: {
+                    tweet: true,
+                    tweetPai: true,
+                  },
+                },
+              },
+            },
+          },
         },
-      });
+      },
+      orderBy: {
+        data_criacao: 'desc',
+      },
+    });
 
-      const formattedTweets = await Promise.all(
-        tweets.map(async (tweet) => {
-          let tweetPaiId: number | null = null;
-          let tweetPai: TweetResponseDto | null = null;
-
-          if (tweet.retweetPai && tweet.retweetPai.length > 0) {
-            tweetPaiId = tweet.retweetPai[0].tweetPaiId;
-            tweetPai = await this.getTweetByTweetPaiId(tweetPaiId);
+    const mappedTweets = tweets.map((tweet) => ({
+      id: tweet.id,
+      texto: tweet.texto,
+      usuarioId: tweet.usuarioId,
+      usuario: tweet.usuario.usuario,
+      nome: tweet.usuario.nome,
+      likes: tweet.likes.length,
+      liked: tweet.likes.some((like) => like.usuarioId === usuarioId),
+      retweeted: tweet.retweets.some(
+        (retweet) =>
+          retweet.tweetId == tweet.id && retweet.usuarioId === usuarioId,
+      ),
+      isDeleted: tweet.isDeleted,
+      comentarios: tweet.comentarios.length,
+      retweets: tweet.retweets.filter(
+        (retweet) => retweet.tweetPai.isDeleted === false,
+      ).length,
+      data: tweet.data_criacao,
+      tweetPai: tweet.retweetPai[0]
+        ? {
+            id: tweet.retweetPai[0].tweet.id,
+            texto: tweet.retweetPai[0].tweet.texto,
+            usuarioId: tweet.retweetPai[0].tweet.usuarioId,
+            usuario: tweet.retweetPai[0].tweet.usuario.usuario,
+            nome: tweet.retweetPai[0].tweet.usuario.nome,
+            likes: tweet.retweetPai[0].tweet.likes.length,
+            liked: tweet.retweetPai[0].tweet.likes.some(
+              (like) => like.usuarioId === usuarioId,
+            ),
+            retweeted: tweet.retweetPai[0].tweet.retweets.some(
+              (retweet) =>
+                retweet.tweetId == tweet.id && retweet.usuarioId === usuarioId,
+            ),
+            isDeleted: tweet.retweetPai[0].tweet.isDeleted,
+            comentarios: tweet.retweetPai[0].tweet.comentarios.length,
+            retweets: tweet.retweetPai[0].tweet.retweets.filter(
+              (retweet) => retweet.tweetPai.isDeleted === false,
+            ).length,
+            data: tweet.retweetPai[0].tweet.data_criacao,
+            tweetPai: tweet.retweetPai[0].tweet.retweetPai[0]
+              ? {
+                  id: tweet.retweetPai[0].tweet.retweetPai[0].tweet.id,
+                  texto: tweet.retweetPai[0].tweet.retweetPai[0].tweet.texto,
+                  usuarioId:
+                    tweet.retweetPai[0].tweet.retweetPai[0].tweet.usuarioId,
+                  usuario:
+                    tweet.retweetPai[0].tweet.retweetPai[0].tweet.usuario
+                      .usuario,
+                  nome: tweet.retweetPai[0].tweet.retweetPai[0].tweet.usuario
+                    .nome,
+                  likes:
+                    tweet.retweetPai[0].tweet.retweetPai[0].tweet.likes.length,
+                  liked:
+                    tweet.retweetPai[0].tweet.retweetPai[0].tweet.likes.some(
+                      (like) => like.usuarioId === usuarioId,
+                    ),
+                  retweeted:
+                    tweet.retweetPai[0].tweet.retweetPai[0].tweet.retweets.some(
+                      (retweet) =>
+                        retweet.tweetId === tweet.id &&
+                        retweet.usuarioId === usuarioId,
+                    ),
+                  isDeleted:
+                    tweet.retweetPai[0].tweet.retweetPai[0].tweet.isDeleted,
+                  comentarios:
+                    tweet.retweetPai[0].tweet.retweetPai[0].tweet.comentarios
+                      .length,
+                  retweets:
+                    tweet.retweetPai[0].tweet.retweetPai[0].tweet.retweets.filter(
+                      (retweet) => retweet.tweetPai.isDeleted === false,
+                    ).length,
+                  data: tweet.retweetPai[0].tweet.retweetPai[0].tweet
+                    .data_criacao,
+                }
+              : null,
           }
+        : null,
+    }));
 
-          const comentariosArray = await this.getTweetWithComments(tweet.id);
-
-          const existingLike = await this.prisma.likes.findFirst({
-            where: {
-              tweetId: tweet.id,
-              usuarioId: usuarioId,
-            },
-          });
-
-          const liked = !!existingLike;
-
-          const existingRetweet = await this.prisma.retweet.findFirst({
-            where: {
-              tweetId: tweet.id,
-              usuarioId: usuarioId,
-            },
-          });
-
-          const retweeted = !!existingRetweet;
-
-          return {
-            id: tweet.id,
-            texto: tweet.texto,
-            usuarioId: tweet.usuarioId,
-            usuario: tweet.usuario.usuario,
-            nome: tweet.usuario.nome,
-            likes: tweet.likes.length,
-            liked: liked,
-            comentarios: tweet.comentarios.length,
-            retweets: tweet.retweets.length,
-            data: tweet.data_criacao,
-            retweeted: retweeted,
-            isDeleted: tweet.isDeleted,
-            tweetPai: tweetPai ? [tweetPai] : null,
-            comentariosArray:
-              comentariosArray?.conteudo?.comentariosArray || [],
-          };
-        }),
-      );
-
-      return formattedTweets;
-    } catch (error) {
-      console.error('Erro ao recuperar tweets:', error);
-      throw new Error('Erro ao recuperar tweets.');
-    }
+    // Agora `mappedTweets` contém os tweets no formato desejado com todas as propriedades necessárias
+    return mappedTweets;
   }
 
   async createLike(
@@ -343,25 +482,6 @@ export class TweetsService {
           mensagem: {
             codigo: 401,
             texto: 'Tweet pai não encontrado.',
-          },
-          conteudo: null,
-        };
-      }
-
-      const existingRetweet = await this.prisma.tweet.findFirst({
-        where: {
-          id: tweetPaiId,
-          retweeted: true,
-          usuarioId: usuario.id,
-        },
-      });
-
-      if (existingRetweet) {
-        return {
-          status: false,
-          mensagem: {
-            codigo: 200,
-            texto: 'Você já retuitou este tweet.',
           },
           conteudo: null,
         };

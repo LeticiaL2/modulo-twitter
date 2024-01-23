@@ -47,9 +47,7 @@ export class TweetsController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  async getAllTweets(
-    @CurrentUser() user: UserFromJwt,
-  ): Promise<TweetResponseDto[]> {
+  async getAllTweets(@CurrentUser() user: UserFromJwt): Promise<any> {
     return this.tweetsService.getAllTweets(user.id);
   }
 
@@ -102,7 +100,7 @@ export class TweetsController {
     return this.tweetsService.getTweetWithComments(Number(tweetId));
   }
 
-  @Delete(':id')
+  @Delete(':id/delete')
   @UseGuards(JwtAuthGuard)
   async deleteTweet(
     @Param('id') tweetId: string,
