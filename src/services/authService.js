@@ -1,31 +1,16 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3003/api/v1/auth';
+export const loginUser = async (user) => {
+    try {
+        const response = await axios.post('http://localhost:3003/api/v1/auth', user);
 
-class AuthService {
-    login(user) {
-        return axios
-            .post(API_URL, {
-                email: user.email,
-                password: user.password
-            })
-            .then(response => {
-                if (response.data.token) {
-                    localStorage.setItem('user', JSON.stringify(response.data));
-                }
+        if (response.data && response.data.token) {
+            localStorage.setItem('token', response.data.token);
+        }
 
-                return response.data;
-            });
+        return response.data;
+    } catch (error) {
+        console.error(error);
+        return { status: false, mensagem: { texto: error.message } };
     }
-
-    logout() {
-        localStorage.removeItem('user');
-    }
-
-    getCurrentUser() {
-        return JSON.parse(localStorage.getItem('user'));
-    }
-}
-
-const authService = new AuthService();
-export default authService;
+};
