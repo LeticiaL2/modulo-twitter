@@ -1,57 +1,63 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import AuthService from '../../services/authService';
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
+import { useFormik } from 'formik';
+import { signInSchema } from '../../schemas/SignInSchema';
+import { loginUser } from '../../services/authService';
+import { useNavigate } from 'react-router-dom';
 
-const SignIn = () => {
-    const [user, setUser] = useState({
-        email: '',
-        senha: ''
-    });
-    
+const SignIn = ({ handleClose }) => {
+
     const navigate = useNavigate();
 
-    const handleChange = e => {
-        setUser({
-            ...user,
-            [e.target.name]: e.target.value
-        });
+    const onSubmit = async (values, actions) => {
+        const data = await loginUser(values);
+        console.log(data);
+        
+        if (data && data.token) {
+            navigate('/feed')
+        } else {
+            alert("Login failed")
+            //TODO give feedback to the user
+        }
+        handleClose();
     };
 
-    const handleSubmit = async e => {
-        e.preventDefault();
-        AuthService.login(user)
-            .then(() => {
-                navigate('/feed');
-            })
-            .catch((err) => {
-                console.error(err);
-            });
-    };
+    const {values, errors, touched, isSubmitting, handleBlur, handleChange, handleSubmit} = useFormik({ 
+        initialValues: {
+            email: '',
+            senha: ''
+        },
+        validationSchema: signInSchema,
+        onSubmit
+    });
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h1>Sign In to Tweeter</h1>
-            <div className='input-container'>
-                <Input 
-                    type="email" 
-                    name="email" 
-                    placeholder="Email" 
-                    onChange={handleChange}
-                    value={user.email}
-                />
-                <Input 
-                    type="password" 
-                    name="senha" 
-                    placeholder="Senha" 
-                    onChange={handleChange}
-                    value={user.senha}
-                />
-            </div>
-            <Button type="submit">Sign In</Button>
-        </form>
-    );
-};
+        <form onSubmit={handleSubmit} autoComplete='off'>
+            <h1> Sign In to Tweeter </h1>
+            <Input
+                id='email'
+                type='email'
+                placeholder='Email'
+                value={values.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className={errors.email && touched.email ? 'input-error' : ''}
+            />
+            {errors.email && touched.email && <p className='error'>{errors.email}</p>}
+            <Input
+                id='senha'
+                type='password'
+                placeholder='Senha'
+                value={values.senha}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className={errors.senha && touched.senha ? 'input-error' : ''}
+            />
+            {errors.senha && touched.senha && <p className='error'>{errors.senha}</p>}
+            <Button disabled={isSubmitting} type='submit'>Sign In</Button>
+        </form> 
+    )
+
+}
 
 export default SignIn;
