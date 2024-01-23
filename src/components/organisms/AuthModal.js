@@ -10,7 +10,7 @@ const AuthModal = ({ handleClose, show, children, isLogin }) => {
         <div className={showHideClassName}>
             <section className="modal-main">
                 <div className="modal-close" onClick={handleClose}>x</div>
-                {isLogin ? <SignIn /> : <SignUp />}
+                {isLogin ? <SignIn handleClose={handleClose} /> : <SignUp handleClose={handleClose} />}
             </section>
         </div>
     );

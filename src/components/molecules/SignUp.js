@@ -2,19 +2,21 @@ import { useFormik } from "formik";
 import { signUpSchema } from "../../schemas/SignUpSchema";
 import { registerUser } from "../../services/user";
 
-const onSubmit = async (values, actions) => {
-    const response = await registerUser(values);
-    if (response.status === false) {
-        console.log({ email: response.mensagem.texto });
-    } else {
-        console.log('Registration successful!');
-        //TODO maybe redirect to the feed page with the new user logged in
-    }
-    actions.resetForm();
-};
 
 
-const SignUp = () => {
+const SignUp = ({ handleClose }) => {
+
+    const onSubmit = async (values, actions) => {
+        const response = await registerUser(values);
+        if (response.status === false) {
+            console.log({ email: response.mensagem.texto });
+        } else {
+            alert('Registration successful!');
+            actions.resetForm();
+            handleClose();
+            //TODO maybe redirect to the feed page with the new user logged in
+        }
+    };
 
     const {values, errors, touched, isSubmitting, handleBlur, handleChange, handleSubmit} = useFormik({ 
         initialValues: {
@@ -26,10 +28,6 @@ const SignUp = () => {
         validationSchema: signUpSchema,
         onSubmit
     });
-
-
-
-
 
     return (
         <form onSubmit={handleSubmit} autoComplete="off">
