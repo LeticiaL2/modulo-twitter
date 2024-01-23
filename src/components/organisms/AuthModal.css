@@ -14,12 +14,19 @@
     position:relative;
     background: black;
     width: 600px;
-    height: 600px;
     padding: 20px;
     box-sizing: border-box;
     color: white;
     border-radius: 20px;
     overflow: auto;
+}
+
+.modal-main.small-form {
+    height: 400px;
+}
+
+.modal-main.large-form {
+    height: 600px;
 }
 
 .modal-main form {
