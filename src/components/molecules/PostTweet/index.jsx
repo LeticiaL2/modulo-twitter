@@ -1,13 +1,12 @@
-import React, { useState, useContext } from 'react'
-import { Container, FormTweet, InputTweetContainer, ActionsContainer } from './styles'
+import React, { useState } from 'react'
 import Button from '../../atoms/Button'
 import Input from '../../atoms/Input'
+import Span from '../../atoms/Span'
 import UserPhoto from '../../atoms/UserPhoto'
-import { AuthContext } from '../../../contexts/auth'
+import { ActionsContainer, Container, FormTweetContainer, InputTweetContainer } from './styles'
 
 
-function PostTweet({ onAddTweet }) {
-  const { user } = useContext(AuthContext)
+function PostTweet({ handleAddTweet }) {
   const [enteredTweet, setEnteredTweet] = useState('')
   const [isButtonDisabled, setIsButtonDisabled] = useState(true)
   const maxLetters = 280
@@ -25,7 +24,7 @@ function PostTweet({ onAddTweet }) {
     const tweetData = {
       texto: enteredTweet,
     }
-    onAddTweet(tweetData)
+    handleAddTweet(tweetData)
     setEnteredTweet('')
     setIsButtonDisabled(true)
   };
@@ -33,7 +32,7 @@ function PostTweet({ onAddTweet }) {
   return (
     <Container>
       <UserPhoto src="https://cdn.pixabay.com/photo/2021/01/04/10/41/icon-5887126_1280.png" />
-      <FormTweet onSubmit={handlePostTweetData}>
+      <FormTweetContainer onSubmit={handlePostTweetData}>
         <InputTweetContainer>
           <Input
             type="text"
@@ -44,12 +43,12 @@ function PostTweet({ onAddTweet }) {
           />
         </InputTweetContainer>
         <ActionsContainer>
-          <span>{maxLetters - enteredTweet.length} / {maxLetters}</span>
+          <Span>{maxLetters - enteredTweet.length} / {maxLetters}</Span>
           <Button disabled={isButtonDisabled}>
             Post
           </Button>
         </ActionsContainer>
-      </FormTweet>
+      </FormTweetContainer>
     </Container>
   );
 }

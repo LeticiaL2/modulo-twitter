@@ -20,7 +20,7 @@ export const FormContainer = styled.div`
   }
 `
 
-export const FormTweet = styled.form`
+export const FormTweetContainer = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;

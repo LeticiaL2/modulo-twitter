@@ -1,12 +1,12 @@
 import { formatDistanceToNow } from 'date-fns'
 import React, { useState } from 'react'
 import MoreIcon from '../../atoms/SVGIcons/MoreIcon'
-import TweetUserContent from '../../atoms/TweetUserContent'
-import TweetUserInfo from '../../atoms/TweetUserInfo'
+import TweetUserContent from '../../molecules/TweetUserContent'
+import TweetUserInfo from '../TweetUserInfo'
 import { Container, HeaderContainer } from './styles'
 import { getUserLocalStorage } from '../../../contexts/util'
-import DropdownMenu from '../../atoms/DropdownMenu'
-import DropdownItem from '../../atoms/DropdownItem'
+import DropdownMenu from '../../templates/DropdownMenuTemplate'
+import DropdownItem from '../DropdownItem'
 import DeleteIcon from '../../atoms/SVGIcons/DeleteIcon'
 
 const BodyTweet = ({ userData, username, onClickRemoveTweet }) => {
@@ -32,7 +32,7 @@ const BodyTweet = ({ userData, username, onClickRemoveTweet }) => {
         <TweetUserInfo nome={nome} usuario={usuario} dataFormatada={formattedDate}/>
         {username === userLogged ? <div style={{position: 'relative'}} onClick={handleMoreDropdown}>
           <MoreIcon />
-          <DropdownMenu showDropdown={openMoreDropdown} setOpenDropdown={setOpenMoreDropdown}>
+          <DropdownMenu showDropdown={openMoreDropdown} setShowDropdown={setOpenMoreDropdown}>
             <DropdownItem icon={<DeleteIcon />} onClick={handleDeleteTweet}>Delete</DropdownItem>
           </DropdownMenu>
         </div> : null}

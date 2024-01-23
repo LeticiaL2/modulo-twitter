@@ -9,7 +9,7 @@ export const Container = styled.div`
   gap: 0.75rem;
 `;
 
-export const FormTweet = styled.form`
+export const FormTweetContainer = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;

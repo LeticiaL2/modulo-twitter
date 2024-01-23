@@ -1,10 +1,12 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import HomePage from "../pages/Home/Home";
-import LoginPage from "../pages/Login/Login";
-import Signup from "../pages/Signup/Signup"
+import HomePage from '../components/pages/Home/Home'
+import LoginPage from '../components/pages/Login/Login'
+import Signup from '../components/pages/Signup/Signup'
+import TweetPage from '../components/pages/Tweet/Tweet'
 import { AuthProvider, AuthContext } from "../contexts/auth";
 import React, { useContext } from 'react'
-import TweetPage from "../pages/Tweet/Tweet";
+import TweetTimelineProvider from "../contexts/tweetsTimeline";
+import TweetDetailProvider from "../contexts/tweetDetail";
 
 const AppRoutes = () => {
   function Private({ children }) {
@@ -13,7 +15,7 @@ const AppRoutes = () => {
     if (loading) {
       return <div>Loading...</div>
     }
-    
+
     if (!authenticated) {
       return <Navigate to="/login" />
     }
@@ -27,8 +29,16 @@ const AppRoutes = () => {
         <Routes>
           <Route exact path="/login" element={<LoginPage />} />
           <Route exact path="/signup" element={<Signup />} />
-          <Route exact path="/" element={<Private><HomePage /></Private>} />
-          <Route exact path="/tweet/:id" element={<Private><TweetPage /></Private>} />
+          <Route exact path="/" element={<Private>
+            <TweetTimelineProvider>
+              <HomePage />
+            </TweetTimelineProvider>
+          </Private>} />
+          <Route exact path="/tweet/:id" element={<Private>
+            <TweetDetailProvider>
+              <TweetPage />
+            </TweetDetailProvider>
+          </Private>} />
         </Routes>
       </AuthProvider>
     </Router>

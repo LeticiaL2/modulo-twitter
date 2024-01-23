@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import Button from '../../atoms/Button'
 import Input from '../../atoms/Input'
-import UserPhoto from '../../atoms/UserPhoto'
-import { ActionsContainer, Container, FormContainer, FormTweet, InputTweetContainer, ReplyToContainer } from './styles'
 import Span from '../../atoms/Span'
+import UserPhoto from '../../atoms/UserPhoto'
+import { ActionsContainer, Container, FormContainer, FormTweetContainer, InputTweetContainer, ReplyToContainer } from './styles'
 
 
-function ReplyTweet({ onReplyTweet, postUser }) {
+function ReplyTweet({ postUser, handleAddComment, tweetId }) {
   const [enteredReply, setEnteredReply] = useState('')
   const [isButtonDisabled, setIsButtonDisabled] = useState(true)
   const maxLetters = 280
@@ -23,7 +23,7 @@ function ReplyTweet({ onReplyTweet, postUser }) {
     const replyData = {
       texto: enteredReply,
     }
-    onReplyTweet(replyData)
+    handleAddComment(replyData, tweetId)
     setEnteredReply('')
     setIsButtonDisabled(true)
   };
@@ -32,7 +32,7 @@ function ReplyTweet({ onReplyTweet, postUser }) {
     <Container>
       <FormContainer >
         <UserPhoto src="https://cdn.pixabay.com/photo/2021/01/04/10/41/icon-5887126_1280.png" />
-        <FormTweet onSubmit={handlePostReplyData}>
+        <FormTweetContainer onSubmit={handlePostReplyData}>
           <ReplyToContainer>Replying to <Span>@{postUser}</Span></ReplyToContainer>
           <InputTweetContainer>
             <Input
@@ -49,7 +49,7 @@ function ReplyTweet({ onReplyTweet, postUser }) {
               Reply
             </Button>
           </ActionsContainer>
-        </FormTweet>
+        </FormTweetContainer>
       </FormContainer>
     </Container>
   );
