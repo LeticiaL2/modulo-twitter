@@ -1,133 +1,133 @@
 .modal.display-block {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width:100%;
-    height: 100%;
-    background: rgba(91, 112, 131, 0.4);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(91, 112, 131, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-main {
-    position:relative;
-    background: black;
-    width: 600px;
-    padding: 20px;
-    box-sizing: border-box;
-    color: white;
-    border-radius: 20px;
-    overflow: auto;
+  position: relative;
+  background: black;
+  width: 600px;
+  padding: 20px;
+  box-sizing: border-box;
+  color: white;
+  border-radius: 20px;
+  overflow: auto;
 }
 
 .modal-main.small-form {
-    height: 400px;
+  height: 400px;
 }
 
 .modal-main.large-form {
-    height: 600px;
+  height: 600px;
 }
 
 .modal-main form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
 }
 
-.modal-main form h1{
-    align-self: flex-start;
-    padding-left: 48px;
+.modal-main form h1 {
+  align-self: flex-start;
+  padding-left: 48px;
 }
 
 .input-container {
-    width: 80%;
+  width: 80%;
 }
 
-.modal-main form input[type="text"], 
-.modal-main form input[type="email"], 
-.modal-main form input[type="password"] {
-    margin: 20px 0;
-    padding: 10px;
-    width: 80%;
-    height: 30px;
-    background: black;
-    border: 1px solid rgb(51, 54, 57); 
-    color: white; 
-    outline: none;
-    border-width: 1px;
+.modal-main form input[type='text'],
+.modal-main form input[type='email'],
+.modal-main form input[type='password'] {
+  margin: 20px 0;
+  padding: 10px;
+  width: 80%;
+  height: 30px;
+  background: black;
+  border: 1px solid rgb(51, 54, 57);
+  color: white;
+  outline: none;
+  border-width: 1px;
 }
 
-.modal-main form input[type="text"]:focus, 
-.modal-main form input[type="email"]:focus, 
-.modal-main form input[type="password"]:focus {
-    border-color: #1D9BF0;
+.modal-main form input[type='text']:focus,
+.modal-main form input[type='email']:focus,
+.modal-main form input[type='password']:focus {
+  border-color: #1d9bf0;
 }
 
-.modal-main form button[type="submit"] {
-    margin: 20px 0;
-    padding: 10px;
-    width: 80%;
-    background: white;
-    color: black;
-    border-radius: 30px;
-    border: none;
-    font-weight: bold;
-    font-size: 1rem;
-    height: 50px;
-    transition: background 0.2s;
-    margin-top: 30px;
-    margin-bottom: 30px;
+.modal-main form button[type='submit'] {
+  margin: 20px 0;
+  padding: 10px;
+  width: 80%;
+  background: white;
+  color: black;
+  border-radius: 30px;
+  border: none;
+  font-weight: bold;
+  font-size: 1rem;
+  height: 50px;
+  transition: background 0.2s;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
-.modal-main form button[type="submit"]:hover {
-    background: lightgrey;
+.modal-main form button[type='submit']:hover {
+  background: lightgrey;
 }
 
 .modal-close {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    cursor: pointer;
-    color: rgb(239, 243, 244);
-    width: 35px;
-    height: 35px;
-    font-size: 1.2rem;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: background 0.2s;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  cursor: pointer;
+  color: rgb(239, 243, 244);
+  width: 35px;
+  height: 35px;
+  font-size: 1.2rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.2s;
 }
 
 .modal-close:hover {
-    background: rgb(29, 29, 29);
+  background: rgb(29, 29, 29);
 }
 
 .display-block {
-    display: block;
+  display: block;
 }
 
 .display-none {
-    display: none;
+  display: none;
 }
 
 input.input-error,
 select.input-error {
-    border-color: red;
+  border-color: red;
 }
 
 button:disabled {
-    opacity: 0.35;
+  opacity: 0.35;
 }
 
 .error {
-    color: #fc8181;
-    font-size: 0.75rem;
-    align-self: flex-start;
-    padding-left: 50px;
-    margin-top: -12px;
-    margin-bottom: 0;
-    height: 1em;
+  color: #fc8181;
+  font-size: 0.75rem;
+  align-self: flex-start;
+  padding-left: 50px;
+  margin-top: -12px;
+  margin-bottom: 0;
+  height: 1em;
 }
