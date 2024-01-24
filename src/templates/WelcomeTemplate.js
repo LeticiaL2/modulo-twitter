@@ -10,16 +10,16 @@ const WelcomeTemplate = ({ show, isLogin, showModal, hideModal }) => (
             <img src="x_icon.png" alt="Welcome" />
         </div>
         <div className="welcome--right">
-            <h1>Happening now</h1>
-            <h4>Join today.</h4>
-            <Button type="button" onClick={() => showModal(false)} className="welcome--create-account-btn">Create account</Button>
+            <h1>Acontecendo agora</h1>
+            <h4>Inscreva-se hoje</h4>
+            <Button type="button" onClick={() => showModal(false)} className="welcome--create-account-btn">Criar conta</Button>
             <div className="welcome--separator-container">
                 <div className="welcome--separator-line"></div>
-                <span className="welcome--separator-text">or</span>
+                <span className="welcome--separator-text">ou</span>
                 <div className="welcome--separator-line"></div>
             </div>
-            <p>Already have an account?</p>
-            <Button type="button" onClick={() => showModal(true)} className="welcome--sign-in-btn">Sign in</Button>
+            <p>Já tem uma conta?</p>
+            <Button type="button" onClick={() => showModal(true)} className="welcome--sign-in-btn">Entrar</Button>
         </div>
     </div>
 );

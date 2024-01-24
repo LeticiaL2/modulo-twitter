@@ -32,7 +32,7 @@ const SignIn = ({ handleClose }) => {
 
     return (
         <form onSubmit={handleSubmit} autoComplete='off'>
-            <h1> Sign In to Tweeter </h1>
+            <h1> Entrar no X </h1>
             <Input
                 id='email'
                 type='email'
@@ -53,7 +53,7 @@ const SignIn = ({ handleClose }) => {
                 className={errors.senha && touched.senha ? 'input-error' : ''}
             />
             {errors.senha && touched.senha && <p className='error'>{errors.senha}</p>}
-            <Button disabled={isSubmitting} type='submit'>Sign In</Button>
+            <Button disabled={isSubmitting} type='submit'>Entrar</Button>
         </form> 
     )
 

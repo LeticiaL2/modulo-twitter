@@ -40,7 +40,7 @@ const SignUp = ({ handleClose }) => {
 
     return (
         <form onSubmit={handleSubmit} autoComplete="off">
-            <h1>Sign Up to Tweeter</h1>
+            <h1>Criar sua conta</h1>
             <Input 
                 id="nome" 
                 type="text" 
@@ -81,7 +81,7 @@ const SignUp = ({ handleClose }) => {
                 className={errors.senha && touched.senha ? "input-error" : ""}
             />
             {errors.senha && touched.senha && <p className="error">{errors.senha}</p>}
-            <Button disabled={isSubmitting} type="submit">Sign Up</Button>
+            <Button disabled={isSubmitting} type="submit">Inscrever-se</Button>
         </form>
     )
 }
