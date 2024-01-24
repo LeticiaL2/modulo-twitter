@@ -11,14 +11,13 @@ const SignIn = ({ handleClose }) => {
 
     const onSubmit = async (values, actions) => {
         const data = await loginUser(values);
-        console.log(data);
         
         if (data && data.token) {
             navigate('/feed')
         } else {
             alert("Login failed")
-            //TODO give feedback to the user
         }
+        actions.resetForm();
         handleClose();
     };
 

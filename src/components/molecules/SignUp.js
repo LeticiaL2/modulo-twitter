@@ -3,19 +3,28 @@ import { signUpSchema } from "../../schemas/SignUpSchema";
 import { signUpUser } from "../../services/userService";
 import Input from "../atoms/Input";
 import Button from "../atoms/Button";
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "../../services/authService";
 
 const SignUp = ({ handleClose }) => {
+
+    const navigate = useNavigate();
 
     const onSubmit = async (values, actions) => {
         const response = await signUpUser(values);
         if (response.status === false) {
-            console.log({ email: response.mensagem.texto });
+            alert({ email: response.mensagem.texto });
         } else {
-            alert('Registration successful!');
-            actions.resetForm();
-            handleClose();
-            //TODO maybe redirect to the feed page with the new user logged in
+            const data =  await loginUser(values);
+
+            if (data && data.token) {
+                navigate('/feed');
+            } else {
+                alert("Login failed");
+            }
         }
+        actions.resetForm();
+        handleClose();
     };
 
     const {values, errors, touched, isSubmitting, handleBlur, handleChange, handleSubmit} = useFormik({ 
