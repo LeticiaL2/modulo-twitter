@@ -1,22 +1,20 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import HomePage from '../components/pages/Home/Home'
-import LoginPage from '../components/pages/Login/Login'
-import Signup from '../components/pages/Signup/Signup'
-import TweetPage from '../components/pages/Tweet/Tweet'
-import { AuthProvider, AuthContext } from "../contexts/auth";
-import React, { useContext } from 'react'
-import TweetTimelineProvider from "../contexts/tweetsTimeline";
+import React, { useContext } from 'react';
+import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import HomePage from '../components/pages/Home/Home';
+import LoginPage from '../components/pages/Login/Login';
+import Signup from '../components/pages/Signup/Signup';
+import TweetPage from '../components/pages/Tweet/Tweet';
+import { AuthContext, AuthProvider } from "../contexts/auth";
 import TweetDetailProvider from "../contexts/tweetDetail";
+import TweetTimelineProvider from "../contexts/tweetsTimeline";
+import { setUserLocalStorage } from '../contexts/util';
 
 const AppRoutes = () => {
   function Private({ children }) {
-    const { authenticated, loading } = useContext(AuthContext)
+    const { token, expiresIn } = useContext(AuthContext)
 
-    if (loading) {
-      return <div>Loading...</div>
-    }
-
-    if (!authenticated) {
+    if (!token || new Date(expiresIn) < new Date()) {
+      setUserLocalStorage(null)
       return <Navigate to="/login" />
     }
 

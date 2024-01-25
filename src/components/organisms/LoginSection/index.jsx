@@ -7,7 +7,7 @@ import { Container, FormContainer } from './styles'
 import { colors } from '../../../styles/colors'
 
 function LoginSection() {
-  const { login } = useContext(AuthContext)
+  const { authenticate } = useContext(AuthContext)
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [emailError, setEmailError] = useState('')
@@ -65,19 +65,13 @@ function LoginSection() {
     if (!passwordIsValid(password)) {
       return
     }
-
-    const log = await login(email, password)
-    log.status ? navigate('/') : setHttpError(log.mensagem.texto)
-
-    // try {
-    //   const log = await login(email, password);
-    //   console.log(log)
-    //   navigate('/')
-    // } catch (error) {
-    //   console.log(error)
-    //   // setHttpError(error.response.data.mensagem.texto)
-    // }
-
+    
+    try {
+      await authenticate(email, password)
+      navigate('/')
+    } catch (error) {
+      setHttpError('Email ou senha inválidos')
+    }
   };
 
   return (
