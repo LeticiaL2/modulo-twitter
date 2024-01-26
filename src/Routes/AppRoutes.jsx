@@ -8,12 +8,13 @@ import { AuthContext, AuthProvider } from "../contexts/auth";
 import TweetDetailProvider from "../contexts/tweetDetail";
 import TweetTimelineProvider from "../contexts/tweetsTimeline";
 import { setUserLocalStorage } from '../contexts/util';
+import { AxiosInterceptor } from '../services/api';
 
 const AppRoutes = () => {
   function Private({ children }) {
-    const { token, expiresIn } = useContext(AuthContext)
+    const { token } = useContext(AuthContext)
 
-    if (!token || new Date(expiresIn) < new Date()) {
+    if (!token) {
       setUserLocalStorage(null)
       return <Navigate to="/login" />
     }
@@ -27,14 +28,20 @@ const AppRoutes = () => {
         <Routes>
           <Route exact path="/login" element={<LoginPage />} />
           <Route exact path="/signup" element={<Signup />} />
-          <Route exact path="/" element={<Private>
-            <TweetTimelineProvider>
-              <HomePage />
-            </TweetTimelineProvider>
-          </Private>} />
+          <Route exact path="/" element={
+            <Private>
+              <TweetTimelineProvider>
+                <AxiosInterceptor>
+                  <HomePage />
+                </AxiosInterceptor>
+              </TweetTimelineProvider>
+            </Private>
+          } />
           <Route exact path="/tweet/:id" element={<Private>
             <TweetDetailProvider>
-              <TweetPage />
+              <AxiosInterceptor>
+                <TweetPage />
+              </AxiosInterceptor>
             </TweetDetailProvider>
           </Private>} />
         </Routes>

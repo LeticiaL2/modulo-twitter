@@ -6,7 +6,6 @@ import RetweetIcon from '../../atoms/SVGIcons/RetweetIcon';
 import UserPhoto from '../../atoms/UserPhoto';
 import BodyTweet from '../../molecules/BodyTweet';
 import ListActions from '../../organisms/ListActions';
-// import Modal from '../../organisms/Modal';
 import ReplyTweet from '../../molecules/ReplyTweet';
 import Modal from '../../templates/ModalTemplate';
 import {
@@ -43,7 +42,7 @@ function Tweet({
 
   const handleRemoveTweet = async () => {
     try {
-      const response = await Api.delete(`api/v1/tweets/${userData.id}`, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
+      const response = await Api.delete(`api/v1/tweets/${userData.id}`)
       if (refreshList && response.data.mensagem.codigo === 200) {
         refreshList()
       }
