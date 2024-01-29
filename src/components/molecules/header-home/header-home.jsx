@@ -23,7 +23,6 @@ function HeaderHome({ buttonText }) {
     if (buttonText === "Sair") {
       handleLogout();
     } else {
-      // Utilizando navigate para voltar para a página anterior
       navigate(-1);
     }
   };

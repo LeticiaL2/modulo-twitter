@@ -5,6 +5,8 @@ export const TweetsListContext = createContext();
 
 const TimeLineProvider = ({ children }) => {
   const [tweets, setTweets] = useState([]);
+  const [openCommentModal, setOpenCommentModal] = useState(null);
+  const [openRetweetModal, setOpenRetweetModal] = useState(null);
 
   const getTweets = async () => {
     try {
@@ -28,13 +30,47 @@ const TimeLineProvider = ({ children }) => {
     }
   };
 
+  async function addReplyWithQuote(texto, id) {
+    try {
+      const response = await post(`tweets/${id}/retweet`, texto);
+      setOpenRetweetModal(null);
+      console.log("Resposta da requisição:", response.data);
+      getTweets();
+    } catch (error) {
+      console.error("Erro ao realizar a requisição:", error);
+      console.log("Erro detalhado:", error.response);
+    }
+  }
+
+  async function addComment(texto, id) {
+    try {
+      const response = await post(`tweets/${id}/comentarios`, texto);
+      setOpenCommentModal(null);
+      console.log("Resposta da requisição:", response.data);
+      getTweets();
+    } catch (error) {
+      console.error("Erro ao realizar a requisição:", error);
+      console.log("Erro detalhado:", error.response);
+    }
+  }
+
   useEffect(() => {
     getTweets();
   }, []);
 
   return (
     <TweetsListContext.Provider
-      value={{ refreshTweets: getTweets, addTweet, tweets }}
+      value={{
+        refreshTweets: getTweets,
+        addTweet,
+        tweets,
+        addComment,
+        addReplyWithQuote,
+        openCommentModal,
+        setOpenCommentModal,
+        openRetweetModal,
+        setOpenRetweetModal,
+      }}
     >
       {children}
     </TweetsListContext.Provider>

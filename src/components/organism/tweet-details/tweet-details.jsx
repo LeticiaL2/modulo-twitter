@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
 import ptBR from "date-fns/locale/pt-BR";
-import { useParams } from "react-router-dom";
 import {
   TweetDetailsContainer,
   TopTweet,
@@ -18,72 +16,23 @@ import ButtonIcon from "../../atoms/button-icon/button-icon";
 import UserPhoto from "../../atoms/user-photo/user-photo";
 import Button from "../../atoms/button/button";
 import { format } from "date-fns";
-import { get } from "../../../api/api";
 import Actions from "../../molecules/actions/actions";
-import Modal from "../../molecules/modal/modal";
+import Retweet from "../../molecules/retweet/retweet";
+import TweetInput from "../../molecules/tweet-input-box/tweet-input-box";
+import ModalTemplate from "../../template/modal-template/modal-template";
 
-const TweetDetails = ({ refreshTweets }) => {
-  const { id } = useParams();
-  const [tweet, setTweet] = useState({});
-  const [openCommentModal, setOpenCommentModal] = useState(false);
-  const [openRetweetModal, setOpenRetweetModal] = useState(false);
-
-  const getTweets = async () => {
-    console.log("id aqui", id);
-    try {
-      const response = await get(`tweets/${id}/detalhes`);
-
-      console.log("Dados da API:", response);
-      console.log("tweet detalhes aqui", response.conteudo);
-      setTweet(response.conteudo);
-    } catch (error) {
-      console.error("Erro ao buscar dados da API:", error);
-    }
-  };
-
-  useEffect(() => {
-    getTweets();
-  });
-
-  const handleButtonRetweet = async () => {
-    const token = JSON.parse(localStorage.getItem("accessToken"));
-    const response = await axios.post(
-      `http://localhost:8000/tweets/${id}/retweet`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    refreshTweets();
-
-    console.log("Ação realizada com sucesso:", response.data);
-  };
-
-  const handleLikeUpdate = () => {
-    refreshTweets();
-  };
-
-  const handleUndoRetweet = async () => {
-    try {
-      const token = JSON.parse(localStorage.getItem("accessToken"));
-      const response = await axios.delete(
-        `http://localhost:8000/tweets/${id}/delete`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      refreshTweets();
-      console.log("Ação realizada com sucesso:", response.data);
-    } catch (error) {
-      console.error("Erro ao tentar desfazer retweet:", error);
-    }
-  };
-
+const TweetDetails = ({
+  tweet,
+  refreshTweets,
+  addComment,
+  addReplyWithQuote,
+  onCloseRetweetModal,
+  onCloseCommentModal,
+  openCommentModal,
+  setOpenCommentModal,
+  openRetweetModal,
+  setOpenRetweetModal,
+}) => {
   function formatTimeAgo(date) {
     try {
       if (date && !isNaN(date.getTime())) {
@@ -134,28 +83,43 @@ const TweetDetails = ({ refreshTweets }) => {
           liked={tweet.liked}
           retweets={tweet.retweets}
           retweeted={tweet.retweeted}
-          onClickModal={() => setOpenCommentModal(true)}
-          onClickRetweetModal={() => setOpenRetweetModal(true)}
-          onClickCommentModal={() => setOpenCommentModal(true)}
-          onClickUndoRetweet={handleUndoRetweet}
-          onClickRetweet={handleButtonRetweet}
-          onClickUpdateLike={handleLikeUpdate}
+          refreshTweets={refreshTweets}
+          userData={tweet}
+          onClickRetweetModal={() => setOpenRetweetModal(tweet.id)}
+          onClickCommentModal={() => setOpenCommentModal(tweet.id)}
         ></Actions>
 
-        <Modal
-          showModal={openRetweetModal}
-          setShowModal={setOpenRetweetModal}
-          userData={tweet}
-          refreshTweets={refreshTweets}
-        />
+        <ModalTemplate
+          showModal={openCommentModal === tweet.id}
+          onClose={onCloseCommentModal}
+        >
+          <Retweet tweet={tweet} />
+          <TweetInput
+            $border="none"
+            buttonText="Post"
+            placeholder="Add a comment"
+            userData={tweet}
+            onComment={addComment}
+            isComment={true}
+            id={tweet.id}
+          />
+        </ModalTemplate>
 
-        <Modal
-          showModal={openCommentModal}
-          setShowModal={setOpenCommentModal}
-          userData={tweet}
-          isComment={true}
-          refreshTweets={refreshTweets}
-        />
+        <ModalTemplate
+          showModal={openRetweetModal === tweet.id}
+          onClose={onCloseRetweetModal}
+        >
+          <Retweet tweet={tweet} />
+          <TweetInput
+            $border="none"
+            buttonText="Reply"
+            placeholder="Post your reply"
+            userData={tweet}
+            onComment={addReplyWithQuote}
+            isComment={true}
+            id={tweet.id}
+          />
+        </ModalTemplate>
       </FooterTweetCard>
     </TweetDetailsContainer>
   );
