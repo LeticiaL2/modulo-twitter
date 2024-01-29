@@ -7,7 +7,6 @@ export const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const recoveredUser = getUserLocalStorage()
@@ -15,19 +14,15 @@ export function AuthProvider({ children }) {
     if (recoveredUser) {
       setUser(recoveredUser);
     }
-    setLoading(false);
   }, []);
 
-  const login = async (email, password) => {
+  const authenticate = async (email, password) => {
       const response = await LoginRequest(email, password)
-      if (!response.status) {
-        return response
-      }
+
       const payload = { token: response.conteudo.token, usuario: response.conteudo.usuario, name: response.conteudo.nome }
+     
       setUser(payload)
       setUserLocalStorage(payload)
-
-      return response
   };
 
   const logout = async () => {
@@ -38,7 +33,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ authenticated: !!user, user, loading, login, logout }}>
+    <AuthContext.Provider value={{ ...user, authenticate, logout }}>
       {children}
     </AuthContext.Provider>
   );

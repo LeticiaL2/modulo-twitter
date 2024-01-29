@@ -1,6 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
 import Api from '../services/api';
-import { getUserLocalStorage } from './util';
 
 export const TweetsListContext = createContext();
 
@@ -11,7 +10,7 @@ const TweetTimelineProvider = ({ children }) => {
 
   const fetchTweets = async () => {
     try {
-      const response = await Api.get('api/v1/tweets', { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
+      const response = await Api.get('api/v1/tweets')
       if (response.status !== 200) {
         throw new Error('Erro ao buscar os tweets')
       }
@@ -23,7 +22,7 @@ const TweetTimelineProvider = ({ children }) => {
 
   const handleAddTweet = async (tweet) => {
     try {
-      const response = await Api.post('api/v1/tweets', tweet, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
+      const response = await Api.post('api/v1/tweets', tweet)
 
       if (response.status !== 201) {
         throw new Error(response.data.message || 'Something went wrong')
@@ -57,7 +56,7 @@ const TweetTimelineProvider = ({ children }) => {
 
   const handleAddComment = async (reply, id) => {
     try {
-      const response = await Api.post(`api/v1/tweets/${id}/comentarios`, reply, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
+      const response = await Api.post(`api/v1/tweets/${id}/comentarios`, reply)
 
       if (response.status !== 201) {
         throw new Error(response.data.message || 'Something went wrong')
@@ -71,7 +70,7 @@ const TweetTimelineProvider = ({ children }) => {
 
   const handleAddRetweetWithQuote = async (retweet, id) => {
     try {
-      const response = await Api.post(`api/v1/tweets/${id}/retweets`, retweet, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
+      const response = await Api.post(`api/v1/tweets/${id}/retweets`, retweet)
 
       if (response.status !== 201) {
         throw new Error(response.data.message || 'Something went wrong')

@@ -1,7 +1,6 @@
 import { createContext, useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Api from "../services/api";
-import { getUserLocalStorage } from "./util";
 
 
 export const TweetDetailContext = createContext();
@@ -16,7 +15,7 @@ const TweetDetailProvider = ({ children }) => {
 
   const fetchTweet = useCallback(async () => {
     try {
-      const response = await Api.get(`/api/v1/tweets/${id}`, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
+      const response = await Api.get(`/api/v1/tweets/${id}`)
       if (response.status !== 200) {
         throw new Error('Erro ao buscar o tweet')
       }
@@ -30,7 +29,7 @@ const TweetDetailProvider = ({ children }) => {
 
   const handleAddComment = async (reply, id) => {
     try {
-      const response = await Api.post(`api/v1/tweets/${id}/comentarios`, reply, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
+      const response = await Api.post(`api/v1/tweets/${id}/comentarios`, reply)
 
       if (response.status !== 201) {
         throw new Error(response.data.message || 'Something went wrong')
@@ -63,7 +62,7 @@ const TweetDetailProvider = ({ children }) => {
 
   const handleAddRetweetWithQuote = async (retweet, id) => {
     try {
-      const response = await Api.post(`api/v1/tweets/${id}/retweets`, retweet, { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
+      const response = await Api.post(`api/v1/tweets/${id}/retweets`, retweet)
 
       if (response.status !== 201) {
         throw new Error(response.data.message || 'Something went wrong')
