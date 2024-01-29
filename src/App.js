@@ -2,7 +2,7 @@ import './App.css';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Welcome from './pages/Welcome';
-import TweetFeedPage from './pages/TweetFeed';
+import TweetFeedPage from './pages/TweetFeedPage';
 import NotFound from './pages/NotFound';
 
 function App() {
