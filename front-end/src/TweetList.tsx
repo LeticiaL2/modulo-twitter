@@ -1,8 +1,6 @@
-// React component to display a list of tweets
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-// Define the structure of a tweet
 interface Tweet {
   id: number;
   message: string;

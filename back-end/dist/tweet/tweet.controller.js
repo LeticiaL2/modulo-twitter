@@ -18,6 +18,10 @@ let TweetController = class TweetController {
     constructor() {
         this.tweets = [];
     }
+    findTweetById(id) {
+        const tweetId = parseInt(id);
+        return this.tweets.find((tweet) => tweet.id === tweetId);
+    }
     getAllTweets() {
         return this.tweets;
     }
@@ -38,23 +42,18 @@ let TweetController = class TweetController {
         res.status(common_1.HttpStatus.NO_CONTENT).send();
     }
     getTweetById(id) {
-        const tweetId = parseInt(id);
-        const tweet = this.tweets.find((tweet) => tweet.id === tweetId);
+        const tweet = this.findTweetById(id);
         return tweet;
     }
     likeTweet(id, res) {
-        const tweetId = parseInt(id);
-        const tweet = this.tweets.find((tweet) => tweet.id === tweetId);
+        const tweet = this.findTweetById(id);
         tweet.likes++;
         res.status(common_1.HttpStatus.NO_CONTENT).send();
-        return;
     }
     unlikeTweet(id, res) {
-        const tweetId = parseInt(id);
-        const tweet = this.tweets.find((tweet) => tweet.id === tweetId);
+        const tweet = this.findTweetById(id);
         tweet.likes--;
         res.status(common_1.HttpStatus.NO_CONTENT).send();
-        return;
     }
 };
 exports.TweetController = TweetController;
@@ -93,7 +92,7 @@ __decorate([
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
-    __metadata("design:returntype", Object)
+    __metadata("design:returntype", void 0)
 ], TweetController.prototype, "likeTweet", null);
 __decorate([
     (0, common_1.Delete)(':id/like'),
@@ -101,7 +100,7 @@ __decorate([
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
-    __metadata("design:returntype", Object)
+    __metadata("design:returntype", void 0)
 ], TweetController.prototype, "unlikeTweet", null);
 exports.TweetController = TweetController = __decorate([
     (0, common_1.Controller)('api/tweets')

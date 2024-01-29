@@ -12,13 +12,15 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const health_controller_1 = require("./health/health.controller");
 const tweet_controller_1 = require("./tweet/tweet.controller");
+const user_controller_1 = require("./user/user.controller");
+const login_controller_1 = require("./login/login.controller");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [],
-        controllers: [app_controller_1.AppController, health_controller_1.HealthController, tweet_controller_1.TweetController],
+        controllers: [app_controller_1.AppController, health_controller_1.HealthController, tweet_controller_1.TweetController, user_controller_1.UserController, login_controller_1.LoginController],
         providers: [app_service_1.AppService],
     })
 ], AppModule);
