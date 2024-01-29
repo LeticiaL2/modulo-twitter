@@ -21,24 +21,40 @@ let TweetController = class TweetController {
     getAllTweets() {
         return this.tweets;
     }
-    createTweet(tweet) {
+    createTweet(tweet, res) {
         const newTweet = {
             id: this.tweets.length + 1,
             message: tweet.message,
+            likes: 0,
         };
         this.tweets.push(newTweet);
+        res.status(common_1.HttpStatus.CREATED).send();
         return newTweet;
     }
-    deleteTweet(id) {
-        const tweetId = parseInt(id, 10);
+    deleteTweet(id, res) {
+        const tweetId = parseInt(id);
         const index = this.tweets.findIndex((tweet) => tweet.id === tweetId);
-        if (index >= 0) {
-            this.tweets[index].message = '';
-            return common_1.HttpStatus.NO_CONTENT;
-        }
-        else {
-            throw new Error(`Tweet with id ${tweetId} not found`);
-        }
+        this.tweets[index].message = '';
+        res.status(common_1.HttpStatus.NO_CONTENT).send();
+    }
+    getTweetById(id) {
+        const tweetId = parseInt(id);
+        const tweet = this.tweets.find((tweet) => tweet.id === tweetId);
+        return tweet;
+    }
+    likeTweet(id, res) {
+        const tweetId = parseInt(id);
+        const tweet = this.tweets.find((tweet) => tweet.id === tweetId);
+        tweet.likes++;
+        res.status(common_1.HttpStatus.NO_CONTENT).send();
+        return;
+    }
+    unlikeTweet(id, res) {
+        const tweetId = parseInt(id);
+        const tweet = this.tweets.find((tweet) => tweet.id === tweetId);
+        tweet.likes--;
+        res.status(common_1.HttpStatus.NO_CONTENT).send();
+        return;
     }
 };
 exports.TweetController = TweetController;
@@ -51,17 +67,42 @@ __decorate([
 __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Object)
 ], TweetController.prototype, "createTweet", null);
 __decorate([
     (0, common_1.Delete)(':id'),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], TweetController.prototype, "deleteTweet", null);
+__decorate([
+    (0, common_1.Get)(':id'),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Number)
-], TweetController.prototype, "deleteTweet", null);
+    __metadata("design:returntype", Object)
+], TweetController.prototype, "getTweetById", null);
+__decorate([
+    (0, common_1.Post)(':id/like'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Object)
+], TweetController.prototype, "likeTweet", null);
+__decorate([
+    (0, common_1.Delete)(':id/like'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Object)
+], TweetController.prototype, "unlikeTweet", null);
 exports.TweetController = TweetController = __decorate([
     (0, common_1.Controller)('api/tweets')
 ], TweetController);
