@@ -7,7 +7,8 @@ export const TweetsListContext = createContext();
 const TweetTimelineProvider = ({ children }) => {
   const [tweets, setTweets] = useState([]);
   const [openCommentModalId, setOpenCommentModalId] = useState(null)
-  
+  const [openRetweetModalId, setOpenRetweetModalId] = useState(null)
+
   const fetchTweets = async () => {
     try {
       const response = await Api.get('api/v1/tweets', { headers: { Authorization: `Bearer ${getUserLocalStorage().token}` } })
@@ -40,16 +41,16 @@ const TweetTimelineProvider = ({ children }) => {
 
 
   const updateTweets = (updatedTweet) => {
-   const updatedList = tweets.map(
-    tweet => {
-      if (tweet.retweetPai?.id === updatedTweet.id) {
-        return { ...tweet, retweetPai: updatedTweet }
-      }
-      if (tweet.id === updatedTweet.id) {
-        return { ...tweet, isLikedByUser: updatedTweet.isLikedByUser, likes: updatedTweet.likes, comentarios: updatedTweet.comentarios }
-      }
-      return tweet
-    }) 
+    const updatedList = tweets.map(
+      tweet => {
+        if (tweet.retweetPai?.id === updatedTweet.id) {
+          return { ...tweet, retweetPai: updatedTweet }
+        }
+        if (tweet.id === updatedTweet.id) {
+          return { ...tweet, isLikedByUser: updatedTweet.isLikedByUser, likes: updatedTweet.likes, comentarios: updatedTweet.comentarios }
+        }
+        return tweet
+      })
 
     setTweets(updatedList)
   }
@@ -75,6 +76,7 @@ const TweetTimelineProvider = ({ children }) => {
       if (response.status !== 201) {
         throw new Error(response.data.message || 'Something went wrong')
       }
+      setOpenRetweetModalId(null)
       fetchTweets()
     } catch (e) {
       console.log(e)
@@ -84,7 +86,18 @@ const TweetTimelineProvider = ({ children }) => {
 
 
   return (
-    <TweetsListContext.Provider value={{ tweets, refreshList: fetchTweets, handleAddTweet, updateTweets, handleAddComment, openCommentModalId, setOpenCommentModalId }}>
+    <TweetsListContext.Provider value={{
+      tweets,
+      refreshList: fetchTweets,
+      handleAddTweet,
+      handleAddRetweetWithQuote,
+      updateTweets,
+      handleAddComment,
+      openCommentModalId,
+      setOpenCommentModalId,
+      openRetweetModalId,
+      setOpenRetweetModalId
+    }}>
       {children}
     </TweetsListContext.Provider>
   );
