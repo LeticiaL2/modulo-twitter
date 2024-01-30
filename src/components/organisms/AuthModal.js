@@ -1,6 +1,5 @@
 import SignUp from '../molecules/SignUp';
 import SignIn from '../molecules/SignIn';
-import './AuthModal.css';
 
 const AuthModal = ({ handleClose, show, isLogin }) => {
   const showHideClassName = show ? 'modal display-block' : 'modal display-none';

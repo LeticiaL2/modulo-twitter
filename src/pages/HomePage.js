@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import HomeTemplate from '../templates/HomeTemplate';
+import './HomePage.css';
 
 const HomePage = () => {
   const [show, setShow] = useState(false);
