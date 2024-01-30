@@ -8,8 +8,7 @@ import {
 } from "./styles";
 import Retweet from "../retweet/retweet";
 import { IoClose } from "react-icons/io5";
-
-import axios from "axios";
+import { post } from "../../../api/api";
 import TweetInput from "../tweet-input-box/tweet-input-box";
 
 const Modal = ({
@@ -21,16 +20,7 @@ const Modal = ({
 }) => {
   async function replyWithQuote(texto) {
     try {
-      const token = JSON.parse(localStorage.getItem("accessToken"));
-      const response = await axios.post(
-        `http://localhost:8000/tweets/${userData.id}/retweet`,
-        texto,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await post(`tweets/${userData.id}/retweet`, texto);
       setShowModal(false);
       console.log("Resposta da requisição:", response.data);
       refreshTweets();
@@ -42,16 +32,7 @@ const Modal = ({
 
   async function addComment(texto) {
     try {
-      const token = JSON.parse(localStorage.getItem("accessToken"));
-      const response = await axios.post(
-        `http://localhost:8000/tweets/${userData.id}/comentarios`,
-        texto,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await post(`tweets/${userData.id}/comentarios`, texto);
       setShowModal(false);
       console.log("Resposta da requisição:", response.data);
       refreshTweets();

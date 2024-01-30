@@ -8,18 +8,14 @@ import OptionDropdown from "../../atoms/option-dropdown/option-dropdown";
 const Actions = ({
   onClickCommentModal,
   onClickRetweetModal,
-  onClickRetweet,
-  onClickUndoRetweet,
-  onClickUpdateLike,
   tweetId,
   comentarios,
   liked,
   likes,
   retweets,
   retweeted,
-  tweetPai,
-  tweet,
-  texto,
+  userData,
+  refreshTweets,
 }) => {
   const [likedBoolean, setLikedBoolean] = useState(liked);
   const [likesCount, setLikesCount] = useState(likes);
@@ -30,8 +26,6 @@ const Actions = ({
   const [openDropdown, setOpenDropdown] = useState(false);
 
   const isRetweeted = retweetedBoolean;
-
-  //const { refreshTweet } = useContext(TweetsListContext);
 
   useEffect(() => {
     setLikedBoolean(liked);
@@ -75,16 +69,42 @@ const Actions = ({
       setLikedBoolean((prev) => !prev);
       setLikesCount((prev) => prev - 1);
     }
-    onClickUpdateLike(liked, likes);
-    // refreshTweet();
+    refreshTweets();
   };
 
   const handleButtonRetweet = async () => {
-    onClickRetweet();
+    const token = JSON.parse(localStorage.getItem("accessToken"));
+    const response = await axios.post(
+      `http://localhost:8000/tweets/${tweetId}/retweet`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    refreshTweets();
+
+    console.log("Ação realizada com sucesso:", response.data);
   };
 
   const handleUndoRetweet = async () => {
-    onClickUndoRetweet();
+    try {
+      const token = JSON.parse(localStorage.getItem("accessToken"));
+      const response = await axios.delete(
+        `http://localhost:8000/tweets/${userData.id}/delete`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      refreshTweets();
+      console.log("Ação realizada com sucesso:", response.data);
+    } catch (error) {
+      console.error("Erro ao tentar desfazer retweet:", error);
+    }
   };
 
   return (
@@ -103,7 +123,7 @@ const Actions = ({
         <Dropdown
           showDropdown={openDropdown}
           setShowDropdown={setOpenDropdown}
-          tweetPai={tweet}
+          tweetPai={userData}
         >
           {!isRetweeted ? (
             <OptionDropdown iconType={"Retweet"} onClick={handleButtonRetweet}>

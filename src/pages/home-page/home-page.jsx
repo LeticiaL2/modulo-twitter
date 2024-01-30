@@ -9,9 +9,18 @@ import { AuthContext } from "../../contexts/auth";
 
 function HomePage() {
   const { user } = useContext(AuthContext);
-  //const [tweets, setTweets] = useState([]);
-  const { tweets, updateTweets, refreshTweets, addTweet } =
-    useContext(TweetsListContext);
+
+  const {
+    tweets,
+    refreshTweets,
+    addTweet,
+    addComment,
+    addReplyWithQuote,
+    openCommentModal,
+    setOpenCommentModal,
+    openRetweetModal,
+    setOpenRetweetModal,
+  } = useContext(TweetsListContext);
 
   return (
     <Container>
@@ -28,7 +37,12 @@ function HomePage() {
         <ListTweets
           tweets={tweets}
           refreshTweets={refreshTweets}
-          updateTweets={updateTweets}
+          addComment={addComment}
+          addReplyWithQuote={addReplyWithQuote}
+          openCommentModal={openCommentModal}
+          setOpenCommentModal={setOpenCommentModal}
+          openRetweetModal={openRetweetModal}
+          setOpenRetweetModal={setOpenRetweetModal}
         />
       </BoxCenter>
     </Container>

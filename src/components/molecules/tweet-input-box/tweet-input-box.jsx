@@ -29,13 +29,20 @@ function TweetInput(props) {
         texto: tweetText,
       };
 
-      props.onTweet(tweetObject);
+      if (props.isComment) {
+        props.onComment(tweetObject, props.id);
+      } else {
+        props.onTweet(tweetObject);
+      }
+
       setTweetText("");
       setRemainingChars(charLimit);
     }
   }
 
   const isTweetTooLong = remainingChars < 0;
+  const tweetEmpty = tweetText === "";
+  const isTweetInvalid = isTweetTooLong || tweetEmpty;
   const buttonStyle = isTweetTooLong;
   const charCountStyle = {
     color: remainingChars < 0 ? "red" : "rgb(113, 118, 123)",
@@ -65,7 +72,7 @@ function TweetInput(props) {
           style={buttonStyle}
           $text={props.buttonText}
           onClick={handleButtonClick}
-          disabled={isTweetTooLong}
+          disabled={isTweetInvalid}
         />
       </FooterContainerInput>
     </TweetBoxInput>
