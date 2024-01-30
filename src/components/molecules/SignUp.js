@@ -6,13 +6,19 @@ import Button from '../atoms/Button';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../../services/authService';
 
-const SignUp = ({ handleClose }) => {
+const SignUp = () => {
   const navigate = useNavigate();
 
-  const onSubmit = async (values, actions) => {
+  const onSubmit = async (values, { setStatus }) => {
     const response = await signUpUser(values);
     if (response.status === false) {
-      alert({ email: response.mensagem.texto });
+      if (response.mensagem.includes('Email')) {
+        setStatus({ emailError: response.mensagem });
+      } else if (response.mensagem.includes('Usuário')) {
+        setStatus({ usernameError: response.mensagem });
+      } else {
+        alert('Erro: ', response);
+      }
     } else {
       const data = await loginUser(values);
 
@@ -22,8 +28,6 @@ const SignUp = ({ handleClose }) => {
         alert('Login failed');
       }
     }
-    actions.resetForm();
-    handleClose();
   };
 
   const {
@@ -34,6 +38,7 @@ const SignUp = ({ handleClose }) => {
     handleBlur,
     handleChange,
     handleSubmit,
+    status,
   } = useFormik({
     initialValues: {
       nome: '',
@@ -70,6 +75,9 @@ const SignUp = ({ handleClose }) => {
       {errors.usuario && touched.usuario && (
         <p className="error">{errors.usuario}</p>
       )}
+      {status && status.usernameError && (
+        <p className="error">{status.usernameError}</p>
+      )}
       <Input
         id="email"
         type="email"
@@ -80,6 +88,9 @@ const SignUp = ({ handleClose }) => {
         className={errors.email && touched.email ? 'input-error' : ''}
       />
       {errors.email && touched.email && <p className="error">{errors.email}</p>}
+      {status && status.emailError && (
+        <p className="error">{status.emailError}</p>
+      )}
       <Input
         id="senha"
         type="password"
