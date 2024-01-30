@@ -1,12 +1,13 @@
 import AuthModal from '../components/organisms/AuthModal';
 import Button from '../components/atoms/Button';
+import Image from '../components/atoms/Image';
 import './WelcomeTemplate.css';
 
 const WelcomeTemplate = ({ show, isLogin, showModal, hideModal }) => (
   <div className="welcome--container">
     <AuthModal show={show} handleClose={hideModal} isLogin={isLogin} />
     <div className="welcome--left">
-      <img src="x_icon.png" alt="Welcome" />
+      <Image src="x_icon.png" alt="Welcome" />
     </div>
     <div className="welcome--right">
       <h1>Acontecendo agora</h1>
