@@ -15,13 +15,25 @@ export class UsersService {
   async create(createUsersDto: CreateUserDto) {
     const { email, usuario, senha } = createUsersDto;
 
-    // Verificar se email/usuario ja existem
+    // Email ja existe
+    const existingEmail = await this.usersRepository.findOne({
+      where: { email },
+    });
+    if (existingEmail) {
+      throw new BadRequestException({
+        message: ['Email já existe'],
+        error: 'Bad Request',
+        statusCode: 400,
+      });
+    }
+
+    // Usuario ja existe
     const existingUser = await this.usersRepository.findOne({
-      where: [{ email }, { usuario }],
+      where: { usuario },
     });
     if (existingUser) {
       throw new BadRequestException({
-        message: ['Email ou Usuário já existem'],
+        message: ['Usuário já existe'],
         error: 'Bad Request',
         statusCode: 400,
       });
