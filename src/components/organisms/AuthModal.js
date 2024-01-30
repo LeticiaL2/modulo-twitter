@@ -2,7 +2,7 @@ import SignUp from '../molecules/SignUp';
 import SignIn from '../molecules/SignIn';
 import './AuthModal.css';
 
-const AuthModal = ({ handleClose, show, children, isLogin }) => {
+const AuthModal = ({ handleClose, show, isLogin }) => {
   const showHideClassName = show ? 'modal display-block' : 'modal display-none';
   const formSizeClassName = isLogin ? 'modal-small' : 'modal-big';
 
