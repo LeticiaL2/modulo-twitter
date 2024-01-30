@@ -13,17 +13,18 @@ export class AuthService {
 
   async validateUser(email: string, senha: string) {
     const user = await this.usersService.findByEmail(email);
-    if (user) {
-      if (await bcrypt.compare(senha, user.senha)) {
-        //return user;
-        return {
-          ...user,
-          senha: undefined,
-        };
-      }
+    if (!user) {
+      throw new UnauthorizedException('Email incorreto');
     }
 
-    throw new UnauthorizedException('Email ou senha inválidos');
+    if (!(await bcrypt.compare(senha, user.senha))) {
+      throw new UnauthorizedException('Senha incorreta');
+    }
+
+    return {
+      ...user,
+      senha: undefined,
+    };
   }
 
   async login(user: any) {
