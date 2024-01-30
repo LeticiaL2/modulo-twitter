@@ -1,4 +1,3 @@
-import React from 'react';
 import AuthModal from '../components/organisms/AuthModal';
 import Button from '../components/atoms/Button';
 import './WelcomeTemplate.css';
