@@ -13,7 +13,12 @@ export const loginUser = async (user) => {
 
     return response.data;
   } catch (error) {
-    console.error(error);
-    return { status: false, mensagem: { texto: error.message } };
+    if (error.response) {
+      const errorResponse = error.response.data.message;
+      const statusCode = error.response.data.statusCode;
+      return { status: false, statusCode: statusCode, mensagem: errorResponse };
+    } else {
+      return { status: false, mensagem: { texto: error.message } };
+    }
   }
 };
