@@ -5,19 +5,27 @@ import { signInSchema } from '../../schemas/SignInSchema';
 import { loginUser } from '../../services/authService';
 import { useNavigate } from 'react-router-dom';
 
-const SignIn = ({ handleClose }) => {
+const SignIn = () => {
   const navigate = useNavigate();
 
-  const onSubmit = async (values, actions) => {
-    const data = await loginUser(values);
+  const onSubmit = async (values, { setStatus }) => {
+    const response = await loginUser(values);
 
-    if (data && data.token) {
+    if (response && response.token) {
       navigate('/feed');
+    } else if (
+      response.statusCode === 401 &&
+      response.mensagem.includes('Email')
+    ) {
+      setStatus({ emailError: response.mensagem });
+    } else if (
+      response.statusCode === 401 &&
+      response.mensagem.includes('Senha')
+    ) {
+      setStatus({ passwordError: response.mensagem });
     } else {
       alert('Login failed');
     }
-    actions.resetForm();
-    handleClose();
   };
 
   const {
@@ -28,6 +36,7 @@ const SignIn = ({ handleClose }) => {
     handleBlur,
     handleChange,
     handleSubmit,
+    status,
   } = useFormik({
     initialValues: {
       email: '',
@@ -50,6 +59,9 @@ const SignIn = ({ handleClose }) => {
         className={errors.email && touched.email ? 'input-error' : ''}
       />
       {errors.email && touched.email && <p className="error">{errors.email}</p>}
+      {status && status.emailError && (
+        <p className="error">{status.emailError}</p>
+      )}
       <Input
         id="senha"
         type="password"
@@ -60,6 +72,9 @@ const SignIn = ({ handleClose }) => {
         className={errors.senha && touched.senha ? 'input-error' : ''}
       />
       {errors.senha && touched.senha && <p className="error">{errors.senha}</p>}
+      {status && status.passwordError && (
+        <p className="error">{status.passwordError}</p>
+      )}
       <Button disabled={isSubmitting} type="submit">
         Entrar
       </Button>
