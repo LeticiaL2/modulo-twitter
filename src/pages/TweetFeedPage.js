@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postTweet } from '../services/tweetService';
 import TweetFeedTemplate from '../templates/TweetFeedTemplate';
-import './TweetFeed.css';
+import './TweetFeedPage.css';
 
 function TweetFeedPage() {
   const navigate = useNavigate();
