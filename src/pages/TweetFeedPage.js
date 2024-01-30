@@ -15,7 +15,6 @@ function TweetFeedPage() {
 
   const handlePostTweet = async () => {
     const response = await postTweet(tweetText);
-    console.log(response);
     if (response.status >= 200 && response.stats < 300) {
       setTweetText('');
     } else {
