@@ -15,10 +15,11 @@ function TweetFeedPage() {
 
   const handlePostTweet = async () => {
     const response = await postTweet(tweetText);
-    if (response.status) {
+    console.log(response);
+    if (response.status >= 200 && response.stats < 300) {
       setTweetText('');
     } else {
-      alert('Failed to post tweet', response.mensagem.texto);
+      alert('Erro ao postar Tweet', response.mensagem.texto);
     }
   };
 
