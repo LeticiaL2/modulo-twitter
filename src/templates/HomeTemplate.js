@@ -1,9 +1,9 @@
 import AuthModal from '../components/organisms/AuthModal';
 import Button from '../components/atoms/Button';
 import Image from '../components/atoms/Image';
-import './WelcomeTemplate.css';
+import './HomeTemplate.css';
 
-const WelcomeTemplate = ({ show, isLogin, showModal, hideModal }) => (
+const HomeTemplate = ({ show, isLogin, showModal, hideModal }) => (
   <div className="welcome--container">
     <AuthModal show={show} handleClose={hideModal} isLogin={isLogin} />
     <div className="welcome--left">
@@ -36,4 +36,4 @@ const WelcomeTemplate = ({ show, isLogin, showModal, hideModal }) => (
   </div>
 );
 
-export default WelcomeTemplate;
+export default HomeTemplate;

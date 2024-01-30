@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import WelcomeTemplate from '../templates/WelcomeTemplate';
+import HomeTemplate from '../templates/HomeTemplate';
 
-const WelcomePage = () => {
+const HomePage = () => {
   const [show, setShow] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
 
@@ -15,7 +15,7 @@ const WelcomePage = () => {
   };
 
   return (
-    <WelcomeTemplate
+    <HomeTemplate
       show={show}
       isLogin={isLogin}
       showModal={showModal}
@@ -24,4 +24,4 @@ const WelcomePage = () => {
   );
 };
 
-export default WelcomePage;
+export default HomePage;
