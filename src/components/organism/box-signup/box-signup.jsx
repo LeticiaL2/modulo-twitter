@@ -10,6 +10,7 @@ import {
   LinkButton,
   ErrorMessage,
 } from "./styles";
+import { i18n } from "../../../translate/i18n";
 
 const BoxSignup = () => {
   const navigate = useNavigate();
@@ -36,12 +37,12 @@ const BoxSignup = () => {
     e.preventDefault();
 
     if (senha !== confirmsenha) {
-      setError("As senhas não coincidem.");
+      setError(i18n.t("signup.passwords_dont_match"));
       return;
     }
 
     if (!validationsenha(senha)) {
-      setError("A senha não atende aos critérios");
+      setError(i18n.t("signup.password_invalid"));
       return;
     }
 
@@ -81,35 +82,35 @@ const BoxSignup = () => {
         <FormContainer onSubmit={handleSubmit}>
           <FieldInput
             type="email"
-            placeholder="Email"
+            placeholder={i18n.t("signup.email")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
 
           <FieldInput
             type="usuario"
-            placeholder="@Usuario"
+            placeholder={i18n.t("signup.user")}
             value={usuario}
             onChange={(e) => setUsuario(e.target.value)}
           />
 
           <FieldInput
             type="nome"
-            placeholder="Nome"
+            placeholder={i18n.t("signup.name")}
             value={nome}
             onChange={(e) => setNome(e.target.value)}
           />
 
           <FieldInput
             type="password"
-            placeholder="Senha"
+            placeholder={i18n.t("signup.password")}
             value={senha}
             onChange={(e) => setsenha(e.target.value)}
           />
 
           <FieldInput
             type="password"
-            placeholder="Confirmar Senha"
+            placeholder={i18n.t("signup.confirm_password")}
             value={confirmsenha}
             onChange={(e) => setConfirmsenha(e.target.value)}
           />
@@ -121,11 +122,11 @@ const BoxSignup = () => {
               $border="1px solid #808080"
               $backgroundColor="black"
               color="#00acee"
-              $text="Avançar"
+              $text={i18n.t("signup.create_account")}
             />
 
             <LinkButton to="/login">
-              <Button border="1px solid white" $text="Voltar" />
+              <Button border="1px solid white" $text={i18n.t("signup.back")} />
             </LinkButton>
           </ActionContainer>
         </FormContainer>

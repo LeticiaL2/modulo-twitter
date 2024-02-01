@@ -3,13 +3,14 @@ import "./styles";
 import TweetDetails from "../../components/organism/tweet-details/tweet-details";
 import { BoxCenter, Container } from "./styles";
 import TweetInput from "../../components/molecules/tweet-input-box/tweet-input-box";
-//import { AuthContext } from "../../contexts/auth";
+import { AuthContext } from "../../contexts/auth";
 import HeaderHome from "../../components/molecules/header-home/header-home";
 import ListTweets from "../../components/organism/list-tweets/list-tweets";
 import { TweetsDetailsContext } from "../../contexts/tweetsDetailsContext";
+import { i18n } from "../../translate/i18n";
 
 function DetailsPage() {
-  //const { user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const {
     commentsList,
     addTweet,
@@ -26,10 +27,10 @@ function DetailsPage() {
   return (
     <Container>
       <BoxCenter>
-        <HeaderHome buttonText="Voltar" />
+        <HeaderHome buttonText={i18n.t("details.back")} />
         <TweetDetails
-          tweet={tweet}
           refreshTweets={refreshTweets}
+          tweet={tweet}
           addComment={addComment}
           addReplyWithQuote={addReplyWithQuote}
           openCommentModal={openCommentModal}
@@ -41,8 +42,8 @@ function DetailsPage() {
         ></TweetDetails>
         <TweetInput
           $border="none"
-          buttonText="Reply"
-          placeholder="Post your reply!"
+          buttonText={i18n.t("details.reply")}
+          placeholder={i18n.t("details.postReply")}
           onTweet={addTweet}
         />
         <ListTweets

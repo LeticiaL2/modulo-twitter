@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom"; // Alteração aqui
+import { useNavigate } from "react-router-dom";
 import UserPhoto from "../../atoms/user-photo/user-photo";
 import {
   HeaderContainer,
@@ -13,7 +13,7 @@ import { AuthContext } from "../../../contexts/auth";
 
 function HeaderHome({ buttonText }) {
   const { logout } = useContext(AuthContext);
-  const navigate = useNavigate(); // Alteração aqui
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
