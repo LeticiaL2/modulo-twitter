@@ -17,7 +17,7 @@ export const Button = styled.button`
   align-items: center;
   background-color: transparent;
   cursor: pointer;
-  padding: ${(prop) => (prop.$padding ? prop.$padding : "3px")};
+  padding: 0;
   margin: 0;
   justify-content: center;
   flex-wrap: wrap;
@@ -26,35 +26,9 @@ export const Button = styled.button`
   position: relative;
 `;
 
-function getIconColor(iconType) {
-  switch (iconType) {
-    case "reply":
-      return "blue";
-    case "retweet":
-      return "green";
-    case "heart":
-      return "red";
-    case "eye":
-      return "blue";
-    default:
-      return "inherit";
-  }
-}
-
 export const IconContainer = styled.div`
   display: flex;
   align-items: center;
   padding: 0;
   margin: 0;
-  ${Button}:hover & {
-    ${Icon} {
-      color: ${({ iconType }) => getIconColor(iconType)};
-    }
-  }
-
-  ${Button}:active & {
-    ${Icon} {
-      color: ${({ iconType }) => getIconColor(iconType)};
-    }
-  }
 `;
