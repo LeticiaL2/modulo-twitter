@@ -1,0 +1,249 @@
+$primary-color: rgb(231, 233, 234);
+$secondary-color: rgb(78, 78, 78);
+$tertiary-color: rgb(113, 118, 123);
+$back-hover-color: #272727;
+$like-color: rgb(249, 24, 128);
+$retweet-color: rgb(0, 186, 124);
+$comment-color: rgb(43, 149, 220);
+
+#left-section,
+#right-section {
+  width: 30%;
+}
+
+#middle-section {
+  width: 35%;
+  border-left: 0.5px solid $secondary-color;
+  border-right: 0.5px solid $secondary-color;
+  height: 100vh;
+}
+
+.tweet-details {
+  &--container {
+    display: flex;
+    justify-content: space-between;
+    background-color: black;
+    color: $primary-color;
+  }
+
+  &--header,
+  &--card-footer,
+  &--comment-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &--header {
+    height: 50px;
+    padding-left: 10px;
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  &--back-arrow-container,
+  &--back-anchor,
+  &--card-retweet,
+  &--card-comment,
+  &--card-like {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  &--back-anchor,
+  &--retweet-anchor,
+  &--comment-anchor,
+  &--like-anchor,
+  &--comment-comment-anchor,
+  &--comment-retweet-anchor,
+  &--comment-like-anchor {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+
+    &:hover {
+      background-color: $hover-color;
+    }
+  }
+
+  &--back-arrow,
+  &--retweet,
+  &--comment,
+  &--like,
+  &--comment-comment,
+  &--comment-retweet,
+  &--comment-like {
+    fill: $primary-color;
+    width: 20px;
+  }
+
+  &--header--title {
+    line-height: 50px;
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+
+  &--card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: 16px;
+    padding-left: 16px;
+    padding-right: 16px;
+
+    &--header--user {
+      display: flex;
+      align-items: center;
+    }
+
+    &-user-image {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    &--header--username {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: $primary-color;
+    }
+
+    &--header--handle {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: $tertiary-color;
+    }
+
+    &--content {
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: $primary-color;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    &--footer {
+      height: 20px;
+      margin-bottom: 10px;
+    }
+
+    &--retweet,
+    &--comment,
+    &--like {
+      fill: $secondary-color;
+      width: 20px;
+    }
+
+    &--retweet-count,
+    &--comment-count,
+    &--like-count {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: $secondary-color;
+    }
+
+    &--retweet {
+      &:hover {
+        background-color: rgba($retweet-color, 0.1);
+      }
+    }
+
+    &--comment {
+      &:hover {
+        background-color: rgba($comment-color, 0.1);
+      }
+    }
+
+    &--like {
+      &:hover {
+        background-color: rgba($like-color, 0.1);
+      }
+    }
+  }
+
+  &--comment-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: 16px;
+    padding-left: 16px;
+    padding-right: 16px;
+
+    &--header--user {
+      display: flex;
+      align-items: center;
+    }
+
+    &-user-image {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    &--header--username {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: $primary-color;
+    }
+
+    &--header--handle {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: $tertiary-color;
+    }
+
+    &--content {
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: $primary-color;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    &--footer {
+      height: 20px;
+      margin-bottom: 10px;
+    }
+
+    &--retweet,
+    &--comment,
+    &--like {
+      fill: $secondary-color;
+      width: 20px;
+    }
+
+    &--retweet-count,
+    &--comment-count,
+    &--like-count {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: $secondary-color;
+    }
+
+    &--retweet {
+      &:hover {
+        background-color: rgba($retweet-color, 0.1);
+      }
+    }
+
+    &--comment {
+      &:hover {
+        background-color: rgba($comment-color, 0.1);
+      }
+    }
+
+    &--like {
+      &:hover {
+        background-color: rgba($like-color, 0.1);
+      }
+    }
+  }
+
+  // ... rest of your code
+}
