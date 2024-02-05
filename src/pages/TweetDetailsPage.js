@@ -133,6 +133,10 @@ function TweetDetails() {
         });
 
         setTweetData(response.data.conteudo);
+
+        if (commentPosted) {
+          setCommentPosted(false);
+        }
       } catch (error) {
         console.error('Erro ao buscar Tweets:', error);
       }
