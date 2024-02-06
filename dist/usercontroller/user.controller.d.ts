@@ -13,4 +13,9 @@ export declare class UserController {
         email: string;
         password: string;
     }, res: Response): any;
+    findUserByEmail(email: string): {
+        username: string;
+        email: string;
+        password: string;
+    };
 }

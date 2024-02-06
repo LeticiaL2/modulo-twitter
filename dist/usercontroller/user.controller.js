@@ -37,6 +37,9 @@ let UserController = class UserController {
             return res.status(common_1.HttpStatus.UNAUTHORIZED).json({ message: 'Erro no login' });
         }
     }
+    findUserByEmail(email) {
+        return this.users.find(u => u.email === email);
+    }
 };
 exports.UserController = UserController;
 __decorate([
