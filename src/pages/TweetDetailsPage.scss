@@ -17,13 +17,15 @@ $button-hover-color: #157bc8;
   align-items: center;
   justify-content: center;
 
-  &-anchor {
+  &-btn {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 34px;
     height: 34px;
     border-radius: 50%;
+    background-color: inherit;
+    border: none;
 
     &:hover {
       background-color: $comment-hover-color;
@@ -46,13 +48,15 @@ $button-hover-color: #157bc8;
   align-items: center;
   justify-content: center;
 
-  &-anchor {
+  &-btn {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 34px;
     height: 34px;
     border-radius: 50%;
+    background-color: inherit;
+    border: none;
 
     &:hover {
       background-color: $retweet-hover-color;
@@ -75,13 +79,15 @@ $button-hover-color: #157bc8;
   align-items: center;
   justify-content: center;
 
-  &-anchor {
+  &-btn {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 34px;
     height: 34px;
     border-radius: 50%;
+    background-color: inherit;
+    border: none;
 
     &:hover {
       background-color: $like-hover-color;
@@ -159,22 +165,27 @@ $button-hover-color: #157bc8;
 
   &--input-container {
     display: flex;
-    flex-direction: column;
-    padding: 16px;
-    border-bottom: 0.5px solid $secondary-color;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 120px;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid $secondary-color;
   }
 
-  &--input-top {
-    display: flex;
-    align-items: center;
-    width: 100%;
+  &--input-left {
+    height: 100%;
+    margin-right: 5px;
   }
 
   &--input-user-image {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    margin-right: 10px;
+    margin-right: 5px;
+    margin-top: 16px;
   }
 
   &--input-textarea {
@@ -183,19 +194,19 @@ $button-hover-color: #157bc8;
     border: none;
     resize: none;
     font-size: 1.3rem;
+    font-weight: 550;
+    color: $quaternary-color;
+    background-color: black;
     flex-grow: 1;
     outline: none;
-    background-color: black;
-    color: $quaternary-color;
   }
 
-  &--input-bottom {
+  &--input-right {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: flex-end;
-    margin-top: 5px;
-    margin-right: 10px;
-    margin-bottom: 5px;
+    width: 100%;
+    height: 100%;
   }
 
   &--input-button {
@@ -205,10 +216,13 @@ $button-hover-color: #157bc8;
     background-color: $button-color;
     color: white;
     border: none;
-    font-weight: 700;
+    font-weight: bold;
+    font-size: 0.9rem;
     transition: background 0.2s;
+    align-self: flex-end;
+    margin-top: 5px;
 
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: $button-hover-color;
     }
   }
