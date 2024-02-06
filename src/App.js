@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import TweetFeedPage from './pages/TweetFeedPage';
 import NotFound from './pages/NotFound';
-import TweetDetails from './pages/TweetDetailsPage';
+import TweetDetailsPage from './pages/TweetDetailsPage';
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/feed" element={<TweetFeedPage />} />
         <Route path="*" element={<NotFound />} />
-        <Route path="/feed/:id" element={<TweetDetails />} />
+        <Route path="/feed/:id" element={<TweetDetailsPage />} />
       </Routes>
     </Router>
   );
