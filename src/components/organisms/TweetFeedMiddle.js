@@ -1,5 +1,5 @@
 import Header from '../molecules/TweetFeedHeader';
-import Input from '../molecules/TweetFeedInput';
+import PostInput from '../molecules/PostInput';
 
 function MiddleSection({
   handleLogout,
@@ -10,10 +10,13 @@ function MiddleSection({
   return (
     <div className="tweet-feed--section" id="middle-section">
       <Header handleLogout={handleLogout} />
-      <Input
+      <PostInput
         tweetText={tweetText}
         setTweetText={setTweetText}
         handlePostTweet={handlePostTweet}
+        placeholder="O que está acontecendo?"
+        buttonText="Postar"
+        classNamePrefix="tweet-feed"
       />
       <div className="tweet-feed--list">
         <div className="tweet-feed--card"></div>
