@@ -1,4 +1,4 @@
-import Textarea from '../atoms/Textarea';
+import TextArea from '../atoms/TextArea';
 import Button from '../atoms/Button';
 import Image from '../atoms/Image';
 
@@ -20,12 +20,12 @@ function PostInput({
         />
       </div>
       <div className={`${classNamePrefix}--input-right`}>
-        <Textarea
+        <TextArea
           className={`${classNamePrefix}--input-textarea`}
           placeholder={placeholder}
           value={tweetText}
           onChange={(event) => setTweetText(event.target.value)}
-        ></Textarea>
+        ></TextArea>
         <Button
           className={`${classNamePrefix}--input-button`}
           onClick={handlePostTweet}
