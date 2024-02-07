@@ -18,12 +18,14 @@ const user_module_1 = require("./user/user.module");
 const auth_module_1 = require("./auth/auth.module");
 const core_1 = require("@nestjs/core");
 const jwt_auth_guard_1 = require("./auth/guards/jwt-auth.guard");
+const tweet_module_1 = require("./tweet/tweet.module");
+const jwt_1 = require("@nestjs/jwt");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [prisma_module_1.PrismaModule, user_module_1.UserModule, auth_module_1.AuthModule],
+        imports: [prisma_module_1.PrismaModule, user_module_1.UserModule, auth_module_1.AuthModule, tweet_module_1.TweetModule, jwt_1.JwtModule],
         controllers: [app_controller_1.AppController, health_controller_1.HealthController, tweet_controller_1.TweetController, user_controller_1.UserController],
         providers: [
             app_service_1.AppService,

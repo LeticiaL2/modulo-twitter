@@ -1,14 +1,16 @@
-import { Response } from 'express';
+import { JwtService } from '@nestjs/jwt';
+import { Response, Request } from 'express';
+import { UserFromJwt } from 'src/auth/models/UserFromJwt';
 export declare class TweetController {
+    private readonly jwtService;
     private tweets;
     private findTweetById;
-    getAllTweets(): {
-        id: number;
-        message: string;
-    }[];
+    private getUserIdFromToken;
+    constructor(jwtService: JwtService);
+    getAllTweets(user: UserFromJwt): Promise<any>;
     createTweet(tweet: {
         message: string;
-    }, res: Response): {
+    }, req: Request, res: Response): {
         id: number;
         message: string;
         likes: number;

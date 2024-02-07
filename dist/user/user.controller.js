@@ -16,6 +16,8 @@ exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const create_user_dto_1 = require("./dto/create-user.dto");
 const user_service_1 = require("./user.service");
+const is_public_decorator_1 = require("../auth/decorators/is-public.decorator");
+const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -26,6 +28,8 @@ let UserController = class UserController {
 };
 exports.UserController = UserController;
 __decorate([
+    (0, is_public_decorator_1.IsPublic)(),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),

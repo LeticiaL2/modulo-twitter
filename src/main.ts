@@ -11,7 +11,7 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   };
-// Pipes
+  
 app.useGlobalPipes(
   new ValidationPipe({
     transform: true,
