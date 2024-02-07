@@ -1,10 +1,9 @@
 import { useFormik } from 'formik';
 import { signUpSchema } from '../../schemas/SignUpSchema';
-import { signUpUser } from '../../services/userService';
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
 import { useNavigate } from 'react-router-dom';
-import { loginUser } from '../../services/authService';
+import { loginUser, signUpUser } from '../../services/authService';
 
 const SignUp = () => {
   const navigate = useNavigate();
