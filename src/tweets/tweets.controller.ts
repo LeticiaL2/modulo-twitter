@@ -63,8 +63,8 @@ export class TweetsController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  async getTweetDetails(@Param('id') id: number, @Res() res) {
-    const result = await this.tweetsService.getTweetDetails(id);
+  async getTweetDetails(@Param('id') id: number, @Req() req, @Res() res) {
+    const result = await this.tweetsService.getTweetDetails(id, req.user.id);
     res.status(200).json(result);
   }
 

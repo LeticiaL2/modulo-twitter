@@ -52,6 +52,10 @@ export class TweetsService {
         'tweetPaiDoRetweet.retweets',
         'retweetsDoTweetPaiDoRetweet',
       )
+      .leftJoinAndSelect(
+        'likesTweetPaiDoRetweet.usuario',
+        'usuarioLikesTweetPaiDoRetweet',
+      )
       // isso eh pro retuitado
       .leftJoinAndSelect(
         'retweetsDoTweetPaiDoRetweet.retweet',
@@ -72,7 +76,6 @@ export class TweetsService {
       .orderBy('tweet.data_criacao', 'DESC')
       .where('tweet.excluido = :excluido', { excluido: false })
       .andWhere('tweet.id NOT IN (SELECT tweetId FROM Comentarios)')
-      .orderBy('tweet.data_criacao', 'DESC')
       .getMany();
     // console.log('Retweet:', tweets[0])
     // console.log('TweetPai do Retweet: ', tweets[0].rtwTweet[0]);
@@ -123,8 +126,7 @@ export class TweetsService {
           };
         } catch (error) {
           console.error('Error while setting up return object:', error);
-          console.log('tweet:', tweet);
-          process.exit();
+          console.log('twee:', tweet.rtwTweet[0].tweetPai);
         }
       }),
     );
@@ -358,13 +360,18 @@ export class TweetsService {
     return response;
   }
 
-  async getTweetDetails(tweetId: number) {
+  async getTweetDetails(tweetId: number, userId: number) {
     const tweet = await this.tweetsRepository.findOne({
       where: { id: tweetId },
-      relations: ['usuario'],
+      relations: [
+        'usuario',
+        'likes',
+        'likes.usuario',
+        'retweets',
+        'retweets.retweet',
+        'retweets.retweet.usuario',
+      ],
     });
-
-    //console.log(tweet);
 
     if (!tweet || tweet.excluido) {
       throw new NotFoundException('Tweet não encontrado');
@@ -372,12 +379,24 @@ export class TweetsService {
 
     const comments = await this.commentsRepository.find({
       where: {
-        tweetPai: { id: tweetId },
+        tweetPai: { id: tweetId, excluido: false },
       },
-      relations: ['comentario', 'comentario.usuario'],
+      relations: [
+        'comentario',
+        'comentario.usuario',
+        'comentario.likes',
+        'comentario.likes.usuario',
+        'comentario.retweets',
+        'comentario.retweets.retweet',
+        'comentario.retweets.retweet.usuario',
+      ],
     });
 
-    //console.log(comments);
+    comments.sort(
+      (a, b) =>
+        b.comentario.data_criacao.getTime() -
+        a.comentario.data_criacao.getTime(),
+    );
 
     const formattedComments = await Promise.all(
       comments.map(async (comment) => {
@@ -389,8 +408,6 @@ export class TweetsService {
           comment.comentario.id,
         );
 
-        //console.log(comment);
-
         return {
           id: comment.comentario.id,
           texto: comment.comentario.texto,
@@ -398,8 +415,15 @@ export class TweetsService {
           usuario: comment.comentario.usuario.usuario,
           nome: comment.comentario.usuario.nome,
           likes: likesCount,
+          liked: comment.comentario.likes.some(
+            (like) => like.usuario.id === userId,
+          ),
           comentarios: commentsCount,
           retweets: retweetsCount,
+          retuitado: comment.comentario.retweets.some(
+            (retweet) =>
+              retweet.retweet && retweet.retweet.usuario.id === userId,
+          ),
           data: comment.comentario.data_criacao,
         };
       }),
@@ -422,9 +446,13 @@ export class TweetsService {
         usuario: tweet.usuario.usuario,
         nome: tweet.usuario.nome,
         likes: likesCount,
+        liked: tweet.likes.some((like) => like.usuario.id === userId),
         comentarios: commentsCount,
         comentariosLista: formattedComments,
         retweets: retweetsCount,
+        retuitado: tweet.retweets.some(
+          (retweet) => retweet.retweet.usuario.id === userId,
+        ),
         data: tweet.data_criacao,
       },
     };
