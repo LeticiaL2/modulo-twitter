@@ -10,6 +10,7 @@ import {
   FormContainer,
   ActionContainer,
 } from "./styles";
+import { i18n } from "../../../translate/i18n";
 
 function BoxLogin() {
   const { login } = useContext(AuthContext);
@@ -37,13 +38,13 @@ function BoxLogin() {
         <FormContainer onSubmit={handleSubmit}>
           <FieldInput
             type="email"
-            placeholder="Email"
+            placeholder={i18n.t("login.email")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <FieldInput
             type="password"
-            placeholder="Senha"
+            placeholder={i18n.t("login.password")}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -55,10 +56,10 @@ function BoxLogin() {
               $border="1px solid white"
               $backgroundColor="black"
               color="#00acee"
-              $text="Entrar"
+              $text={i18n.t("login.enter")}
             />
             <LinkButton to="/signup">
-              <Button $text="Criar Conta" />
+              <Button $text={i18n.t("login.create_account")} />
             </LinkButton>
           </ActionContainer>
         </FormContainer>

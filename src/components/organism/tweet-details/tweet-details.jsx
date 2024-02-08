@@ -20,6 +20,7 @@ import Actions from "../../molecules/actions/actions";
 import Retweet from "../../molecules/retweet/retweet";
 import TweetInput from "../../molecules/tweet-input-box/tweet-input-box";
 import ModalTemplate from "../../template/modal-template/modal-template";
+import { i18n } from "../../../translate/i18n";
 
 const TweetDetails = ({
   tweet,
@@ -33,6 +34,7 @@ const TweetDetails = ({
   openRetweetModal,
   setOpenRetweetModal,
 }) => {
+  console.log("Tweet:", tweet);
   function formatTimeAgo(date) {
     try {
       if (date && !isNaN(date.getTime())) {
@@ -63,7 +65,7 @@ const TweetDetails = ({
             $border="2px solid black"
             $backgroundColor="white"
             $color="black"
-            $text="Seguir"
+            $text={i18n.t("details.follow")}
           />
           <ButtonIcon iconType="option" $padding="10px" />
         </TopTweetRight>

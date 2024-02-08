@@ -6,6 +6,8 @@ import HeaderHome from "../../components/molecules/header-home/header-home";
 import GlobalStyles from "../../styles/global-style";
 import { TweetsListContext } from "../../contexts/tweetsHomePageContext";
 import { AuthContext } from "../../contexts/auth";
+import { i18n } from "../../translate/i18n";
+import { useTranslation } from "react-i18next";
 
 function HomePage() {
   const { user } = useContext(AuthContext);
@@ -26,11 +28,11 @@ function HomePage() {
     <Container>
       <GlobalStyles />
       <BoxCenter>
-        <HeaderHome buttonText="Sair" />
+        <HeaderHome buttonText={i18n.t("home.logout")} />
         <TweetInput
           $border="1px solid #565656"
-          buttonText="Post"
-          placeholder="What is happening?!"
+          buttonText={i18n.t("home.post")}
+          placeholder={i18n.t("home.whatsHappening")}
           onTweet={addTweet}
           refreshTweets={refreshTweets}
         />
