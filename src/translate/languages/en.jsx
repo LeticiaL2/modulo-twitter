@@ -39,6 +39,23 @@ const messages = {
       header: {
         title: "Twitter",
       },
+      sideBar: {
+        Home: "Home",
+        Explore: "Explore",
+        Notification: "Notification",
+        Message: "Message",
+        List: "List",
+        Bookmark: "Bookmark",
+        Communities: "Communities",
+        Premium: "Premium",
+        Profile: "Profile",
+        More: "More",
+        Monetization: "Monetization",
+        Ads: "Ads",
+        Settings: "Settings",
+        Logout: "Logout",
+        Post: "Post",
+      },
     },
   },
 };

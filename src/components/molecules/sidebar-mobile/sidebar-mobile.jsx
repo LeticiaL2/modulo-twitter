@@ -1,6 +1,7 @@
 import { useRef, React, useContext } from "react";
 import { AuthContext } from "../../../contexts/auth";
 import ButtonIcon from "../../atoms/button-icon/button-icon";
+import { i18n } from "../../../translate/i18n";
 import Button from "../../atoms/button/button";
 import {
   Container,
@@ -40,38 +41,53 @@ const SidebarMobile = ({ showSideBarMobile, onClose, children }) => {
               <UserName>{user.usuario}</UserName>
             </HeaderContainer>
             <SidebarItem>
-              <ButtonIcon iconType={"profile"} content={"Profile"} />
+              <ButtonIcon
+                iconType={"profile"}
+                content={i18n.t("sideBar.Profile")}
+              />
             </SidebarItem>
 
             <SidebarItem>
-              <ButtonIcon iconType={"XTwitter"} content={"Premium"} />
+              <ButtonIcon
+                iconType={"XTwitter"}
+                content={i18n.t("sideBar.Premium")}
+              />
             </SidebarItem>
 
             <SidebarItem>
-              <ButtonIcon iconType={"list"} content={"Lists"} />
+              <ButtonIcon iconType={"list"} content={i18n.t("sideBar.List")} />
             </SidebarItem>
             <SidebarItem>
-              <ButtonIcon iconType={"bookmark"} content={"Bookmarks"} />
+              <ButtonIcon
+                iconType={"bookmark"}
+                content={i18n.t("sideBar.Bookmark")}
+              />
             </SidebarItem>
             <SidebarItem>
-              <ButtonIcon iconType={"communities"} content={"Communities"} />
+              <ButtonIcon
+                iconType={"communities"}
+                content={i18n.t("sideBar.Communities")}
+              />
             </SidebarItem>
             <SidebarItem>
-              <ButtonIcon iconType={"monetization"} content={"Monetization"} />
+              <ButtonIcon
+                iconType={"monetization"}
+                content={i18n.t("sideBar.Monetization")}
+              />
             </SidebarItem>
             <SidebarItem>
-              <ButtonIcon iconType={"ads"} content={"Ads"} />
+              <ButtonIcon iconType={"ads"} content={i18n.t("sideBar.Ads")} />
             </SidebarItem>
             <SidebarItem>
               <ButtonIcon
                 iconType={"settings"}
-                content={"Settings and privacy"}
+                content={i18n.t("sideBar.Settings")}
               />
             </SidebarItem>
             <SidebarItem>
               <ButtonIcon
                 iconType={"logout"}
-                content={"Log out"}
+                content={i18n.t("sideBar.Logout")}
                 onClick={handleLogout}
               />
             </SidebarItem>
