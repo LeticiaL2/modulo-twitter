@@ -7,7 +7,7 @@ export declare class TweetController {
     private findTweetById;
     private getUserIdFromToken;
     constructor(jwtService: JwtService);
-    getAllTweets(user: UserFromJwt): Promise<any>;
+    getAllTweets(): Promise<any>;
     createTweet(tweet: {
         message: string;
     }, req: Request, res: Response): {
@@ -23,4 +23,5 @@ export declare class TweetController {
     };
     likeTweet(id: string, res: Response): void;
     unlikeTweet(id: string, res: Response): void;
+    retweetTweet(id: string, user: UserFromJwt, res: Response, req: Request): void;
 }

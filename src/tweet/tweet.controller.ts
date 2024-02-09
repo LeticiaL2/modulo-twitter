@@ -8,6 +8,7 @@ import { UserFromJwt } from 'src/auth/models/UserFromJwt';
 
 @Controller('api/tweets')
 export class TweetController {
+  
   private tweets: { id: number; message: string; likes: number }[] = [];
 
   private findTweetById(id: string): { id: number; message: string; likes: number } {
@@ -25,7 +26,7 @@ export class TweetController {
   @IsPublic()
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getAllTweets(@CurrentUser() user: UserFromJwt): Promise<any> {
+  async getAllTweets(): Promise<any> {
     return this.tweets;
   }
 
@@ -54,13 +55,16 @@ export class TweetController {
     res.status(HttpStatus.NO_CONTENT).send();
   }
 
-
+  @IsPublic()
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   getTweetById(@Param('id') id: string): { id: number; message: string; likes: number } {
     const tweet = this.findTweetById(id);
     return tweet;
   }
 
+  @IsPublic()
+  @UseGuards(JwtAuthGuard)
   @Post(':id/like')
   likeTweet(@Param('id') id: string, @Res() res: Response): void{
     const tweet = this.findTweetById(id);
@@ -73,5 +77,25 @@ export class TweetController {
     const tweet = this.findTweetById(id);
     tweet.likes--;
     res.status(HttpStatus.NO_CONTENT).send();
+  }
+
+  @IsPublic()
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/retweet')
+  retweetTweet(@Param('id') id: string, @CurrentUser() user: UserFromJwt, @Res() res: Response, @Req() req: Request): void {
+     const token = req.headers.authorization.split(' ')[1]; 
+    const userId = this.getUserIdFromToken(token);
+    const tweet = this.findTweetById(id);
+
+    const retweet = {
+      id: this.tweets.length + 1,
+      message: `RT: ${tweet.message}`, 
+      likes: 0,
+      parentTweetId: userId,
+      retweetOf: tweet.id,
+    };
+
+    this.tweets.push(retweet);
+    res.status(HttpStatus.CREATED).json(retweet);
   }
 }
