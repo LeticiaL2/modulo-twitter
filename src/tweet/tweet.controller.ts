@@ -82,7 +82,7 @@ export class TweetController {
   @IsPublic()
   @UseGuards(JwtAuthGuard)
   @Post(':id/retweet')
-  retweetTweet(@Param('id') id: string, @CurrentUser() user: UserFromJwt, @Res() res: Response, @Req() req: Request): void {
+  retweetTweet(@Param('id') id: string, @Res() res: Response, @Req() req: Request): void {
      const token = req.headers.authorization.split(' ')[1]; 
     const userId = this.getUserIdFromToken(token);
     const tweet = this.findTweetById(id);
