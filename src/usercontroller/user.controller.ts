@@ -27,9 +27,5 @@ export class UserController {
     }
   }
 
-  findUserByEmail(email: string): { username: string; email: string; password: string } {
-    return this.users.find(u => u.email === email);
-  }
-
 }
 
