@@ -76,24 +76,4 @@ export class TweetController {
     tweet.likes--;
     res.status(HttpStatus.NO_CONTENT).send();
   }
-
-  @IsPublic()
-  @UseGuards(JwtAuthGuard)
-  @Post(':id/retweet')
-  retweetTweet(@Param('id') id: string, @Res() res: Response, @Req() req: Request): void {
-     const token = req.headers.authorization.split(' ')[1]; 
-    const userId = this.getUserIdFromToken(token);
-    const tweet = this.findTweetById(id);
-
-    const retweet = {
-      id: this.tweets.length + 1,
-      message: `RT: ${tweet.message}`, 
-      likes: 0,
-      parentTweetId: userId,
-      retweetOf: tweet.id,
-    };
-
-    this.tweets.push(retweet);
-    res.status(HttpStatus.CREATED).json(retweet);
-  }
 }
