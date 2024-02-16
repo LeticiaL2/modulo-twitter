@@ -8,13 +8,21 @@ function TweetDetailsTemplate({
   newCommentText,
   handlePostComment,
   setNewCommentText,
+  handleMainTweetComment,
+  handleMainTweetRetweet,
+  handleMainTweetLike,
 }) {
   return (
     <div className="tweet-details--container">
       <div className="tweet-details--section" id="left-section"></div>
       <div className="tweet-details--section" id="middle-section">
         <BackArrowHeader title="Tweet" />
-        <MainCard tweetData={tweetData} />
+        <MainCard
+          tweetData={tweetData}
+          handleMainTweetComment={handleMainTweetComment}
+          handleMainTweetRetweet={handleMainTweetRetweet}
+          handleMainTweetLike={handleMainTweetLike}
+        />
         <PostInput
           tweetText={newCommentText}
           setTweetText={setNewCommentText}

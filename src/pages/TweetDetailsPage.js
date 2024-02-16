@@ -10,6 +10,7 @@ function TweetDetailsPage() {
   const { id } = useParams();
   const [newCommentText, setNewCommentText] = useState('');
   const [commentPosted, setCommentPosted] = useState(false);
+  //const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchTweet = async () => {
@@ -32,7 +33,7 @@ function TweetDetailsPage() {
     return Loading;
   }
 
-  const handlePostComment = async () => {
+  const handlePostComment = async (id) => {
     const newComment = await postComment(newCommentText, id);
     setTweetData({
       ...tweetData,
@@ -42,12 +43,27 @@ function TweetDetailsPage() {
     setCommentPosted(true);
   };
 
+  const handleMainTweetComment = async () => {
+    console.log('Comment');
+  };
+
+  const handleMainTweetRetweet = async () => {
+    console.log('Retweet');
+  };
+
+  const handleMainTweetLike = async () => {
+    console.log('Retweet');
+  };
+
   return (
     <TweetDetailsTemplate
       tweetData={tweetData}
       newCommentText={newCommentText}
       handlePostComment={handlePostComment}
       setNewCommentText={setNewCommentText}
+      handleMainTweetComment={handleMainTweetComment}
+      handleMainTweetRetweet={handleMainTweetRetweet}
+      handleMainTweetLike={handleMainTweetLike}
     />
   );
 }

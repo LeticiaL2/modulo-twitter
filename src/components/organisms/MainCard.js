@@ -1,7 +1,12 @@
 import TweetHeader from '../molecules/TweetHeader';
 import TweetFooter from './TweetFooter';
 
-function MainCard({ tweetData }) {
+function MainCard({
+  tweetData,
+  handleMainTweetComment,
+  handleMainTweetRetweet,
+  handleMainTweetLike,
+}) {
   return (
     <div className="main-card">
       <TweetHeader
@@ -13,6 +18,9 @@ function MainCard({ tweetData }) {
         comments={tweetData.comentarios}
         retweets={tweetData.retweets}
         likes={tweetData.likes}
+        handleMainTweetComment={handleMainTweetComment}
+        handleMainTweetRetweet={handleMainTweetRetweet}
+        handleMainTweetLike={handleMainTweetLike}
       />
     </div>
   );
