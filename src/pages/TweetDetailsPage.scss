@@ -12,12 +12,12 @@ $comment-hover-color: rgba(29, 155, 240, 0.1);
 $button-color: #1d9bf0;
 $button-hover-color: #157bc8;
 
-@mixin comment-styles {
+@mixin action-styles($color, $hoverColor) {
   display: flex;
   align-items: center;
   justify-content: center;
 
-  &-btn {
+  > Button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -28,80 +28,18 @@ $button-hover-color: #157bc8;
     border: none;
 
     &:hover {
-      background-color: $comment-hover-color;
+      background-color: $hoverColor;
+    }
+
+    > svg {
+      fill: $color;
+      width: 24px;
     }
   }
 
-  &-svg {
-    fill: $comment-color;
-    width: 24px;
-  }
-
-  &-count {
+  > Text {
     font-size: 0.9rem;
-    color: $comment-color;
-  }
-}
-
-@mixin retweet-styles {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    background-color: inherit;
-    border: none;
-
-    &:hover {
-      background-color: $retweet-hover-color;
-    }
-  }
-
-  &-svg {
-    fill: $retweet-color;
-    width: 24px;
-  }
-
-  &-count {
-    font-size: 0.9rem;
-    color: $retweet-color;
-  }
-}
-
-@mixin like-styles {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    background-color: inherit;
-    border: none;
-
-    &:hover {
-      background-color: $like-hover-color;
-    }
-  }
-
-  &-svg {
-    fill: $like-color;
-    width: 24px;
-  }
-
-  &-count {
-    font-size: 0.9rem;
-    color: $like-color;
+    color: $color;
   }
 }
 
@@ -283,15 +221,15 @@ $button-hover-color: #157bc8;
   }
 
   &--comment {
-    @include comment-styles();
+    @include action-styles($comment-color, $comment-hover-color);
   }
 
   &--retweet {
-    @include retweet-styles();
+    @include action-styles($retweet-color, $retweet-hover-color);
   }
 
   &--like {
-    @include like-styles();
+    @include action-styles($like-color, $like-hover-color);
   }
 }
 
@@ -364,14 +302,14 @@ $button-hover-color: #157bc8;
   }
 
   &--comment {
-    @include comment-styles();
+    @include action-styles($comment-color, $comment-hover-color);
   }
 
   &--retweet {
-    @include retweet-styles();
+    @include action-styles($retweet-color, $retweet-hover-color);
   }
 
   &--like {
-    @include like-styles();
+    @include action-styles($like-color, $like-hover-color);
   }
 }

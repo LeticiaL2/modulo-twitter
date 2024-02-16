@@ -1,12 +1,12 @@
-import Button from '../atoms/Button';
+import Button from '../atoms/Button/Button';
 import Text from '../atoms/Text';
 
-const TweetAction = ({ className, actionCount, IconComponent }) => (
+const TweetAction = ({ className, actionCount, IconComponent, onClick }) => (
   <div className={className}>
-    <Button className={`${className}-btn`}>
-      <IconComponent className={`${className}-svg`} />
+    <Button onClick={onClick}>
+      <IconComponent />
     </Button>
-    <Text className={`${className}-count`}>{actionCount}</Text>
+    <Text>{actionCount}</Text>
   </div>
 );
 
