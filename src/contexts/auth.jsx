@@ -48,11 +48,17 @@ export const AuthProvider = ({ children }) => {
 
     if (response.status === 200) {
       const data = await response.json();
-      const { acessToken, user: loggedUser } = data.conteudo;
+      const { acessToken } = data.conteudo;
 
-      setUser(data);
+      const payload = {
+        token: data.conteudo.acessToken,
+        usuario: data.conteudo.usuario,
+        name: data.conteudo.nome,
+      };
 
-      localStorage.setItem("user", JSON.stringify(loggedUser));
+      setUser(payload);
+
+      localStorage.setItem("user", JSON.stringify(payload));
       localStorage.setItem("accessToken", JSON.stringify(acessToken));
 
       setToken(acessToken);

@@ -113,13 +113,18 @@ const Actions = ({
         onClick={handleComment}
         iconType="reply"
         count={comentarios}
+        $color={"rgb(113, 118, 123)"}
       />
 
       <ButtonActionContainer
         onClick={handleToggleDropdown}
         $color={retweetedBoolean ? "green" : "gray"}
       >
-        <ButtonIcon iconType="retweet" count={retweetsCount} />
+        <ButtonIcon
+          iconType="retweet"
+          count={retweetsCount}
+          $color={"rgb(113, 118, 123)"}
+        />
         <Dropdown
           showDropdown={openDropdown}
           setShowDropdown={setOpenDropdown}

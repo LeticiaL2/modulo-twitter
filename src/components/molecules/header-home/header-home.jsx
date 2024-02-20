@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import UserPhoto from "../../atoms/user-photo/user-photo";
 import {
@@ -7,13 +7,17 @@ import {
   ContainerPhoto,
   ContainerLogo,
   ContainerLogout,
+  ContainerButtonProfile,
 } from "./styles";
 import Button from "../../atoms/button/button";
 import { AuthContext } from "../../../contexts/auth";
+import ModalTemplate from "../../template/modal-template/modal-template";
+import SidebarMobile from "../sidebar-mobile/sidebar-mobile";
 
 function HeaderHome({ buttonText }) {
   const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [showSidebar, setShowSidebar] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -27,10 +31,16 @@ function HeaderHome({ buttonText }) {
     }
   };
 
+  const handleSidebar = () => {
+    setShowSidebar(!showSidebar);
+  };
+
   return (
     <HeaderContainer>
       <ContainerPhoto>
-        <UserPhoto />
+        <ContainerButtonProfile onClick={handleSidebar}>
+          <UserPhoto />
+        </ContainerButtonProfile>
       </ContainerPhoto>
 
       <ContainerLogo>
@@ -46,6 +56,9 @@ function HeaderHome({ buttonText }) {
           onClick={handleButtonClick}
         />
       </ContainerLogout>
+
+      <SidebarMobile showSideBarMobile={showSidebar} onClose={setShowSidebar} />
+      <SidebarMobile />
     </HeaderContainer>
   );
 }
