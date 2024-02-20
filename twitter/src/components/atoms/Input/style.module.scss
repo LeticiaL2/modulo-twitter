@@ -36,6 +36,13 @@
     display: none;
   }
 }
+.DivInputError {
+  border: 1px solid #c11a25;
+
+  p {
+    display: none;
+  }
+}
 
 .DivInputFocus {
   border: 1px solid #1d9bf0;
