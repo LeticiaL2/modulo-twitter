@@ -5,9 +5,10 @@ interface Props {
   text: string;
   onInputChange: (value: string) => void;
   type: string;
+  error?: boolean;
 }
 
-export default function Input({ text, type, onInputChange }: Props) {
+export default function Input({ text, type, error, onInputChange }: Props) {
   const [showInputFocus, setInputFocus] = useState(false);
 
   const handleClick = () => {
@@ -22,7 +23,6 @@ export default function Input({ text, type, onInputChange }: Props) {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     setInputValue(newValue);
-    // Chama a função de retorno fornecida pelo componente pai
     onInputChange(newValue);
   };
 
@@ -34,10 +34,8 @@ export default function Input({ text, type, onInputChange }: Props) {
         inputRef.current &&
         !inputRef.current.contains(event.target as HTMLDivElement)
       ) {
-        console.log("Clicou fora do input!");
         handleClose();
       } else {
-        console.log("Clicou dentro do input!");
       }
     };
 
@@ -50,7 +48,12 @@ export default function Input({ text, type, onInputChange }: Props) {
 
   return (
     <div className={style.DivMain}>
-      <div className={showInputFocus ? style.DivInputFocus : style.DivInput}>
+      <div
+        className={
+          (showInputFocus ? style.DivInputFocus : style.DivInput) +
+          (error ? ` ${style.DivInputError}` : "")
+        }
+      >
         <p id="pText">{text}</p>
         <input
           type={type}
@@ -60,8 +63,6 @@ export default function Input({ text, type, onInputChange }: Props) {
           onChange={handleChange}
         />
       </div>
-      {/* "text" */}
-      {/* <p>Esqueceu sua senha?</p> */}
     </div>
   );
 }

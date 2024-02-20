@@ -1,8 +1,7 @@
 import { useQuery } from "react-query";
 import axios from "axios";
 
-const baseURL = "http://localhost:3000/autenticacao/entrar";
-// const baseURL = "/autenticacao/entrar";
+const baseURL = "http://localhost:3000";
 
 const fetchData = async () => {
   const response = await axios.get(baseURL);

@@ -24,7 +24,6 @@ export default function PopupSenha({ showPopup, handleClose, value }: Props) {
       email: value,
       senha: inputValue,
     };
-    console.log("Entrou ?");
     mutate(data);
   };
 

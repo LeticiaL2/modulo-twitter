@@ -56,6 +56,7 @@ export default function PopupEntrar({ isShowPopup, handleClose }: Props) {
 
           <Input
             text={"Celular, e-mail ou nome de usuário"}
+            type={"text"}
             onInputChange={handleInputChangeInApp}
           />
 
