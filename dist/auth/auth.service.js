@@ -20,6 +20,10 @@ let AuthService = class AuthService {
         this.jwtService = jwtService;
         this.userService = userService;
     }
+    getUserIdFromToken(token) {
+        const decoded = this.jwtService.decode(token);
+        return decoded.sub;
+    }
     async login(user) {
         const payload = {
             sub: user.id,

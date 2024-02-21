@@ -12,12 +12,14 @@ const jwt_1 = require("@nestjs/jwt");
 const prisma_module_1 = require("../prisma/prisma.module");
 const tweet_controller_1 = require("./tweet.controller");
 const tweet_service_1 = require("./tweet.service");
+const auth_service_1 = require("../auth/auth.service");
+const user_module_1 = require("../user/user.module");
 let TweetModule = class TweetModule {
 };
 exports.TweetModule = TweetModule;
 exports.TweetModule = TweetModule = __decorate([
-    (0, common_1.Module)({ imports: [prisma_module_1.PrismaModule, jwt_1.JwtModule.register({ secret: process.env.JWT_SECRET })],
+    (0, common_1.Module)({ imports: [user_module_1.UserModule, prisma_module_1.PrismaModule, jwt_1.JwtModule.register({ secret: process.env.JWT_SECRET })],
         controllers: [tweet_controller_1.TweetController],
-        providers: [tweet_service_1.TweetService], })
+        providers: [tweet_service_1.TweetService, auth_service_1.AuthService], })
 ], TweetModule);
 //# sourceMappingURL=tweet.module.js.map

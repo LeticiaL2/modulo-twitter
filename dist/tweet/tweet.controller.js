@@ -14,8 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TweetController = void 0;
 const common_1 = require("@nestjs/common");
-const jwt_1 = require("@nestjs/jwt");
-const current_user_decorator_1 = require("../auth/decorators/current-user.decorator");
+const auth_service_1 = require("../auth/auth.service");
 const is_public_decorator_1 = require("../auth/decorators/is-public.decorator");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 let TweetController = class TweetController {
@@ -23,12 +22,8 @@ let TweetController = class TweetController {
         const tweetId = parseInt(id);
         return this.tweets.find((tweet) => tweet.id === tweetId);
     }
-    getUserIdFromToken(token) {
-        const decoded = this.jwtService.decode(token);
-        return decoded.sub;
-    }
-    constructor(jwtService) {
-        this.jwtService = jwtService;
+    constructor(authService) {
+        this.authService = authService;
         this.tweets = [];
     }
     async getAllTweets() {
@@ -36,7 +31,7 @@ let TweetController = class TweetController {
     }
     createTweet(tweet, req, res) {
         const token = req.headers.authorization.split(' ')[1];
-        const userId = this.getUserIdFromToken(token);
+        const userId = this.authService.getUserIdFromToken(token);
         const newTweet = {
             id: this.tweets.length + 1,
             message: tweet.message,
@@ -67,23 +62,19 @@ let TweetController = class TweetController {
         tweet.likes--;
         res.status(common_1.HttpStatus.NO_CONTENT).send();
     }
-    retweetTweet(id, user, res, req) {
+    retweetTweet(id, res, req) {
         const token = req.headers.authorization.split(' ')[1];
-        const userId = this.getUserIdFromToken(token);
+        const userId = this.authService.getUserIdFromToken(token);
         const tweet = this.findTweetById(id);
-        if (!tweet) {
-            res.status(common_1.HttpStatus.NOT_FOUND).json({ message: 'Tweet not found' });
-            return;
-        }
-        const newRetweet = {
+        const retweet = {
             id: this.tweets.length + 1,
             message: `RT: ${tweet.message}`,
             likes: 0,
             parentTweetId: userId,
             retweetOf: tweet.id,
         };
-        this.tweets.push(newRetweet);
-        res.status(common_1.HttpStatus.CREATED).json(newRetweet);
+        this.tweets.push(retweet);
+        res.status(common_1.HttpStatus.CREATED).json(retweet);
     }
 };
 exports.TweetController = TweetController;
@@ -146,15 +137,14 @@ __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Post)(':id/retweet'),
     __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, current_user_decorator_1.CurrentUser)()),
-    __param(2, (0, common_1.Res)()),
-    __param(3, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object, Object, Object]),
+    __metadata("design:paramtypes", [String, Object, Object]),
     __metadata("design:returntype", void 0)
 ], TweetController.prototype, "retweetTweet", null);
 exports.TweetController = TweetController = __decorate([
     (0, common_1.Controller)('api/tweets'),
-    __metadata("design:paramtypes", [jwt_1.JwtService])
+    __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], TweetController);
 //# sourceMappingURL=tweet.controller.js.map

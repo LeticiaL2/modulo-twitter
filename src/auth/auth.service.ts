@@ -14,6 +14,11 @@ export class AuthService {
     private readonly userService: UserService,
   ) {}
 
+  getUserIdFromToken(token: string): number {
+    const decoded = this.jwtService.decode(token);
+    return decoded.sub;
+  }
+  
   async login(user: User): Promise<UserToken> {
     const payload: UserPayload = {
       sub: user.id,

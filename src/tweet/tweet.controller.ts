@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Res, Delete, Param, Body, HttpStatus, UseGuards, Req, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Response, Request} from 'express';
+import { AuthService } from 'src/auth/auth.service';
 import { IsPublic } from 'src/auth/decorators/is-public.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
@@ -13,13 +14,7 @@ export class TweetController {
     const tweetId = parseInt(id);
     return this.tweets.find((tweet) => tweet.id === tweetId);
   }
-
-  private getUserIdFromToken(token: string): number {
-    const decoded = this.jwtService.decode(token);
-    return decoded.sub; 
-  }
-
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(private readonly authService: AuthService) {}
   
   @IsPublic()
   @UseGuards(JwtAuthGuard)
@@ -33,7 +28,7 @@ export class TweetController {
   @Post()
   createTweet(@Body() tweet: { message: string }, @Req() req: Request, @Res() res: Response): { id: number; message: string; likes: number } {
     const token = req.headers.authorization.split(' ')[1]; 
-    const userId = this.getUserIdFromToken(token);
+    const userId = this.authService.getUserIdFromToken(token);
     const newTweet = {
       id: this.tweets.length + 1,
       message: tweet.message,
@@ -82,7 +77,7 @@ export class TweetController {
   @Post(':id/retweet')
   retweetTweet(@Param('id') id: string, @Res() res: Response, @Req() req: Request): void {
     const token = req.headers.authorization.split(' ')[1]; 
-    const userId = this.getUserIdFromToken(token);
+    const userId = this.authService.getUserIdFromToken(token);
     const tweet = this.findTweetById(id);
 
     const retweet = {

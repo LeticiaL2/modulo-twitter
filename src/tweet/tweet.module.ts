@@ -3,10 +3,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { PrismaModule } from 'src/prisma/prisma.module';
 import { TweetController } from './tweet.controller';
 import { TweetService } from './tweet.service';
+import { AuthService } from 'src/auth/auth.service';
+import { UserModule } from 'src/user/user.module';
 
-@Module({imports: [PrismaModule, JwtModule.register({secret:process.env.JWT_SECRET})],
+@Module({imports: [UserModule, PrismaModule, JwtModule.register({secret:process.env.JWT_SECRET})],
 controllers: [TweetController],
-providers: [TweetService],}
+providers: [TweetService, AuthService],}
 )
 export class TweetModule {
 }
