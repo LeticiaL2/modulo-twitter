@@ -1,0 +1,12 @@
+.main-card {
+  &--name {
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+
+  &--username {
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: rgb(113, 118, 123);
+  }
+}

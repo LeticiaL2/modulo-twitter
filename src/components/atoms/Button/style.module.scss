@@ -1,0 +1,140 @@
+$color-blue: #1d9bf0;
+$color-dark-blue: #157bc8;
+$color-black: black;
+$color-white: white;
+$color-grey: lightgrey;
+$like-color: rgb(249, 24, 128);
+$like-hover-color: rgba(249, 24, 128, 0.1);
+$retweet-color: rgb(0, 186, 124);
+$retweet-hover-color: rgba(0, 186, 124, 0.1);
+$comment-color: rgb(43, 149, 220);
+$comment-hover-color: rgba(29, 155, 240, 0.1);
+
+.button {
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+  border-radius: 20px;
+
+  &:disabled {
+    opacity: 0.35;
+  }
+}
+
+.homeCreateAccountBtn {
+  @extend .button;
+  width: 300px;
+  height: 40px;
+  margin: 0px 0px 8px;
+  border-radius: 20px;
+  background-color: $color-blue;
+  color: $color-white;
+  border: none;
+
+  &:hover {
+    background-color: $color-dark-blue;
+  }
+}
+
+.homeSignInBtn {
+  @extend .button;
+  width: 300px;
+  height: 40px;
+  margin: 0px 0px 8px;
+  border-radius: 20px;
+  background-color: $color-black;
+  color: $color-blue;
+  border: 1px solid rgb(83, 100, 113);
+
+  &:hover {
+    background-color: #030c13;
+  }
+}
+
+.modalMainSubmit {
+  @extend .button;
+  margin: 30px 0;
+  padding: 10px;
+  width: 80%;
+  background: $color-white;
+  color: $color-black;
+  border-radius: 30px;
+  border: none;
+  height: 50px;
+
+  &:hover {
+    background: $color-grey;
+  }
+}
+
+.tweetFeedHeader {
+  @extend .button;
+  width: 100px;
+  height: 35px;
+  background-color: $color-black;
+  color: $color-blue;
+  border: 1px solid rgb(83, 100, 113);
+
+  &:hover {
+    background-color: #09243a;
+  }
+}
+
+.tweetFeedInput {
+  @extend .button;
+  width: auto;
+  padding: 0 15px;
+  height: 36px;
+  background-color: $color-blue;
+  color: $color-white;
+  border: none;
+  align-self: flex-end;
+  margin-top: 5px;
+
+  &:hover:not(:disabled) {
+    background-color: $color-dark-blue;
+  }
+}
+
+@mixin action-styles($hoverColor) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background-color: inherit;
+  border: none;
+
+  &:hover {
+    background-color: $hoverColor;
+  }
+}
+
+.main-card {
+  &--comment {
+    @include action-styles($comment-hover-color);
+  }
+
+  &--retweet {
+    @include action-styles($retweet-hover-color);
+  }
+
+  &--like {
+    @include action-styles($like-hover-color);
+  }
+}
+
+.comment-card {
+  &--comment {
+    @include action-styles($comment-hover-color);
+  }
+
+  &--retweet {
+    @include action-styles($retweet-hover-color);
+  }
+
+  &--like {
+    @include action-styles($like-hover-color);
+  }
+}

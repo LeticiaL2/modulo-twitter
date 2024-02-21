@@ -1,0 +1,19 @@
+.modal-close {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  cursor: pointer;
+  color: rgb(239, 243, 244);
+  width: 35px;
+  height: 35px;
+  font-size: 1.2rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.2s;
+}
+
+.modal-close:hover {
+  background: rgb(29, 29, 29);
+}

@@ -1,0 +1,11 @@
+.tweet-feed--container {
+  display: flex;
+  justify-content: space-between;
+  background-color: black;
+  height: 100vh;
+}
+
+#left-section,
+#right-section {
+  width: 30%;
+}
