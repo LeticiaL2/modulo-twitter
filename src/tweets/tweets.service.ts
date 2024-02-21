@@ -301,7 +301,7 @@ export class TweetsService {
         codigo: 200,
         texto: 'Tweet descurtido com sucesso!',
       },
-      conteudo: true,
+      conteudo: false,
     };
 
     return response;
