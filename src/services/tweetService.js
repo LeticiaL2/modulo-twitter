@@ -20,6 +20,23 @@ export const postTweet = async (tweetText) => {
   }
 };
 
+export const getTweets = async () => {
+  try {
+    const response = await axios.get('http://localhost:3003/api/v1/tweets', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+    const tweets = response.data;
+    tweets.conteudo.forEach((tweet) => {
+      tweet.data = formatDateForComments(tweet.data);
+    });
+    return tweets;
+  } catch (error) {
+    console.error('Erro ao buscar Tweets:', error);
+  }
+};
+
 export const getTweetDetails = async (id) => {
   try {
     const response = await axios.get(
