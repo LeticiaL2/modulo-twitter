@@ -12,6 +12,7 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { TweetModule } from './tweet/tweet.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth/auth.service';
+import { TweetService } from './tweet/tweet.service';
 
 @Module({
   imports: [PrismaModule, UserModule, AuthModule, TweetModule, JwtModule],
@@ -22,7 +23,8 @@ import { AuthService } from './auth/auth.service';
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
-    AuthService
+    AuthService,
+    TweetService
   ],
 })
 export class AppModule {}

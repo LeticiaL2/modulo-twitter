@@ -1,94 +1,72 @@
 import { Controller, Get, Post, Res, Delete, Param, Body, HttpStatus, UseGuards, Req, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { Response, Request} from 'express';
 import { AuthService } from 'src/auth/auth.service';
 import { IsPublic } from 'src/auth/decorators/is-public.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { TweetService } from './tweet.service';
 
 @Controller('api/tweets')
 export class TweetController {
-  
-  private tweets: { id: number; message: string; likes: number }[] = [];
+  constructor(
+    private readonly authService: AuthService,
+    private readonly tweetService: TweetService
+  ) {}
 
-  private findTweetById(id: string): { id: number; message: string; likes: number } {
-    const tweetId = parseInt(id);
-    return this.tweets.find((tweet) => tweet.id === tweetId);
-  }
-  constructor(private readonly authService: AuthService) {}
-  
   @IsPublic()
   @UseGuards(JwtAuthGuard)
   @Get()
   async getAllTweets(): Promise<any> {
-    return this.tweets;
+    return this.tweetService.getAllTweets();
   }
 
   @IsPublic()
   @UseGuards(JwtAuthGuard) 
   @Post()
-  createTweet(@Body() tweet: { message: string }, @Req() req: Request, @Res() res: Response): { id: number; message: string; likes: number } {
+  async createTweet(@Body() tweet: { message: string }, @Req() req: Request, @Res() res: Response): Promise<any> {
     const token = req.headers.authorization.split(' ')[1]; 
     const userId = this.authService.getUserIdFromToken(token);
-    const newTweet = {
-      id: this.tweets.length + 1,
-      message: tweet.message,
-      likes: 0,
-      userId,
-    };
-    this.tweets.push(newTweet);
-    res.status(HttpStatus.CREATED).send(); 
-    return newTweet;
+    const newTweet = await this.tweetService.createTweet(tweet.message, userId);
+    res.status(HttpStatus.CREATED).send(newTweet); 
   }
 
+  @IsPublic()
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  deleteTweet(@Param('id') id: string, @Res() res: Response): void {
-    const tweetId = parseInt(id);
-    const index = this.tweets.findIndex((tweet) => tweet.id === tweetId);
-    this.tweets[index].message = '';
+  async deleteTweet(@Param('id') id: string, @Res() res: Response): Promise<any> {
+    await this.tweetService.deleteTweet(parseInt(id));
     res.status(HttpStatus.NO_CONTENT).send();
   }
 
   @IsPublic()
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  getTweetById(@Param('id') id: string): { id: number; message: string; likes: number } {
-    const tweet = this.findTweetById(id);
-    return tweet;
+  async getTweetById(@Param('id') id: string): Promise<any> {
+    return this.tweetService.getTweetById(parseInt(id));
   }
 
   @IsPublic()
   @UseGuards(JwtAuthGuard)
   @Post(':id/like')
-  likeTweet(@Param('id') id: string, @Res() res: Response): void{
-    const tweet = this.findTweetById(id);
-    tweet.likes++;
+  async likeTweet(@Param('id') id: string, @Res() res: Response): Promise<any> {
+    await this.tweetService.likeTweet(parseInt(id));
     res.status(HttpStatus.NO_CONTENT).send();
   }
 
+  @IsPublic()
+  @UseGuards(JwtAuthGuard)
   @Delete(':id/like')
-  unlikeTweet(@Param('id') id: string, @Res() res: Response): void{
-    const tweet = this.findTweetById(id);
-    tweet.likes--;
+  async unlikeTweet(@Param('id') id: string, @Res() res: Response): Promise<any> {
+    await this.tweetService.unlikeTweet(parseInt(id));
     res.status(HttpStatus.NO_CONTENT).send();
   }
 
   @IsPublic()
   @UseGuards(JwtAuthGuard)
   @Post(':id/retweet')
-  retweetTweet(@Param('id') id: string, @Res() res: Response, @Req() req: Request): void {
+  async retweetTweet(@Param('id') id: string, @Body() tweet: { message: string }, @Req() req: Request, @Res() res: Response): Promise<any> {
     const token = req.headers.authorization.split(' ')[1]; 
     const userId = this.authService.getUserIdFromToken(token);
-    const tweet = this.findTweetById(id);
-
-    const retweet = {
-      id: this.tweets.length + 1,
-      message: `RT: ${tweet.message}`, 
-      likes: 0,
-      parentTweetId: userId,
-      retweetOf: tweet.id,
-    };
-
-    this.tweets.push(retweet);
-    res.status(HttpStatus.CREATED).json(retweet);
+    const retweet = await this.tweetService.retweetTweet(tweet.message, userId, parseInt(id));
+    res.status(HttpStatus.CREATED).send(retweet);
   }
 }
