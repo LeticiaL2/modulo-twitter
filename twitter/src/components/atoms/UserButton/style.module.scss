@@ -1,0 +1,54 @@
+.MainButton {
+  padding: 12px;
+  margin: 12px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 9999px;
+}
+
+.MainButton:hover {
+  background-color: #181818;
+}
+
+.Div {
+  display: flex;
+}
+
+.ImgButton {
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+}
+
+.MainText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 12px;
+}
+
+.TextName {
+  background-color: transparent;
+  color: rgb(231, 233, 234);
+  font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.TextUser {
+  background-color: transparent;
+  color: rgb(113, 118, 123);
+  font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 400;
+}
+
+.active {
+  background-color: blue;
+}
