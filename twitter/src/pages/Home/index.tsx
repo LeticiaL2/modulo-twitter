@@ -3,8 +3,10 @@ import LoginButton from "../../components/atoms/LoginButton";
 import Button from "../../components/atoms/Button";
 import PopupEntrar from "../../components/organisms/Pop-upEntrar";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import LeftSide from "../../components/organisms/LeftSide";
 
-export default function Login() {
+export default function Home() {
   const arraybutton = [
     { name: "Inscrever-se com Apple", img: "./images/logo_apple.svg" },
     { name: "Entrar com a conta do Google", img: "./images/logo_apple.svg" },
@@ -22,6 +24,11 @@ export default function Login() {
   return (
     <>
       <div className={style.DivMain}>
+        <LeftSide />
+        {/* <h1>HOME</h1> */}
+      </div>
+
+      {/* <div className={style.DivMain}>
         <div className={style.DivMainLogo}>
           <div className={style.DivLogo}>
             <img src="./images/logo_login.svg" alt="Logo X" />
@@ -104,7 +111,7 @@ export default function Login() {
           Configurações
         </a>
         <a href="">© 2023 X Corp.</a>
-      </div>
+      </div> */}
     </>
   );
 }

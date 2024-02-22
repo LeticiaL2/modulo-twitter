@@ -1,0 +1,35 @@
+.MainButton {
+  height: 38px;
+  // max-width: 380px;
+  // width: fit-content;
+  max-width: 400px;
+  min-width: 200px;
+  width: 300px;
+  background-color: rgb(255, 255, 255);
+  border: none;
+  display: flex;
+  margin-bottom: 8px;
+  border-radius: 9999px;
+  justify-content: center;
+}
+.Button {
+  padding-left: 16px;
+  padding-right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ImgButton {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.Text {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  font-size: 15px;
+  color: #0f1419;
+  font-weight: 700;
+  line-height: 20px;
+}

@@ -1,0 +1,30 @@
+.DivMain {
+  height: 56px;
+  background-color: rgb(32, 35, 39);
+  opacity: 0.5;
+  border-radius: 4px;
+  color: rgb(113, 118, 123);
+  padding: 8px;
+  font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  flex-direction: column;
+
+  > p:first-child {
+    margin: 0;
+    width: 100%;
+    font-size: 13px;
+  }
+
+  > p:last-child {
+    width: 100%;
+    box-shadow: 0 0 0 0;
+    border: 0 none;
+    outline: 0;
+    margin: 0px;
+  }
+}

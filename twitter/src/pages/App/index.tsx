@@ -1,14 +1,17 @@
-import React from 'react';
-import LeftSide from '../../components/organisms/LeftSide';
-import Login from '../Login';
+import Login from "../Login";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import style from "./style.module.scss";
+import Home from "../Home";
 
-import style from './style.module.scss';
 function App() {
   return (
-    // <div className="App">
     <div className={style.App}>
-        {/* <LeftSide /> */}
-        <Login/>
+      <BrowserRouter>
+        <Routes>
+          <Route index element={<Login />}></Route>
+          <Route path="home" element={<Home />}></Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
