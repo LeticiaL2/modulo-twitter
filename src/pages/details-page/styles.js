@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Container = styled.div`
   padding: 0;
   margin: 0;
-  background-color: black;
+  background-color: transparent;
   font-family: "Segoe UI", "Open Sans", "Helvetica Neue", sans-serif, Arial,
     sans-serif;
   width: 100%;

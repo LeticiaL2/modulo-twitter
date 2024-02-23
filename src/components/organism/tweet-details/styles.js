@@ -5,7 +5,7 @@ export const TweetDetailsContainer = styled.div`
   margin: 0;
   display: flex;
   flex-direction: column;
-  background-color: black;
+  background-color: transparent;
 `;
 
 export const TopTweet = styled.div`
@@ -25,7 +25,21 @@ export const TopTweetLeft = styled.div`
 
 export const TopTweetRight = styled.div`
   display: flex;
-  width: 25%;
+  @media screen and (max-width: 1440px) {
+    width: 40%;
+  }
+
+  @media screen and (max-width: 930px) {
+    width: 50%;
+  }
+
+  @media screen and (max-width: 376px) {
+    width: 50%;
+  }
+
+  @media screen and (max-width: 375px) {
+    display: none;
+  }
 `;
 
 export const ContentContainer = styled.div`

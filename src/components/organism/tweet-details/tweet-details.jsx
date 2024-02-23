@@ -63,7 +63,7 @@ const TweetDetails = ({
         <TopTweetRight>
           <Button
             $border="2px solid black"
-            $backgroundColor="white"
+            $backgroundColor="transparent"
             $color="black"
             $text={i18n.t("details.follow")}
           />

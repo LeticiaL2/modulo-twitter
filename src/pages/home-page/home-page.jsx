@@ -9,7 +9,6 @@ import { AuthContext } from "../../contexts/auth";
 import { i18n } from "../../translate/i18n";
 import { useTranslation } from "react-i18next";
 import Sidebar from "../../components/molecules/sidebar/sidebar";
-
 function HomePage() {
   const { user } = useContext(AuthContext);
 

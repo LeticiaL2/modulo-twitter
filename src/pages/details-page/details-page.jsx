@@ -8,6 +8,8 @@ import HeaderHome from "../../components/molecules/header-home/header-home";
 import ListTweets from "../../components/organism/list-tweets/list-tweets";
 import { TweetsDetailsContext } from "../../contexts/tweetsDetailsContext";
 import { i18n } from "../../translate/i18n";
+import GlobalStyles from "../../styles/global-style";
+import Sidebar from "../../components/molecules/sidebar/sidebar";
 
 function DetailsPage() {
   const { user } = useContext(AuthContext);
@@ -26,6 +28,8 @@ function DetailsPage() {
 
   return (
     <Container>
+      <GlobalStyles />
+      <Sidebar />
       <BoxCenter>
         <HeaderHome buttonText={i18n.t("details.back")} />
         <TweetDetails
