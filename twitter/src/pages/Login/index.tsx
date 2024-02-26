@@ -3,6 +3,7 @@ import LoginButton from "../../components/atoms/LoginButton";
 import Button from "../../components/atoms/Button";
 import PopupEntrar from "../../components/organisms/Pop-upEntrar";
 import { useState } from "react";
+import PopupCriarConta from "../../components/organisms/PopupCriarConta";
 
 export default function Login() {
   const arraybutton = [
@@ -10,13 +11,21 @@ export default function Login() {
     { name: "Entrar com a conta do Google", img: "./images/logo_apple.svg" },
   ];
 
-  const [showPopup, setShowPopup] = useState(false);
+  const [showPopupEntrar, setShowPopupEntrar] = useState(false);
+  const [showPopupCriarConta, setShowPopupCriarConta] = useState(false);
 
-  const handleClick = () => {
-    setShowPopup(true); // Abre o popup ao clicar no botão
+  const handleClickEntrar = () => {
+    setShowPopupEntrar(true); // Abre o PopupEntrar ao clicar no botão
   };
-  const handleClose = () => {
-    setShowPopup(false); // Fecha o popup ao clicar no botão
+  const handleCloseEntrar = () => {
+    setShowPopupEntrar(false); // Fecha o PopupEntrar ao clicar no botão
+  };
+
+  const handleClickCriarConta = () => {
+    setShowPopupCriarConta(true); // Abre o PopupCriarConta ao clicar no botão
+  };
+  const handleCloseCriarConta = () => {
+    setShowPopupCriarConta(false); // Fecha o PopupCriarConta ao clicar no botão
   };
 
   return (
@@ -40,8 +49,16 @@ export default function Login() {
             </div>
 
             <div className={style.buttonSize}>
-              <Button name={"Criar conta"} colorblue={true} />
+              <Button
+                name={"Criar conta"}
+                colorblue={true}
+                onClick={handleClickCriarConta}
+              />
             </div>
+            <PopupCriarConta
+              isShowPopup={showPopupCriarConta}
+              handleClose={handleCloseCriarConta}
+            />
             <div className={style.MainTermos}>
               <p className={style.Termos}>
                 Ao se inscrever, você concorda com os{" "}
@@ -62,9 +79,16 @@ export default function Login() {
             </div>
 
             <div className={style.buttonSize}>
-            <Button name={"Entrar"} colorblue={false} onClick={handleClick} />
+              <Button
+                name={"Entrar"}
+                colorblue={false}
+                onClick={handleClickEntrar}
+              />
             </div>
-            <PopupEntrar isShowPopup={showPopup} handleClose={handleClose} />
+            <PopupEntrar
+              isShowPopup={showPopupEntrar}
+              handleClose={handleCloseEntrar}
+            />
           </div>
         </div>
       </div>
