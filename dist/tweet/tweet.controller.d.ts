@@ -9,11 +9,11 @@ export declare class TweetController {
     createTweet(tweet: {
         message: string;
     }, req: Request, res: Response): Promise<any>;
-    deleteTweet(id: string, res: Response): Promise<any>;
-    getTweetById(id: string): Promise<any>;
-    likeTweet(id: string, res: Response): Promise<any>;
-    unlikeTweet(id: string, res: Response): Promise<any>;
-    retweetTweet(id: string, tweet: {
+    deleteTweet(id: number, res: Response): Promise<any>;
+    getTweetById(id: number): Promise<any>;
+    likeTweet(id: number, res: Response): Promise<any>;
+    unlikeTweet(id: number, res: Response): Promise<any>;
+    retweetTweet(id: number, tweet: {
         message: string;
     }, req: Request, res: Response): Promise<any>;
 }

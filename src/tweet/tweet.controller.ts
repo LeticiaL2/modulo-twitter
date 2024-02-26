@@ -19,7 +19,6 @@ export class TweetController {
     return this.tweetService.getAllTweets();
   }
 
-  @IsPublic()
   @UseGuards(JwtAuthGuard) 
   @Post()
   async createTweet(@Body() tweet: { message: string }, @Req() req: Request, @Res() res: Response): Promise<any> {
@@ -29,44 +28,39 @@ export class TweetController {
     res.status(HttpStatus.CREATED).send(newTweet); 
   }
 
-  @IsPublic()
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  async deleteTweet(@Param('id') id: string, @Res() res: Response): Promise<any> {
-    await this.tweetService.deleteTweet(parseInt(id));
+  async deleteTweet(@Param('id') id: number, @Res() res: Response): Promise<any> {
+    await this.tweetService.deleteTweet(id);
     res.status(HttpStatus.NO_CONTENT).send();
   }
 
-  @IsPublic()
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  async getTweetById(@Param('id') id: string): Promise<any> {
-    return this.tweetService.getTweetById(parseInt(id));
+  async getTweetById(@Param('id') id: number): Promise<any> {
+    return this.tweetService.getTweetById(id);
   }
 
-  @IsPublic()
   @UseGuards(JwtAuthGuard)
   @Post(':id/like')
-  async likeTweet(@Param('id') id: string, @Res() res: Response): Promise<any> {
-    await this.tweetService.likeTweet(parseInt(id));
+  async likeTweet(@Param('id') id: number, @Res() res: Response): Promise<any> {
+    await this.tweetService.likeTweet(id);
     res.status(HttpStatus.NO_CONTENT).send();
   }
 
-  @IsPublic()
   @UseGuards(JwtAuthGuard)
   @Delete(':id/like')
-  async unlikeTweet(@Param('id') id: string, @Res() res: Response): Promise<any> {
-    await this.tweetService.unlikeTweet(parseInt(id));
+  async unlikeTweet(@Param('id') id: number, @Res() res: Response): Promise<any> {
+    await this.tweetService.unlikeTweet(id);
     res.status(HttpStatus.NO_CONTENT).send();
   }
 
-  @IsPublic()
   @UseGuards(JwtAuthGuard)
   @Post(':id/retweet')
-  async retweetTweet(@Param('id') id: string, @Body() tweet: { message: string }, @Req() req: Request, @Res() res: Response): Promise<any> {
+  async retweetTweet(@Param('id') id: number, @Body() tweet: { message: string }, @Req() req: Request, @Res() res: Response): Promise<any> {
     const token = req.headers.authorization.split(' ')[1]; 
     const userId = this.authService.getUserIdFromToken(token);
-    const retweet = await this.tweetService.retweetTweet(tweet.message, userId, parseInt(id));
+    const retweet = await this.tweetService.retweetTweet(tweet.message, userId, id);
     res.status(HttpStatus.CREATED).send(retweet);
   }
 }

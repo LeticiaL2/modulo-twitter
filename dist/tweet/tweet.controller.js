@@ -33,24 +33,24 @@ let TweetController = class TweetController {
         res.status(common_1.HttpStatus.CREATED).send(newTweet);
     }
     async deleteTweet(id, res) {
-        await this.tweetService.deleteTweet(parseInt(id));
+        await this.tweetService.deleteTweet(id);
         res.status(common_1.HttpStatus.NO_CONTENT).send();
     }
     async getTweetById(id) {
-        return this.tweetService.getTweetById(parseInt(id));
+        return this.tweetService.getTweetById(id);
     }
     async likeTweet(id, res) {
-        await this.tweetService.likeTweet(parseInt(id));
+        await this.tweetService.likeTweet(id);
         res.status(common_1.HttpStatus.NO_CONTENT).send();
     }
     async unlikeTweet(id, res) {
-        await this.tweetService.unlikeTweet(parseInt(id));
+        await this.tweetService.unlikeTweet(id);
         res.status(common_1.HttpStatus.NO_CONTENT).send();
     }
     async retweetTweet(id, tweet, req, res) {
         const token = req.headers.authorization.split(' ')[1];
         const userId = this.authService.getUserIdFromToken(token);
-        const retweet = await this.tweetService.retweetTweet(tweet.message, userId, parseInt(id));
+        const retweet = await this.tweetService.retweetTweet(tweet.message, userId, id);
         res.status(common_1.HttpStatus.CREATED).send(retweet);
     }
 };
@@ -64,7 +64,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], TweetController.prototype, "getAllTweets", null);
 __decorate([
-    (0, is_public_decorator_1.IsPublic)(),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
@@ -75,46 +74,41 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], TweetController.prototype, "createTweet", null);
 __decorate([
-    (0, is_public_decorator_1.IsPublic)(),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Delete)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [Number, Object]),
     __metadata("design:returntype", Promise)
 ], TweetController.prototype, "deleteTweet", null);
 __decorate([
-    (0, is_public_decorator_1.IsPublic)(),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], TweetController.prototype, "getTweetById", null);
 __decorate([
-    (0, is_public_decorator_1.IsPublic)(),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Post)(':id/like'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [Number, Object]),
     __metadata("design:returntype", Promise)
 ], TweetController.prototype, "likeTweet", null);
 __decorate([
-    (0, is_public_decorator_1.IsPublic)(),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Delete)(':id/like'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [Number, Object]),
     __metadata("design:returntype", Promise)
 ], TweetController.prototype, "unlikeTweet", null);
 __decorate([
-    (0, is_public_decorator_1.IsPublic)(),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Post)(':id/retweet'),
     __param(0, (0, common_1.Param)('id')),
@@ -122,7 +116,7 @@ __decorate([
     __param(2, (0, common_1.Req)()),
     __param(3, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object, Object, Object]),
+    __metadata("design:paramtypes", [Number, Object, Object, Object]),
     __metadata("design:returntype", Promise)
 ], TweetController.prototype, "retweetTweet", null);
 exports.TweetController = TweetController = __decorate([
