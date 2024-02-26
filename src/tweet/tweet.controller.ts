@@ -11,8 +11,6 @@ export class TweetController {
     private readonly authService: AuthService,
     private readonly tweetService: TweetService
   ) {}
-
-  @IsPublic()
   @UseGuards(JwtAuthGuard)
   @Get()
   async getAllTweets(): Promise<any> {

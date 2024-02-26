@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TweetController = void 0;
 const common_1 = require("@nestjs/common");
 const auth_service_1 = require("../auth/auth.service");
-const is_public_decorator_1 = require("../auth/decorators/is-public.decorator");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 const tweet_service_1 = require("./tweet.service");
 let TweetController = class TweetController {
@@ -56,7 +55,6 @@ let TweetController = class TweetController {
 };
 exports.TweetController = TweetController;
 __decorate([
-    (0, is_public_decorator_1.IsPublic)(),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Get)(),
     __metadata("design:type", Function),
