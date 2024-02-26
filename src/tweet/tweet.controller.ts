@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Res, Delete, Param, Body, HttpStatus, UseGuards, Req, UnauthorizedException } from '@nestjs/common';
 import { Response, Request} from 'express';
 import { AuthService } from 'src/auth/auth.service';
-import { IsPublic } from 'src/auth/decorators/is-public.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { TweetService } from './tweet.service';
 
