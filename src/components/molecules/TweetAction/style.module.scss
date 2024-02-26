@@ -1,0 +1,42 @@
+$like-color: rgb(249, 24, 128);
+$retweet-color: rgb(0, 186, 124);
+$comment-color: rgb(43, 149, 220);
+
+@mixin action-styles($color) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  > span {
+    font-size: 0.9rem;
+    color: $color;
+  }
+}
+
+.comment-card {
+  &--comment {
+    @include action-styles($comment-color);
+  }
+
+  &--retweet {
+    @include action-styles($retweet-color);
+  }
+
+  &--like {
+    @include action-styles($like-color);
+  }
+}
+
+.main-card {
+  &--comment {
+    @include action-styles($comment-color);
+  }
+
+  &--retweet {
+    @include action-styles($retweet-color);
+  }
+
+  &--like {
+    @include action-styles($like-color);
+  }
+}

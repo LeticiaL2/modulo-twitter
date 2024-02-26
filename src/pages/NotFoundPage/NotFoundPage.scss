@@ -1,0 +1,13 @@
+.not-found {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: black;
+  color: #777777;
+
+  h1 {
+    font-size: 2em;
+    font-weight: bold;
+  }
+}

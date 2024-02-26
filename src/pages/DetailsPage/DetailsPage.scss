@@ -1,0 +1,21 @@
+$primary-color: rgb(231, 233, 234);
+$secondary-color: rgb(78, 78, 78);
+
+#left-section,
+#right-section {
+  width: 30%;
+}
+
+#middle-section {
+  width: 35%;
+  border-left: 0.5px solid $secondary-color;
+  border-right: 0.5px solid $secondary-color;
+  min-height: 100vh;
+}
+
+.tweet-details--container {
+  display: flex;
+  justify-content: space-between;
+  background-color: black;
+  color: $primary-color;
+}
