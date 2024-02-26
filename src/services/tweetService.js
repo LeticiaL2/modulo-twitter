@@ -113,3 +113,19 @@ export const toggleLike = async (tweetId, action) => {
     }
   }
 };
+
+export const deleteTweet = async (tweetId) => {
+  try {
+    const response = await axios.delete(
+      `http://localhost:3003/api/v1/tweets/${tweetId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};

@@ -1,7 +1,6 @@
 import FeedPageHeader from '../../molecules/FeedPageHeader/FeedPageHeader';
 import PostInput from '../../molecules/PostInput/PostInput';
 import styles from './style.module.scss';
-// import MainCard from '../MainCard/MainCard';
 import CommentCard from '../CommentCard/CommentCard';
 
 function MiddleSection({
@@ -10,6 +9,7 @@ function MiddleSection({
   setTweetText,
   handlePostTweet,
   tweetData,
+  setRefreshCheck,
 }) {
   return (
     <div className={styles['tweet-feed--section']}>
@@ -24,7 +24,11 @@ function MiddleSection({
       />
       <div className={styles['tweet-feed--list']}>
         {tweetData.map((tweet) => (
-          <CommentCard key={tweet.id} comment={tweet}></CommentCard>
+          <CommentCard
+            key={tweet.id}
+            comment={tweet}
+            setRefreshCheck={setRefreshCheck}
+          ></CommentCard>
         ))}
       </div>
     </div>

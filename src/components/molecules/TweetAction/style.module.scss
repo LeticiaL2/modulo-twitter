@@ -25,6 +25,11 @@ $comment-color: rgb(43, 149, 220);
   &--like {
     @include action-styles($like-color);
   }
+
+  &--more {
+    @include action-styles(rgb(113, 118, 123));
+    margin-left: auto;
+  }
 }
 
 .main-card {
@@ -38,5 +43,10 @@ $comment-color: rgb(43, 149, 220);
 
   &--like {
     @include action-styles($like-color);
+  }
+
+  &--more {
+    @include action-styles(rgb(113, 118, 123));
+    margin-left: auto;
   }
 }

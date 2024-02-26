@@ -9,7 +9,7 @@ function FeedPage() {
   const navigate = useNavigate();
   const [tweetText, setTweetText] = useState('');
   const [tweetData, setTweetData] = useState(null);
-  const [tweetPostedCheck, setTweetPostedCheck] = useState(false);
+  const [refreshCheck, setRefreshCheck] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -21,7 +21,7 @@ function FeedPage() {
     const responseStatus = response.mensagem.codigo;
     if (responseStatus >= 200 && responseStatus < 300) {
       setTweetText('');
-      setTweetPostedCheck(true);
+      setRefreshCheck(true);
     } else {
       alert('Erro ao postar Tweet', response.mensagem.texto);
     }
@@ -32,8 +32,8 @@ function FeedPage() {
       const response = await getTweets();
       if (response.status) {
         setTweetData(response.conteudo);
-        if (tweetPostedCheck) {
-          setTweetPostedCheck(false);
+        if (refreshCheck) {
+          setRefreshCheck(false);
         }
       } else {
         alert('Erro ao buscar Tweets', response.mensagem.texto);
@@ -41,7 +41,7 @@ function FeedPage() {
     };
 
     handleGetTweets();
-  }, [tweetPostedCheck]);
+  }, [refreshCheck]);
 
   if (!tweetData) {
     return Loading;
@@ -56,6 +56,7 @@ function FeedPage() {
         setTweetText={setTweetText}
         handlePostTweet={handlePostTweet}
         tweetData={tweetData}
+        setRefreshCheck={setRefreshCheck}
       />
       <div className="tweet-feed--section" id="right-section"></div>
     </div>
