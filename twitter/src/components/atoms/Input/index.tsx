@@ -4,8 +4,8 @@ import style from "./style.module.scss";
 interface Props {
   text: string;
   onInputChange: (value: string) => void;
-  type: string;
   error?: boolean;
+  type?: string;
 }
 
 export default function Input({ text, type, error, onInputChange }: Props) {
