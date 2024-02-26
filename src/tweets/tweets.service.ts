@@ -379,7 +379,8 @@ export class TweetsService {
 
     const comments = await this.commentsRepository.find({
       where: {
-        tweetPai: { id: tweetId, excluido: false },
+        tweetPai: { id: tweetId },
+        comentario: { excluido: false },
       },
       relations: [
         'comentario',
