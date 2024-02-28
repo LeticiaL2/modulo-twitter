@@ -58,8 +58,13 @@ function DetailsPage() {
     console.log('Retweet');
   };
 
-  const handleMainTweetLike = async () => {
-    console.log('Retweet');
+  const handleMainTweetLike = async (liked) => {
+    const response = await toggleLike(id, liked);
+    if (response.status) {
+      setRefreshCheck(true);
+    } else {
+      console.error('Erro ao curtir Tweet:', response.mensagem);
+    }
   };
 
   const handleCommentLike = async (id, liked) => {

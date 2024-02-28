@@ -30,9 +30,12 @@ function MainCard({
         comments={tweetData.comentarios}
         retweets={tweetData.retweets}
         likes={tweetData.likes}
+        liked={tweetData.liked}
         handleMainTweetComment={handleMainTweetComment}
         handleMainTweetRetweet={handleMainTweetRetweet}
-        handleMainTweetLike={handleMainTweetLike}
+        handleMainTweetLike={() =>
+          handleMainTweetLike(tweetData.liked, tweetData.liked)
+        }
       />
       {isModalOpen && (
         <MoreModal
