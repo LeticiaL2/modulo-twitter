@@ -1,7 +1,7 @@
-import { PrismaService } from 'src/prisma/prisma.service';
+import { TweetRepository } from './tweet.repository';
 export declare class TweetService {
-    private prisma;
-    constructor(prisma: PrismaService);
+    private readonly tweetRepository;
+    constructor(tweetRepository: TweetRepository);
     createTweet(message: string, userId: number): Promise<{
         id: number;
         message: string;

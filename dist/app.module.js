@@ -22,6 +22,7 @@ const tweet_module_1 = require("./tweet/tweet.module");
 const jwt_1 = require("@nestjs/jwt");
 const auth_service_1 = require("./auth/auth.service");
 const tweet_service_1 = require("./tweet/tweet.service");
+const tweet_repository_1 = require("./tweet/tweet.repository");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -36,7 +37,8 @@ exports.AppModule = AppModule = __decorate([
                 useClass: jwt_auth_guard_1.JwtAuthGuard,
             },
             auth_service_1.AuthService,
-            tweet_service_1.TweetService
+            tweet_service_1.TweetService,
+            tweet_repository_1.TweetRepository
         ],
     })
 ], AppModule);

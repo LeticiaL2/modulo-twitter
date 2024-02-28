@@ -13,6 +13,7 @@ import { TweetModule } from './tweet/tweet.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth/auth.service';
 import { TweetService } from './tweet/tweet.service';
+import { TweetRepository } from './tweet/tweet.repository';
 
 @Module({
   imports: [PrismaModule, UserModule, AuthModule, TweetModule, JwtModule],
@@ -24,7 +25,8 @@ import { TweetService } from './tweet/tweet.service';
       useClass: JwtAuthGuard,
     },
     AuthService,
-    TweetService
+    TweetService,
+    TweetRepository
   ],
 })
 export class AppModule {}

@@ -14,12 +14,13 @@ const tweet_controller_1 = require("./tweet.controller");
 const tweet_service_1 = require("./tweet.service");
 const auth_service_1 = require("../auth/auth.service");
 const user_module_1 = require("../user/user.module");
+const tweet_repository_1 = require("./tweet.repository");
 let TweetModule = class TweetModule {
 };
 exports.TweetModule = TweetModule;
 exports.TweetModule = TweetModule = __decorate([
     (0, common_1.Module)({ imports: [user_module_1.UserModule, prisma_module_1.PrismaModule, jwt_1.JwtModule.register({ secret: process.env.JWT_SECRET })],
         controllers: [tweet_controller_1.TweetController],
-        providers: [tweet_service_1.TweetService, auth_service_1.AuthService], })
+        providers: [tweet_service_1.TweetService, auth_service_1.AuthService, tweet_repository_1.TweetRepository], })
 ], TweetModule);
 //# sourceMappingURL=tweet.module.js.map
