@@ -1,79 +1,63 @@
 import { Controller, Get, Post, Res, Delete, Param, Body, HttpStatus, UseGuards, Req, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { Response, Request} from 'express';
-import { IsPublic } from 'src/auth/decorators/is-public.decorator';
+import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { TweetService } from './tweet.service';
 
 @Controller('api/tweets')
 export class TweetController {
-  
-  private tweets: { id: number; message: string; likes: number }[] = [];
-
-  private findTweetById(id: string): { id: number; message: string; likes: number } {
-    const tweetId = parseInt(id);
-    return this.tweets.find((tweet) => tweet.id === tweetId);
-  }
-
-  private getUserIdFromToken(token: string): number {
-    const decoded = this.jwtService.decode(token);
-    return decoded.sub; 
-  }
-
-  constructor(private readonly jwtService: JwtService) {}
-  
-  @IsPublic()
+  constructor(
+    private readonly authService: AuthService,
+    private readonly tweetService: TweetService
+  ) {}
   @UseGuards(JwtAuthGuard)
   @Get()
   async getAllTweets(): Promise<any> {
-    return this.tweets;
+    return this.tweetService.getAllTweets();
   }
 
-  @IsPublic()
   @UseGuards(JwtAuthGuard) 
   @Post()
-  createTweet(@Body() tweet: { message: string }, @Req() req: Request, @Res() res: Response): { id: number; message: string; likes: number } {
+  async createTweet(@Body() tweet: { message: string }, @Req() req: Request, @Res() res: Response): Promise<any> {
     const token = req.headers.authorization.split(' ')[1]; 
-    const userId = this.getUserIdFromToken(token);
-    const newTweet = {
-      id: this.tweets.length + 1,
-      message: tweet.message,
-      likes: 0,
-      userId,
-    };
-    this.tweets.push(newTweet);
-    res.status(HttpStatus.CREATED).send(); 
-    return newTweet;
+    const userId = this.authService.getUserIdFromToken(token);
+    const newTweet = await this.tweetService.createTweet(tweet.message, userId);
+    res.status(HttpStatus.CREATED).send(newTweet); 
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  deleteTweet(@Param('id') id: string, @Res() res: Response): void {
-    const tweetId = parseInt(id);
-    const index = this.tweets.findIndex((tweet) => tweet.id === tweetId);
-    this.tweets[index].message = '';
+  async deleteTweet(@Param('id') id: number, @Res() res: Response): Promise<any> {
+    await this.tweetService.deleteTweet(id);
     res.status(HttpStatus.NO_CONTENT).send();
   }
 
-  @IsPublic()
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  getTweetById(@Param('id') id: string): { id: number; message: string; likes: number } {
-    const tweet = this.findTweetById(id);
-    return tweet;
+  async getTweetById(@Param('id') id: number): Promise<any> {
+    return this.tweetService.getTweetById(id);
   }
 
-  @IsPublic()
   @UseGuards(JwtAuthGuard)
   @Post(':id/like')
-  likeTweet(@Param('id') id: string, @Res() res: Response): void{
-    const tweet = this.findTweetById(id);
-    tweet.likes++;
+  async likeTweet(@Param('id') id: number, @Res() res: Response): Promise<any> {
+    await this.tweetService.likeTweet(id);
     res.status(HttpStatus.NO_CONTENT).send();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id/like')
-  unlikeTweet(@Param('id') id: string, @Res() res: Response): void{
-    const tweet = this.findTweetById(id);
-    tweet.likes--;
+  async unlikeTweet(@Param('id') id: number, @Res() res: Response): Promise<any> {
+    await this.tweetService.unlikeTweet(id);
     res.status(HttpStatus.NO_CONTENT).send();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/retweet')
+  async retweetTweet(@Param('id') id: number, @Body() tweet: { message: string }, @Req() req: Request, @Res() res: Response): Promise<any> {
+    const token = req.headers.authorization.split(' ')[1]; 
+    const userId = this.authService.getUserIdFromToken(token);
+    const retweet = await this.tweetService.retweetTweet(tweet.message, userId, id);
+    res.status(HttpStatus.CREATED).send(retweet);
   }
 }
