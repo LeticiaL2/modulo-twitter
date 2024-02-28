@@ -26,6 +26,10 @@ $comment-color: rgb(43, 149, 220);
     @include action-styles($like-color);
   }
 
+  &--unliked {
+    @include action-styles($like-color);
+  }
+
   &--more {
     @include action-styles(rgb(113, 118, 123));
     margin-left: auto;
@@ -42,6 +46,10 @@ $comment-color: rgb(43, 149, 220);
   }
 
   &--like {
+    @include action-styles($like-color);
+  }
+
+  &--unliked {
     @include action-styles($like-color);
   }
 

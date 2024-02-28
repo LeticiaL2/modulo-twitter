@@ -31,6 +31,7 @@ function CommentCard({ comment, setRefreshCheck }) {
             comments={comment.comentarios}
             retweets={comment.retweets}
             likes={comment.likes}
+            liked={comment.liked}
           />
           {isModalOpen && (
             <MoreModal
