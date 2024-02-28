@@ -3,11 +3,13 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { Provider } from "react-redux";
+import store from "./redux/configureStore";
 
 const root = createRoot(document.getElementById("root"));
-root.render(<App />);
-
-// Se você quiser começar a medir o desempenho em seu aplicativo, passe uma função
-// para registrar os resultados (por exemplo: reportWebVitals(console.log))
-// ou envie para um ponto de análise. Saiba mais: https://bit.ly/CRA-vitals
+root.render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
 reportWebVitals();

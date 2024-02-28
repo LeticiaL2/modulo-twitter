@@ -14,9 +14,6 @@ import SignupPage from "./pages/signup-page/signup-page";
 import { AuthProvider, AuthContext } from "./contexts/auth";
 import TimeLineProvider from "./contexts/tweetsHomePageContext";
 import TweetsDetailsProvider from "./contexts/tweetsDetailsContext";
-import LanguageProvider from "./contexts/languageContext";
-import { Provider } from "react-redux";
-import store from "./redux/configureStore";
 
 const AppRoutes = () => {
   const Private = ({ children }) => {
@@ -34,41 +31,37 @@ const AppRoutes = () => {
   };
   return (
     <Routers>
-      <Provider store={store}>
-        <AuthProvider>
-          <LanguageProvider>
-            <Routes>
-              <Route exact path="login" element={<LoginPage />} />
+      <AuthProvider>
+        <Routes>
+          <Route exact path="login" element={<LoginPage />} />
 
-              <Route exact path="signup" element={<SignupPage />} />
+          <Route exact path="signup" element={<SignupPage />} />
 
-              <Route
-                exact
-                path="/"
-                element={
-                  <Private>
-                    <TimeLineProvider>
-                      <HomePage />
-                    </TimeLineProvider>
-                  </Private>
-                }
-              />
+          <Route
+            exact
+            path="/"
+            element={
+              <Private>
+                <TimeLineProvider>
+                  <HomePage />
+                </TimeLineProvider>
+              </Private>
+            }
+          />
 
-              <Route
-                exact
-                path="tweets/:id/detalhes"
-                element={
-                  <Private>
-                    <TweetsDetailsProvider>
-                      <DetailsPage />
-                    </TweetsDetailsProvider>
-                  </Private>
-                }
-              />
-            </Routes>
-          </LanguageProvider>
-        </AuthProvider>
-      </Provider>
+          <Route
+            exact
+            path="tweets/:id/detalhes"
+            element={
+              <Private>
+                <TweetsDetailsProvider>
+                  <DetailsPage />
+                </TweetsDetailsProvider>
+              </Private>
+            }
+          />
+        </Routes>
+      </AuthProvider>
     </Routers>
   );
 };

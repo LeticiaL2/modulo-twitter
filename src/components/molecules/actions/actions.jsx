@@ -4,9 +4,8 @@ import axios from "axios";
 import Dropdown from "../../atoms/dropdown/dropdown";
 import { Container, ButtonActionContainer } from "./styles";
 import OptionDropdown from "../../atoms/option-dropdown/option-dropdown";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { openSnackbar } from "../../../redux/ducks/snackbar";
-import SnackBarComponent from "../../atoms/snackbar/snackbar";
 
 const Actions = ({
   onClickCommentModal,
@@ -31,7 +30,6 @@ const Actions = ({
   const isRetweeted = retweetedBoolean;
 
   const dispatch = useDispatch();
-  const { open, message } = useSelector((state) => state.snackbar);
 
   useEffect(() => {
     setLikedBoolean(liked);
@@ -89,9 +87,10 @@ const Actions = ({
         },
       }
     );
-    refreshTweets();
 
     dispatch(openSnackbar("Retweet realizado com sucesso!"));
+
+    refreshTweets();
 
     console.log("Ação realizada com sucesso:", response.data);
   };
@@ -164,8 +163,6 @@ const Actions = ({
           $color={likedBoolean ? "red" : "rgb(113, 118, 123)"}
         />
       </ButtonActionContainer>
-
-      <SnackBarComponent open={open} message={message} />
     </Container>
   );
 };
