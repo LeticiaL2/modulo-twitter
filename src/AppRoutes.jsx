@@ -16,19 +16,17 @@ import TimeLineProvider from "./contexts/tweetsHomePageContext";
 import TweetsDetailsProvider from "./contexts/tweetsDetailsContext";
 
 const AppRoutes = () => {
-  const Private = ({ children }) => {
-    const { authenticated, loading } = useContext(AuthContext);
+  function Private({ children }) {
+    const { authenticated } = useContext(AuthContext);
 
-    if (loading) {
-      return <div>Carregando...</div>;
-    }
+    console.log("authenticated", authenticated);
 
     if (!authenticated) {
       return <Navigate to="/login" />;
     }
 
     return children;
-  };
+  }
   return (
     <Routers>
       <AuthProvider>

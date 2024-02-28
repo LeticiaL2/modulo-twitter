@@ -7,7 +7,6 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(null);
 
   useEffect(() => {
@@ -25,10 +24,10 @@ export const AuthProvider = ({ children }) => {
           error
         );
         localStorage.removeItem("accessToken");
+        navigate("/login");
       }
     }
-    setLoading(false);
-  }, []);
+  }, [navigate]);
 
   const login = async (email, password) => {
     console.log("login auth", { email, password });
@@ -80,7 +79,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ authenticated: !!user, user, loading, login, logout, token }}
+      value={{ authenticated: !!user, user, login, logout, token }}
     >
       {children}
     </AuthContext.Provider>
