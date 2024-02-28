@@ -5,7 +5,7 @@ import styles from './style.module.scss';
 import { useState } from 'react';
 import MoreModal from '../../molecules/MoreModal/MoreModal';
 
-function CommentCard({ comment, setRefreshCheck }) {
+function CommentCard({ comment, setRefreshCheck, handleLike }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleMore = (event) => {
@@ -32,6 +32,7 @@ function CommentCard({ comment, setRefreshCheck }) {
             retweets={comment.retweets}
             likes={comment.likes}
             liked={comment.liked}
+            handleLike={() => handleLike(comment.id, comment.liked)}
           />
           {isModalOpen && (
             <MoreModal

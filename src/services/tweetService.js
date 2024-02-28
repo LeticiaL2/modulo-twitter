@@ -80,37 +80,26 @@ export const postComment = async (commentText, tweetId) => {
   }
 };
 
-export const toggleLike = async (tweetId, action) => {
-  if (action === 'like') {
-    try {
-      const response = await axios.post(
-        `http://localhost:3003/api/v1/tweets/${tweetId}/likes`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        },
-      );
-      return response.data;
-    } catch (error) {
-      console.error(error);
+export const toggleLike = async (tweetId, liked) => {
+  const url = `http://localhost:3003/api/v1/tweets/${tweetId}/likes`;
+  const headers = {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  };
+  let response;
+  try {
+    if (liked) {
+      console.log('entrou no if', url);
+      console.log('Token:', localStorage.getItem('token'));
+      response = await axios.delete(url, { headers });
+    } else {
+      console.log('entrou no else', url);
+      console.log('Token:', localStorage.getItem('token'));
+      response = await axios.post(url, {}, { headers });
     }
-  } else {
-    try {
-      const response = await axios.delete(
-        `http://localhost:3003/api/v1/tweets/${tweetId}/likes`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        },
-      );
-      return response.data;
-    } catch (error) {
-      console.error(error);
-    }
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return error.response.data;
   }
 };
 

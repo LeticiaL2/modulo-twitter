@@ -10,6 +10,7 @@ function MiddleSection({
   handlePostTweet,
   tweetData,
   setRefreshCheck,
+  handleLike,
 }) {
   return (
     <div className={styles['tweet-feed--section']}>
@@ -28,6 +29,7 @@ function MiddleSection({
             key={tweet.id}
             comment={tweet}
             setRefreshCheck={setRefreshCheck}
+            handleLike={handleLike}
           ></CommentCard>
         ))}
       </div>
