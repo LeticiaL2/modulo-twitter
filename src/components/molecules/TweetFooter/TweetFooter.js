@@ -27,7 +27,6 @@ const TweetFooter = ({
       IconComponent={RetweetIcon}
       onClick={handleMainTweetRetweet}
     />
-    {console.log(liked)}
     {liked ? (
       <TweetAction
         variant="main-card--like"

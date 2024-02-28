@@ -40,7 +40,6 @@ function DetailsPage() {
   }
 
   const handlePostComment = async () => {
-    console.log('id:', id);
     const newComment = await postComment(newCommentText, id);
     setTweetData({
       ...tweetData,

@@ -88,17 +88,12 @@ export const toggleLike = async (tweetId, liked) => {
   let response;
   try {
     if (liked) {
-      console.log('entrou no if', url);
-      console.log('Token:', localStorage.getItem('token'));
       response = await axios.delete(url, { headers });
     } else {
-      console.log('entrou no else', url);
-      console.log('Token:', localStorage.getItem('token'));
       response = await axios.post(url, {}, { headers });
     }
     return response.data;
   } catch (error) {
-    console.log(error);
     return error.response.data;
   }
 };

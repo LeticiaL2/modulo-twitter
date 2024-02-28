@@ -29,9 +29,7 @@ function FeedPage() {
 
   const handleLike = async (id, liked) => {
     if (event) event.preventDefault();
-    console.log(id, liked);
     const reponse = await toggleLike(id, liked);
-    console.log(reponse);
     if (reponse.status) {
       setRefreshCheck(true);
     } else {
