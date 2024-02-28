@@ -4,7 +4,11 @@ import BackArrowHeader from '../../components/molecules/BackArrowHeader/BackArro
 import PostInput from '../../components/molecules/PostInput/PostInput';
 import CommentCard from '../../components/organisms/CommentCard/CommentCard';
 import MainCard from '../../components/organisms/MainCard/MainCard';
-import { getTweetDetails, postComment } from '../../services/tweetService';
+import {
+  getTweetDetails,
+  postComment,
+  toggleLike,
+} from '../../services/tweetService';
 import Loading from '../../components/atoms/Loading/Loading';
 import './DetailsPage.scss';
 
@@ -58,6 +62,16 @@ function DetailsPage() {
     console.log('Retweet');
   };
 
+  const handleCommentLike = async (id, liked) => {
+    if (event) event.preventDefault();
+    const response = await toggleLike(id, liked);
+    if (response.status) {
+      setRefreshCheck(true);
+    } else {
+      console.error('Erro ao curtir Tweet:', response.mensagem);
+    }
+  };
+
   return (
     <div className="tweet-details--container">
       <div className="tweet-details--section" id="left-section"></div>
@@ -84,6 +98,7 @@ function DetailsPage() {
               key={comment.id}
               comment={comment}
               setRefreshCheck={setRefreshCheck}
+              handleLike={handleCommentLike}
             />
           ))}
         </div>
