@@ -1,11 +1,9 @@
 import React, { createContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const navigate = useNavigate();
-
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
 
@@ -24,10 +22,10 @@ export const AuthProvider = ({ children }) => {
           error
         );
         localStorage.removeItem("accessToken");
-        navigate("/login");
+        <Navigate to="/login" />;
       }
     }
-  }, [navigate]);
+  }, []);
 
   const login = async (email, password) => {
     console.log("login auth", { email, password });
@@ -64,7 +62,7 @@ export const AuthProvider = ({ children }) => {
 
       console.log("token recebido", acessToken);
 
-      navigate("/");
+      <Navigate to="/" />;
     }
   };
 
@@ -74,7 +72,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("accessToken");
 
     setUser(null);
-    navigate("/login");
+    <Navigate to="/login" />;
   };
 
   return (
