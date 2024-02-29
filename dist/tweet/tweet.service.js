@@ -11,60 +11,36 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TweetService = void 0;
 const common_1 = require("@nestjs/common");
-const prisma_service_1 = require("../prisma/prisma.service");
+const tweet_repository_1 = require("./tweet.repository");
 let TweetService = class TweetService {
-    constructor(prisma) {
-        this.prisma = prisma;
+    constructor(tweetRepository) {
+        this.tweetRepository = tweetRepository;
     }
     async createTweet(message, userId) {
-        return this.prisma.tweet.create({
-            data: {
-                message,
-                likes: 0,
-                userId,
-            },
-        });
+        return this.tweetRepository.createTweet(message, userId);
     }
     async getAllTweets() {
-        return this.prisma.tweet.findMany();
+        return this.tweetRepository.getAllTweets();
     }
     async deleteTweet(id) {
-        return this.prisma.tweet.delete({
-            where: { id },
-        });
+        return this.tweetRepository.deleteTweet(id);
     }
     async getTweetById(id) {
-        return this.prisma.tweet.findUnique({
-            where: { id },
-        });
+        return this.tweetRepository.getTweetById(id);
     }
     async likeTweet(id) {
-        return this.prisma.tweet.update({
-            where: { id },
-            data: { likes: { increment: 1 } },
-        });
+        return this.tweetRepository.likeTweet(id);
     }
     async unlikeTweet(id) {
-        return this.prisma.tweet.update({
-            where: { id },
-            data: { likes: { decrement: 1 } },
-        });
+        return this.tweetRepository.unlikeTweet(id);
     }
     async retweetTweet(message, userId, retweetOf) {
-        const data = {
-            message,
-            likes: 0,
-            userId,
-            retweetOf,
-        };
-        return this.prisma.tweet.create({
-            data,
-        });
+        return this.tweetRepository.retweetTweet(message, userId, retweetOf);
     }
 };
 exports.TweetService = TweetService;
 exports.TweetService = TweetService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [tweet_repository_1.TweetRepository])
 ], TweetService);
 //# sourceMappingURL=tweet.service.js.map

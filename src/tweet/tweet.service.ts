@@ -1,62 +1,39 @@
-import { Injectable } from '@nestjs/common'
-import { PrismaService } from 'src/prisma/prisma.service';
+import { Injectable } from '@nestjs/common';
+import { TweetRepository } from './tweet.repository';
 
 @Injectable()
 export class TweetService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly tweetRepository: TweetRepository) {}
 
   async createTweet(message: string, userId: number) {
-    return this.prisma.tweet.create({
-      data: {
-        message,
-        likes: 0,
-        userId,
-      },
-    });
+    return this.tweetRepository.createTweet(message, userId);
   }
 
   async getAllTweets() {
-    return this.prisma.tweet.findMany();
+    return this.tweetRepository.getAllTweets();
   }
 
   async deleteTweet(id: number) {
-    return this.prisma.tweet.delete({
-      where: { id },
-    });
+    return this.tweetRepository.deleteTweet(id);
   }
 
   async getTweetById(id: number) {
-    return this.prisma.tweet.findUnique({
-      where: { id },
-    });
+    return this.tweetRepository.getTweetById(id);
   }
 
   async likeTweet(id: number) {
-    return this.prisma.tweet.update({
-      where: { id },
-      data: { likes: { increment: 1 } },
-    });
+    return this.tweetRepository.likeTweet(id);
   }
 
   async unlikeTweet(id: number) {
-    return this.prisma.tweet.update({
-      where: { id },
-      data: { likes: { decrement: 1 } },
-    });
+    return this.tweetRepository.unlikeTweet(id);
   }
 
-
-  async retweetTweet(message: string, userId: number, retweetOf?: number) {
-    const data = {
-      message,
-      likes: 0,
-      userId,
-      retweetOf, 
-    };
-
-    return this.prisma.tweet.create({
-      data,
-    });
+  async retweetTweet(
+    message: string,
+    userId: number,
+    retweetOf?: number
+  ) {
+    return this.tweetRepository.retweetTweet(message, userId, retweetOf);
   }
-
 }
