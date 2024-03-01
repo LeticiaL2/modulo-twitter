@@ -1,6 +1,9 @@
 .MainButton {
   width: 100%;
-  padding: 4px 0px 4px 0px;
+
+  @media (min-height: 800px) {
+    padding: 4px 0px 4px 0px;
+  }
 }
 
 .Button {
@@ -22,8 +25,8 @@
     Roboto, Helvetica, Arial, sans-serif;
   font-size: 20px;
   margin-left: 20px;
-  // line-height: 24px;
 }
+
 .active {
   background-color: blue;
 }
