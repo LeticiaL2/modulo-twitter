@@ -4,7 +4,11 @@ import BackArrowHeader from '../../components/molecules/BackArrowHeader/BackArro
 import PostInput from '../../components/molecules/PostInput/PostInput';
 import CommentCard from '../../components/organisms/CommentCard/CommentCard';
 import MainCard from '../../components/organisms/MainCard/MainCard';
-import { getTweetDetails, postComment } from '../../services/tweetService';
+import {
+  getTweetDetails,
+  postComment,
+  toggleLike,
+} from '../../services/tweetService';
 import Loading from '../../components/atoms/Loading/Loading';
 import './DetailsPage.scss';
 
@@ -12,7 +16,7 @@ function DetailsPage() {
   const [tweetData, setTweetData] = useState(null);
   const { id } = useParams();
   const [newCommentText, setNewCommentText] = useState('');
-  const [commentPosted, setCommentPosted] = useState(false);
+  const [refreshCheck, setRefreshCheck] = useState(false);
 
   useEffect(() => {
     const fetchTweet = async () => {
@@ -20,8 +24,8 @@ function DetailsPage() {
 
       if (response.status) {
         setTweetData(response.conteudo);
-        if (commentPosted) {
-          setCommentPosted(false);
+        if (refreshCheck) {
+          setRefreshCheck(false);
         }
       } else {
         console.error('Erro ao buscar Tweets:', response.mensagem);
@@ -29,20 +33,20 @@ function DetailsPage() {
     };
 
     fetchTweet();
-  }, [id, commentPosted]);
+  }, [id, refreshCheck]);
 
   if (!tweetData) {
     return Loading;
   }
 
-  const handlePostComment = async (id) => {
+  const handlePostComment = async () => {
     const newComment = await postComment(newCommentText, id);
     setTweetData({
       ...tweetData,
       comentariosLista: [newComment, ...tweetData.comentariosLista],
     });
     setNewCommentText('');
-    setCommentPosted(true);
+    setRefreshCheck(true);
   };
 
   const handleMainTweetComment = async () => {
@@ -53,8 +57,23 @@ function DetailsPage() {
     console.log('Retweet');
   };
 
-  const handleMainTweetLike = async () => {
-    console.log('Retweet');
+  const handleMainTweetLike = async (liked) => {
+    const response = await toggleLike(id, liked);
+    if (response.status) {
+      setRefreshCheck(true);
+    } else {
+      console.error('Erro ao curtir Tweet:', response.mensagem);
+    }
+  };
+
+  const handleCommentLike = async (id, liked) => {
+    if (event) event.preventDefault();
+    const response = await toggleLike(id, liked);
+    if (response.status) {
+      setRefreshCheck(true);
+    } else {
+      console.error('Erro ao curtir Tweet:', response.mensagem);
+    }
   };
 
   return (
@@ -67,6 +86,7 @@ function DetailsPage() {
           handleMainTweetComment={handleMainTweetComment}
           handleMainTweetRetweet={handleMainTweetRetweet}
           handleMainTweetLike={handleMainTweetLike}
+          setRefreshCheck={setRefreshCheck}
         />
         <PostInput
           tweetText={newCommentText}
@@ -78,7 +98,12 @@ function DetailsPage() {
         />
         <div className="tweet-details--comments-container">
           {tweetData.comentariosLista.map((comment) => (
-            <CommentCard key={comment.id} comment={comment} />
+            <CommentCard
+              key={comment.id}
+              comment={comment}
+              setRefreshCheck={setRefreshCheck}
+              handleLike={handleCommentLike}
+            />
           ))}
         </div>
       </div>

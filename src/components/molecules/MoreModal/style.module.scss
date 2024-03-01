@@ -1,0 +1,30 @@
+.more-modal {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  width: auto;
+  background-color: rgba(0, 0, 0, 1);
+  box-shadow:
+    rgba(255, 255, 255, 0.2) 0px 0px 15px,
+    rgba(255, 255, 255, 0.15) 0px 0px 3px 1px;
+}
+
+.more-list {
+  list-style-type: none;
+}
+
+.more-delete {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px 10px 10px;
+}
+
+.more-delete:hover {
+  background-color: rgb(36, 36, 36);
+}
+
+.more-delete-text {
+  margin-left: 10px;
+  color: rgba(244, 33, 46, 1);
+  font-weight: 500;
+}

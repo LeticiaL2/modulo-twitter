@@ -3,11 +3,13 @@ import CommentIcon from '../../atoms/SVGIcons/CommentIcon/CommentIcon';
 import RetweetIcon from '../../atoms/SVGIcons/RetweetIcon/RetweetIcon';
 import LikeIcon from '../../atoms/SVGIcons/LikeIcon/LikeIcon';
 import styles from './style.module.scss';
+import UnlikedIcon from '../../atoms/SVGIcons/UnlikedIcon/UnlikedIcon';
 
 const TweetFooter = ({
   comments,
   retweets,
   likes,
+  liked,
   handleMainTweetComment,
   handleMainTweetRetweet,
   handleMainTweetLike,
@@ -25,12 +27,21 @@ const TweetFooter = ({
       IconComponent={RetweetIcon}
       onClick={handleMainTweetRetweet}
     />
-    <TweetAction
-      variant="main-card--like"
-      actionCount={likes}
-      IconComponent={LikeIcon}
-      onClick={handleMainTweetLike}
-    />
+    {liked ? (
+      <TweetAction
+        variant="main-card--like"
+        actionCount={likes}
+        IconComponent={LikeIcon}
+        onClick={handleMainTweetLike}
+      />
+    ) : (
+      <TweetAction
+        variant="main-card--unliked"
+        actionCount={likes}
+        IconComponent={UnlikedIcon}
+        onClick={handleMainTweetLike}
+      />
+    )}
   </div>
 );
 
