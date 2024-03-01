@@ -10,12 +10,21 @@ import TimeLineProvider from "../contexts/tweetsHomePageContext";
 import TweetsDetailsProvider from "../contexts/tweetsDetailsContext";
 import HelpPage from "../pages/help-page/help-page";
 import PrivateRoute from "./PrivateRoutes";
+import { AuthProvider } from "../contexts/auth";
 
 const AppRoutes = () => {
   return (
     <Routers>
       <Routes>
-        <Route exact path="login" element={<LoginPage />} />
+        <Route
+          exact
+          path="login"
+          element={
+            <AuthProvider>
+              <LoginPage />
+            </AuthProvider>
+          }
+        />
 
         <Route exact path="signup" element={<SignupPage />} />
 
@@ -25,11 +34,13 @@ const AppRoutes = () => {
           exact
           path="/"
           element={
-            <PrivateRoute>
-              <TimeLineProvider>
-                <HomePage />
-              </TimeLineProvider>
-            </PrivateRoute>
+            <AuthProvider>
+              <PrivateRoute>
+                <TimeLineProvider>
+                  <HomePage />
+                </TimeLineProvider>
+              </PrivateRoute>
+            </AuthProvider>
           }
         />
 
@@ -37,11 +48,13 @@ const AppRoutes = () => {
           exact
           path="tweets/:id/detalhes"
           element={
-            <PrivateRoute>
-              <TweetsDetailsProvider>
-                <DetailsPage />
-              </TweetsDetailsProvider>
-            </PrivateRoute>
+            <AuthProvider>
+              <PrivateRoute>
+                <TweetsDetailsProvider>
+                  <DetailsPage />
+                </TweetsDetailsProvider>
+              </PrivateRoute>
+            </AuthProvider>
           }
         />
       </Routes>
