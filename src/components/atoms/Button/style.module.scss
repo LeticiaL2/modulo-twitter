@@ -123,6 +123,10 @@ $comment-hover-color: rgba(29, 155, 240, 0.1);
   &--like {
     @include action-styles($like-hover-color);
   }
+
+  &--unliked {
+    @include action-styles($like-hover-color);
+  }
 }
 
 .comment-card {
@@ -135,6 +139,10 @@ $comment-hover-color: rgba(29, 155, 240, 0.1);
   }
 
   &--like {
+    @include action-styles($like-hover-color);
+  }
+
+  &--unliked {
     @include action-styles($like-hover-color);
   }
 

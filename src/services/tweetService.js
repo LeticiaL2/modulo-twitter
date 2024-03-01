@@ -80,37 +80,21 @@ export const postComment = async (commentText, tweetId) => {
   }
 };
 
-export const toggleLike = async (tweetId, action) => {
-  if (action === 'like') {
-    try {
-      const response = await axios.post(
-        `http://localhost:3003/api/v1/tweets/${tweetId}/likes`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        },
-      );
-      return response.data;
-    } catch (error) {
-      console.error(error);
+export const toggleLike = async (tweetId, liked) => {
+  const url = `http://localhost:3003/api/v1/tweets/${tweetId}/likes`;
+  const headers = {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  };
+  let response;
+  try {
+    if (liked) {
+      response = await axios.delete(url, { headers });
+    } else {
+      response = await axios.post(url, {}, { headers });
     }
-  } else {
-    try {
-      const response = await axios.delete(
-        `http://localhost:3003/api/v1/tweets/${tweetId}/likes`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        },
-      );
-      return response.data;
-    } catch (error) {
-      console.error(error);
-    }
+    return response.data;
+  } catch (error) {
+    return error.response.data;
   }
 };
 

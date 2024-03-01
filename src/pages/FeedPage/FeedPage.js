@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { postTweet, getTweets } from '../../services/tweetService';
+import { postTweet, getTweets, toggleLike } from '../../services/tweetService';
 import MiddleSection from '../../components/organisms/FeedPageMiddle/FeedPageMiddle';
 import './FeedPage.scss';
 import Loading from '../../components/atoms/Loading/Loading';
@@ -24,6 +24,16 @@ function FeedPage() {
       setRefreshCheck(true);
     } else {
       alert('Erro ao postar Tweet', response.mensagem.texto);
+    }
+  };
+
+  const handleLike = async (id, liked) => {
+    if (event) event.preventDefault();
+    const reponse = await toggleLike(id, liked);
+    if (reponse.status) {
+      setRefreshCheck(true);
+    } else {
+      alert('Erro ao curtir Tweet', reponse.mensagem.texto);
     }
   };
 
@@ -57,6 +67,7 @@ function FeedPage() {
         handlePostTweet={handlePostTweet}
         tweetData={tweetData}
         setRefreshCheck={setRefreshCheck}
+        handleLike={handleLike}
       />
       <div className="tweet-feed--section" id="right-section"></div>
     </div>
