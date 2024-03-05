@@ -1,19 +1,18 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { postTweet, getTweets, toggleLike } from '../../services/tweetService';
 import MiddleSection from '../../components/organisms/FeedPageMiddle/FeedPageMiddle';
 import './FeedPage.scss';
 import Loading from '../../components/atoms/Loading/Loading';
+import { useAuth } from '../../contexts/auth-context';
 
 function FeedPage() {
-  const navigate = useNavigate();
   const [tweetText, setTweetText] = useState('');
   const [tweetData, setTweetData] = useState(null);
   const [refreshCheck, setRefreshCheck] = useState(false);
+  const { logout } = useAuth();
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/');
+    logout();
   };
 
   const handlePostTweet = async () => {

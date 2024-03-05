@@ -9,6 +9,7 @@ function MoreModal({ closeModal, commentId, setRefreshCheck }) {
   const handleDelete = async (event) => {
     event.preventDefault();
     const response = await deleteTweet(commentId);
+
     if (response.status) {
       setRefreshCheck(true);
     } else {

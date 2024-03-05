@@ -2,29 +2,28 @@ import Input from '../../atoms/Input/Input';
 import Button from '../../atoms/Button/Button';
 import { useFormik } from 'formik';
 import { signInSchema } from '../../../schemas/SignInSchema';
-import { loginUser } from '../../../services/authService';
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../contexts/auth-context';
 
 const SignIn = () => {
-  const navigate = useNavigate();
+  const { login } = useAuth();
 
   const onSubmit = async (values, { setStatus }) => {
-    const response = await loginUser(values);
-
-    if (response && response.token) {
-      navigate('/feed');
-    } else if (
-      response.statusCode === 401 &&
-      response.mensagem.includes('Email')
-    ) {
-      setStatus({ emailError: response.mensagem });
-    } else if (
-      response.statusCode === 401 &&
-      response.mensagem.includes('Senha')
-    ) {
-      setStatus({ passwordError: response.mensagem });
-    } else {
-      alert('Login failed');
+    try {
+      await login(values);
+    } catch (error) {
+      if (error.response) {
+        const errorResponse = error.response.data.message;
+        const statusCode = error.response.data.statusCode;
+        if (statusCode === 401 && errorResponse.includes('Email')) {
+          setStatus({ emailError: errorResponse });
+        } else if (statusCode === 401 && errorResponse.includes('Senha')) {
+          setStatus({ passwordError: errorResponse });
+        } else {
+          alert('Login failed');
+        }
+      } else {
+        alert('Login failed');
+      }
     }
   };
 
