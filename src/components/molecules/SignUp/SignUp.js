@@ -2,11 +2,11 @@ import { useFormik } from 'formik';
 import { signUpSchema } from '../../../schemas/SignUpSchema';
 import Input from '../../atoms/Input/Input';
 import Button from '../../atoms/Button/Button';
-import { useNavigate } from 'react-router-dom';
-import { loginUser, signUpUser } from '../../../services/authService';
+import { signUpUser } from '../../../services/authService';
+import { useAuth } from '../../../contexts/auth-context';
 
 const SignUp = () => {
-  const navigate = useNavigate();
+  const { login } = useAuth();
 
   const onSubmit = async (values, { setStatus }) => {
     const response = await signUpUser(values);
@@ -19,13 +19,7 @@ const SignUp = () => {
         alert('Erro: ', response);
       }
     } else {
-      const data = await loginUser(values);
-
-      if (data && data.token) {
-        navigate('/feed');
-      } else {
-        alert('Login failed');
-      }
+      await login(values);
     }
   };
 
