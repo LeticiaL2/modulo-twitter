@@ -7,6 +7,7 @@ import {
 	Get,
 	HttpStatus,
 	NotFoundException,
+	Param,
 	Patch,
 	Post,
 	Query,
@@ -226,6 +227,43 @@ export class UsuariosController {
 				status: true,
 			});
 		} catch (error) {
+			return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+				conteudo: null,
+				mensagem: {
+					codigo: 500,
+					texto: 'Erro interno do servidor',
+				},
+				status: false,
+			});
+		}
+	}
+
+	@Get('/confirmar-email/:token')
+	async confirmarEmail(
+		@Param('token') token: string,
+		@Res() res: Response,
+	): Promise<any> {
+		try {
+			await this.usuariosService.confirmarEmail(token);
+			return res.status(HttpStatus.OK).json({
+				conteudo: null,
+				mensagem: {
+					codigo: 200,
+					texto: 'Email confirmado',
+				},
+				status: false,
+			});
+		} catch (error) {
+			if (error instanceof NotFoundException) {
+				return res.status(HttpStatus.NOT_FOUND).json({
+					conteudo: null,
+					mensagem: {
+						codigo: 404,
+						texto: 'Token não encontrado ou expirado',
+					},
+					status: false,
+				});
+			}
 			return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
 				conteudo: null,
 				mensagem: {

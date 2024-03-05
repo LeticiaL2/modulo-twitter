@@ -11,7 +11,9 @@ export class TweetsRepository extends Repository<Tweet> {
 
 	async criarTweet(tweet: Tweet): Promise<Tweet> {
 		const novoTweet = this.create(tweet);
-
+		novoTweet.likes = 0;
+		novoTweet.retweets = 0;
+		novoTweet.comentarios = 0;
 		try {
 			await novoTweet.save();
 			return novoTweet;
@@ -23,15 +25,15 @@ export class TweetsRepository extends Repository<Tweet> {
 	async encontrarTweets(
 		consultaDto: EncontrarTweetsParametrosDto,
 	): Promise<{ tweets: Tweet[]; total: number }> {
-		const { id, usuarioId } = consultaDto;
+		const { id, idUsuario } = consultaDto;
 		const consulta = this.createQueryBuilder('tweet');
 
 		if (id) {
 			consulta.where('tweet.id = :id', { id });
 		}
 
-		if (usuarioId) {
-			consulta.andWhere('tweet.usuarioId = :usuarioId', { usuarioId });
+		if (idUsuario) {
+			consulta.andWhere('tweet.idUsuario = :idUsuario', { idUsuario });
 		}
 
 		consulta.skip((consultaDto.pagina - 1) * consultaDto.limite);
@@ -52,7 +54,7 @@ export class TweetsRepository extends Repository<Tweet> {
 		consulta.select([
 			'tweet.id',
 			'tweet.texto',
-			'tweet.usuarioId',
+			'tweet.idUsuario',
 			'tweet.data_criacao',
 			'tweet.excluido',
 		]);
