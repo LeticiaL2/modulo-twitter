@@ -33,6 +33,9 @@ export class Usuario extends BaseEntity {
 	@Column({ nullable: false })
 	salt: string;
 
+	@Column({ nullable: true, type: 'varchar', length: 64 })
+	tokenConfirmacao: string;
+
 	@CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
 	data_criacao: Date;
 
