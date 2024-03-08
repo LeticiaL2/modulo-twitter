@@ -55,6 +55,7 @@ function FeedPage() {
     }
     setCurrentTweet(null);
     setIsModalOpen(false);
+    setCommentText('');
   };
 
   const handleOpenModal = (comment) => {
