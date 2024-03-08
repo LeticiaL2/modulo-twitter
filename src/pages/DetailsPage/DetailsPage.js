@@ -53,10 +53,6 @@ function DetailsPage() {
     setRefreshCheck(true);
   };
 
-  const handleMainTweetComment = async () => {
-    console.log('Comment');
-  };
-
   const handleMainTweetRetweet = async () => {
     console.log('Retweet');
   };
@@ -110,7 +106,7 @@ function DetailsPage() {
         <BackArrowHeader title="Tweet" />
         <MainCard
           tweetData={tweetData}
-          handleMainTweetComment={handleMainTweetComment}
+          handleMainTweetComment={handleOpenModal}
           handleMainTweetRetweet={handleMainTweetRetweet}
           handleMainTweetLike={handleMainTweetLike}
           setRefreshCheck={setRefreshCheck}
