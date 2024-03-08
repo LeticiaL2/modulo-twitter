@@ -47,7 +47,6 @@ function FeedPage() {
   };
 
   const handleComment = async () => {
-    console.log(currentTweet.id, commentText, 'id, comment');
     const response = await postComment(commentText, currentTweet.id);
     if (response.status) {
       setRefreshCheck(true);
