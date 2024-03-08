@@ -5,7 +5,13 @@ import styles from './style.module.scss';
 import { useState } from 'react';
 import MoreModal from '../../molecules/MoreModal/MoreModal';
 
-function CommentCard({ comment, setRefreshCheck, handleLike }) {
+function CommentCard({
+  comment,
+  setRefreshCheck,
+  handleLike,
+  handleOpenModal,
+  noBorders,
+}) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleMore = (event) => {
@@ -13,9 +19,13 @@ function CommentCard({ comment, setRefreshCheck, handleLike }) {
     setIsModalOpen(!isModalOpen);
   };
 
+  const cardClasses = noBorders
+    ? `${styles['comment-card']} ${styles['no-borders']}`
+    : styles['comment-card'];
+
   return (
     <a href={`/feed/${comment.id}`} className={styles['comment-card--link']}>
-      <div className={styles['comment-card']}>
+      <div className={cardClasses}>
         <div className={styles['comment-card--left']}>
           <Image src="/user.png" variant="comment-user-image" />
         </div>
@@ -33,6 +43,7 @@ function CommentCard({ comment, setRefreshCheck, handleLike }) {
             likes={comment.likes}
             liked={comment.liked}
             handleLike={() => handleLike(comment.id, comment.liked)}
+            handleComment={() => handleOpenModal(comment)}
           />
           {isModalOpen && (
             <MoreModal

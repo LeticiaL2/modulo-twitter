@@ -10,9 +10,14 @@ function PostInput({
   placeholder,
   buttonText,
   imageSrc = '/user.png',
+  noBorders,
 }) {
+  const cardClasses = noBorders
+    ? `${styles['input-container']} ${styles['no-borders']}`
+    : styles['input-container'];
+
   return (
-    <div className={styles['input-container']}>
+    <div className={cardClasses}>
       <div className={styles['input-left']}>
         <Image variant="user-image" src={imageSrc} />
       </div>
