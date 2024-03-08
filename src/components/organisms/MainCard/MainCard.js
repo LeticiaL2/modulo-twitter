@@ -31,7 +31,7 @@ function MainCard({
         retweets={tweetData.retweets}
         likes={tweetData.likes}
         liked={tweetData.liked}
-        handleMainTweetComment={handleMainTweetComment}
+        handleMainTweetComment={() => handleMainTweetComment(tweetData)}
         handleMainTweetRetweet={handleMainTweetRetweet}
         handleMainTweetLike={() =>
           handleMainTweetLike(tweetData.liked, tweetData.liked)
