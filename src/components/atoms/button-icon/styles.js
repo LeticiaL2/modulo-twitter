@@ -42,14 +42,26 @@ export const StyledPiMoneyBold = styled(PiMoneyBold)`
 
 export const StyledBsReply = styled(BsReply)`
   background: none;
+  padding: 0;
+  margin: 0;
+  font-size: 1.2em;
+  fill: ${(prop) => (prop.$color ? prop.$color : "rgb(113, 118, 123)")};
 `;
 
 export const StyledFaRetweet = styled(FaRetweet)`
   background: none;
+  padding: 0;
+  margin: 0;
+  font-size: 1.2em;
+  fill: ${(prop) => (prop.$fill ? prop.$fill : "rgb(113, 118, 123)")};
 `;
 
 export const StyledMdFavoriteBorder = styled(MdFavoriteBorder)`
   background: none;
+  padding: 0;
+  margin: 0;
+  font-size: 1.2em;
+  fill: ${(prop) => (prop.$color ? prop.$color : "rgb(113, 118, 123)")};
 `;
 
 export const StyledTbBrandGoogleAnalytics = styled(TbBrandGoogleAnalytics)`
@@ -59,10 +71,16 @@ export const StyledTbBrandGoogleAnalytics = styled(TbBrandGoogleAnalytics)`
 export const StyledSlOptions = styled(SlOptions)`
   background: none;
   font-size: 1.4rem;
+  color: blue;
 `;
 
 export const StyledIoMdHeart = styled(IoMdHeart)`
   background: none;
+  font-size: 1.2em;
+  padding: 0;
+  margin: 0;
+  stroke: red;
+  fill: red;
 `;
 
 export const StyledGoHomeFill = styled(GoHomeFill)`
@@ -117,8 +135,6 @@ export const StyledCiCircleMore = styled(CiCircleMore)`
 
 export const Icon = styled.div`
   font-size: 1rem;
-  color: ${({ iconType, $color }) =>
-    iconType === "heart-filled" ? "red" : $color || "white"};
   padding: 0;
   display: flex;
   justify-content: center;
@@ -128,7 +144,6 @@ export const Icon = styled.div`
 `;
 
 export const Content = styled.span`
-  color: white;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -150,8 +165,8 @@ export const Content = styled.span`
 
 export const Button = styled.button`
   display: flex;
-  align-items: center;
   border: none;
+  align-items: center;
   cursor: pointer;
   padding: ${(prop) => (prop.$padding ? prop.$padding : "3px")};
   margin: 0;
@@ -160,52 +175,21 @@ export const Button = styled.button`
   outline: none;
   border-radius: 15px;
   &:hover {
-    ${Icon} {
-      color: ${({ iconType }) => getIconColor(iconType)};
-    }
     background: rgba(160, 160, 160, 0.3);
   }
 `;
 
-function getIconColor(iconType) {
-  switch (iconType) {
-    case "reply":
-      return "blue";
-    case "retweet":
-      return "green";
-    case "heart":
-      return "red";
-    case "eye":
-      return "blue";
-    default:
-      return "white";
-  }
-}
-
-export const CountContainer = styled.div`
-  color: white;
-  padding: 0;
-  margin: 0;
-  font-size: 1rem;
-  color: rgb(113, 118, 123);
-  border: 3px solid red;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 export const Count = styled.span`
   font-size: 1rem;
-  color: white;
   padding: 0;
   margin: 0;
-  color: rgb(231, 233, 234);
+  color: rgb(113, 118, 123);
   background: none;
 `;
 
 export const IconContainer = styled.div`
   display: flex;
   align-items: center;
-  padding: 0;
   margin: 0;
+  padding: 0;
 `;

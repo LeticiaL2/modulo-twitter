@@ -3,6 +3,7 @@ import { Container, ContainerSidebar, SidebarItem } from "./styles";
 import ButtonIcon from "../../atoms/button-icon/button-icon";
 import Button from "../../atoms/button/button";
 import { i18n } from "../../../translate/i18n";
+import SwitchButton from "../../atoms/button-switch/button-switch";
 
 const Sidebar = () => {
   return (
@@ -64,6 +65,10 @@ const Sidebar = () => {
         </SidebarItem>
         <SidebarItem>
           <Button $text={i18n.t("sideBar.Post")}></Button>
+        </SidebarItem>
+
+        <SidebarItem>
+          <SwitchButton />
         </SidebarItem>
       </ContainerSidebar>
     </Container>

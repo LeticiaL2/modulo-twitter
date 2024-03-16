@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import ButtonIcon from "../../atoms/button-icon/button-icon";
 import axios from "axios";
 import Dropdown from "../../atoms/dropdown/dropdown";
 import { Container, ButtonActionContainer } from "./styles";
 import OptionDropdown from "../../atoms/option-dropdown/option-dropdown";
+import { useDispatch } from "react-redux";
+import { openSnackbar } from "../../../redux/ducks/snackbar";
 
 const Actions = ({
   onClickCommentModal,
@@ -26,6 +28,8 @@ const Actions = ({
   const [openDropdown, setOpenDropdown] = useState(false);
 
   const isRetweeted = retweetedBoolean;
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setLikedBoolean(liked);
@@ -83,6 +87,9 @@ const Actions = ({
         },
       }
     );
+
+    dispatch(openSnackbar("Retweet realizado com sucesso!"));
+
     refreshTweets();
 
     console.log("Ação realizada com sucesso:", response.data);
@@ -101,6 +108,9 @@ const Actions = ({
       );
 
       refreshTweets();
+
+      dispatch(openSnackbar("Retweet desfeito com sucesso!"));
+
       console.log("Ação realizada com sucesso:", response.data);
     } catch (error) {
       console.error("Erro ao tentar desfazer retweet:", error);
@@ -109,21 +119,21 @@ const Actions = ({
 
   return (
     <Container>
-      <ButtonIcon
-        onClick={handleComment}
-        iconType="reply"
-        count={comentarios}
-        $color={"rgb(113, 118, 123)"}
-      />
-
-      <ButtonActionContainer
-        onClick={handleToggleDropdown}
-        $color={retweetedBoolean ? "green" : "gray"}
-      >
+      <ButtonActionContainer>
         <ButtonIcon
+          onClick={handleComment}
+          iconType="reply"
+          count={comentarios}
+          $color={"rgb(113, 118, 123)"}
+        />
+      </ButtonActionContainer>
+
+      <ButtonActionContainer>
+        <ButtonIcon
+          onClick={handleToggleDropdown}
           iconType="retweet"
           count={retweetsCount}
-          $color={"rgb(113, 118, 123)"}
+          $fill={isRetweeted ? "green" : "rgb(113, 118, 123)"}
         />
         <Dropdown
           showDropdown={openDropdown}
@@ -145,12 +155,14 @@ const Actions = ({
         </Dropdown>
       </ButtonActionContainer>
 
-      <ButtonIcon
-        iconType={likedBoolean ? "heart-filled" : "heart"}
-        count={likesCount}
-        onClick={handleButtonLike}
-        $color={likedBoolean ? "red" : "rgb(113, 118, 123)"}
-      />
+      <ButtonActionContainer>
+        <ButtonIcon
+          iconType={likedBoolean ? "heart-filled" : "heart"}
+          count={likesCount}
+          onClick={handleButtonLike}
+          $color={likedBoolean ? "red" : "rgb(113, 118, 123)"}
+        />
+      </ButtonActionContainer>
     </Container>
   );
 };

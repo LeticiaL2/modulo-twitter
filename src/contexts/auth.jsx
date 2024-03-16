@@ -4,11 +4,9 @@ import { useNavigate } from "react-router-dom";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const navigate = useNavigate();
-
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const recoveredToken = localStorage.getItem("accessToken");
@@ -25,10 +23,12 @@ export const AuthProvider = ({ children }) => {
           error
         );
         localStorage.removeItem("accessToken");
+        setUser(null);
+        setToken(null);
+        navigate("/login");
       }
     }
-    setLoading(false);
-  }, []);
+  }, [navigate]);
 
   const login = async (email, password) => {
     console.log("login auth", { email, password });
@@ -75,12 +75,17 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("accessToken");
 
     setUser(null);
+    setToken(null);
+
     navigate("/login");
   };
 
+  const authenticated = !!user;
+  console.log("authenticated", authenticated);
+
   return (
     <AuthContext.Provider
-      value={{ authenticated: !!user, user, loading, login, logout, token }}
+      value={{ authenticated: !!user, user, login, logout, token }}
     >
       {children}
     </AuthContext.Provider>

@@ -1,4 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { openSnackbar } from "../redux/ducks/snackbar";
 import { get, post } from "../api/api";
 
 export const TweetsListContext = createContext();
@@ -7,6 +9,8 @@ const TimeLineProvider = ({ children }) => {
   const [tweets, setTweets] = useState([]);
   const [openCommentModal, setOpenCommentModal] = useState(null);
   const [openRetweetModal, setOpenRetweetModal] = useState(null);
+
+  const dispatch = useDispatch();
 
   const getTweets = async () => {
     try {
@@ -23,8 +27,8 @@ const TimeLineProvider = ({ children }) => {
     try {
       const response = await post("tweets", tweetObject);
       console.log("Resposta da API após o POST:", response);
-
       getTweets();
+      dispatch(openSnackbar("Tweet realizado com sucesso!"));
     } catch (error) {
       console.error("Erro ao realizar o POST na API:", error);
     }
@@ -36,6 +40,7 @@ const TimeLineProvider = ({ children }) => {
       setOpenRetweetModal(null);
       console.log("Resposta da requisição:", response.data);
       getTweets();
+      dispatch(openSnackbar("Retweet realizado com sucesso!"));
     } catch (error) {
       console.error("Erro ao realizar a requisição:", error);
       console.log("Erro detalhado:", error.response);
@@ -48,6 +53,7 @@ const TimeLineProvider = ({ children }) => {
       setOpenCommentModal(null);
       console.log("Resposta da requisição:", response.data);
       getTweets();
+      dispatch(openSnackbar("Comentario realizado com sucesso!"));
     } catch (error) {
       console.error("Erro ao realizar a requisição:", error);
       console.log("Erro detalhado:", error.response);

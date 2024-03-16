@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import BoxLogin from "../../components/organism/box-login/box-login";
 import TitleIntro from "../../components/atoms/title_intro/title_intro";
 import Header from "../../components/atoms/header/header";
@@ -7,6 +7,7 @@ import GlobalStyles from "../../styles/global-style";
 import { i18n } from "../../translate/i18n";
 import { useContext } from "react";
 import { LanguageContext } from "../../contexts/languageContext";
+import SwitchButton from "../../components/atoms/button-switch/button-switch";
 
 function LoginPage() {
   const { changeLanguage } = useContext(LanguageContext);
@@ -22,6 +23,8 @@ function LoginPage() {
 
       <TitleIntro text={i18n.t("login.title")} />
       <BoxLogin />
+
+      <SwitchButton />
     </ContainerLoginPage>
   );
 }

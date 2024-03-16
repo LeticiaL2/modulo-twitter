@@ -27,18 +27,26 @@ import {
   StyledTbLogout,
 } from "./styles";
 
-function ButtonIcon({ iconType, count, $padding, onClick, $color, content }) {
+function ButtonIcon({
+  iconType,
+  count,
+  $padding,
+  onClick,
+  $color,
+  content,
+  $fill,
+}) {
   let iconComponent;
 
   switch (iconType) {
     case "reply":
-      iconComponent = <StyledBsReply />;
+      iconComponent = <StyledBsReply $fill={$fill} />;
       break;
     case "retweet":
-      iconComponent = <StyledFaRetweet />;
+      iconComponent = <StyledFaRetweet $fill={$fill} />;
       break;
     case "heart":
-      iconComponent = <StyledMdFavoriteBorder />;
+      iconComponent = <StyledMdFavoriteBorder $fill={$fill} />;
       break;
     case "heart-filled":
       iconComponent = <StyledIoMdHeart />;
@@ -108,8 +116,8 @@ function ButtonIcon({ iconType, count, $padding, onClick, $color, content }) {
 
   return (
     <IconContainer>
-      <Button $color={$color} $padding={$padding} onClick={handleClick}>
-        <Icon $color={$color}>{iconComponent}</Icon>
+      <Button $padding={$padding} onClick={handleClick}>
+        <Icon>{iconComponent}</Icon>
         <Content>{content}</Content>
         <Count>{count}</Count>
       </Button>

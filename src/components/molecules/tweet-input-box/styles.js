@@ -61,7 +61,6 @@ export const TextInput = styled.textarea`
   padding: 10px;
   outline: none;
   background-color: transparent;
-  color: white;
   margin-top: 5px;
 
   &::placeholder {
